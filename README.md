@@ -1,7 +1,7 @@
 # website-bds
 
 architecture micro-services
-- user
+- user ([Login Microsoft](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-auth-code-flow))
 - club
 - admin
 - payment <br>

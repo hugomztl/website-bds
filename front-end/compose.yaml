@@ -1,38 +1,40 @@
 services:
-  front-end:
-    build: "."
+  svelte:
+    build: '.'
+    command: 'npm run build:watch'
     restart: unless-stopped
     networks:
       - app-network
     volumes:
-      - web-root:/app/dist/
+      - web-root:/app
     develop:
       watch:
-        - path: "."
-          target: "/app/"
+        - path: ./src
+          target: /app/src
           action: sync
         - path: package.json
           action: rebuild
-        - path: ./nginx-conf/nginx.conf
-          target: /etc/nginx/conf.d/nginx.conf
-          action: sync+restart
 
-  webserver:
+  nginx:
     image: nginx:mainline-alpine
-    container_name: webserver
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - '80:80'
+      - '443:443'
     volumes:
       - web-root:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
+      # - certbot-etc:/etc/letsencrypt
+      # - certbot-var:/var/lib/letsencrypt
     depends_on:
-      - front-end
+      - svelte
     networks:
       - app-network
+    develop:
+      watch:
+        - path: ./nginx-conf/nginx.conf
+          target: /etc/nginx/conf.d/nginx.conf
+          action: sync+restart
 
   # certbot:
   #   image: certbot/certbot
@@ -46,8 +48,8 @@ services:
   #   command: certonly --webroot --webroot-path=/var/www/html --agree-tos --no-eff-email --staging -d jobbishop.jobs  -d www.jobbishop.jobs --register-unsafely-without-email
 
 volumes:
-  certbot-etc:
-  certbot-var:
+  # certbot-etc:
+  # certbot-var:
   web-root:
 
 networks:

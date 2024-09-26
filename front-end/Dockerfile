@@ -2,11 +2,12 @@ FROM node:20.11
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json .
+
 RUN npm ci
 
-RUN npm run build
-
-EXPOSE 3000
-
-CMD ["npm", "run", "build:watch"]
+COPY /src ./src
+COPY /static ./static
+COPY /vite.config.ts .
+COPY /tsconfig.json .
+COPY /svelte.config.js .

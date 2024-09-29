@@ -1,5 +1,6 @@
 include:
   - "./front-end/compose.yaml"
+  - "./back-end/compose.yaml"
 services:
   database:
     image: mongodb/mongodb-community-server:5.0.22-ubi8

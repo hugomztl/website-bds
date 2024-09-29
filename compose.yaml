@@ -1,2 +1,14 @@
 include:
   - "./front-end/compose.yaml"
+services:
+  database:
+    image: mongodb/mongodb-community-server:5.0.22-ubi8
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db:/data/db
+    networks:
+      - db-network
+networks:
+  db-network:

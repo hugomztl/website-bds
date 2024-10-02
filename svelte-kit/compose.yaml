@@ -1,0 +1,41 @@
+services:
+  svelte-kit:
+    build:
+      context: .
+      target: 'dev'
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./src:/app/src
+      - ./static:/app/static
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+    networks:
+      - db-network
+      - app-network
+    develop:
+      watch:
+        - path: ./package.json
+          action: rebuild
+        - path: ./package-lock.json
+          action: rebuild
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx-conf:/etc/nginx/conf.d
+    networks:
+      - app-network
+    depends_on:
+      - svelte-kit
+volumes:
+  web-root:
+
+networks:
+  app-network:
+    driver: bridge

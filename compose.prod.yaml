@@ -1,0 +1,8 @@
+services:
+  svelte-kit:
+    build:
+      target: "prod"
+    ports: !reset []
+    volumes: !reset []
+  database:
+    ports: !reset []

@@ -14,12 +14,6 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	adapter: MongoDBAdapter(client),
 	callbacks: {
 		async signIn({ user }) {
-			// On vérifie que l'utilisateur est bien un utilisateur de l'adapter
-			if (!('emailVerified' in user)) {
-				console.error('User is not AdapterUser.');
-				return false;
-			}
-
 			// On ajoute les propriétés supplémentaires si elles n'existent pas
 			const existingUser = await client.db().collection('users').findOne({ email: user.email });
 			user.license = existingUser?.license ?? false;
@@ -36,8 +30,5 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 		signIn: '/',
 		error: '/',
 		signOut: '/'
-
-		// Possibilité de rediriger les nouveaux utilisateurs vers leur page de profil
-		// newUser: '/profile'
 	}
 });

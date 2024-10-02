@@ -25,6 +25,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@auth/sveltekit": "^1.5.3",
     "dotenv": "^16.4.5"
   }
 }

@@ -14,6 +14,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	adapter: MongoDBAdapter(client),
 	callbacks: {
 		async signIn({ user }) {
+			// On vérifie que l'utilisateur est bien un utilisateur de l'adapter
 			if (!('emailVerified' in user)) {
 				console.error('User is not AdapterUser.');
 				return false;
@@ -30,5 +31,13 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 		session({ session }) {
 			return session;
 		}
+	},
+	pages: {
+		signIn: '/',
+		error: '/',
+		signOut: '/'
+
+		// Possibilité de rediriger les nouveaux utilisateurs vers leur page de profil
+		// newUser: '/profile'
 	}
 });

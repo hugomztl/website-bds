@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import SignOut from '$lib/components/auth/SignOut.svelte';
+	import { SignOut } from '@auth/sveltekit/components';
 </script>
 
 <main id="app">
@@ -17,9 +17,8 @@
 		</div>
 		<SignOut />
 	{:else}
-		<a href="/login">
-			<button>Se connecter</button>
-		</a>
+		<a href="/signin"><button>Se connecter</button></a>
+		<a href="/register"><button>Créer un compte</button></a>
 	{/if}
 </main>
 
@@ -34,11 +33,5 @@
 
 	.user-info > * {
 		vertical-align: middle;
-	}
-
-	.user-avatar {
-		width: 2rem;
-		height: 2rem;
-		border-radius: 50%;
 	}
 </style>

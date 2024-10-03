@@ -1,5 +1,5 @@
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
-import { CredentialsSignin, SvelteKitAuth, type User } from '@auth/sveltekit';
+import { SvelteKitAuth, type User } from '@auth/sveltekit';
 import Credentials from '@auth/sveltekit/providers/credentials';
 import { client } from './lib/database';
 
@@ -9,11 +9,10 @@ declare module '@auth/sveltekit' {
 	}
 }
 
-class CustomError extends CredentialsSignin {
-	code = 'custom_error';
-}
-
 export const { handle, signIn, signOut } = SvelteKitAuth({
+	session: {
+		strategy: 'jwt'
+	},
 	providers: [
 		Credentials({
 			credentials: {
@@ -21,12 +20,9 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 				password: {}
 			},
 			authorize: async (credentials) => {
-				console.log('Trying to authorize user', credentials);
-
 				let user = null;
 
 				// On vérifie si l'utilisateur existe déjà
-				// Le cast permet de contourner le problème de typage de Mongo
 				// TODO: Utilisation possible de mongoose?
 				user = (await client.db().collection('users').findOne({
 					email: credentials.email,
@@ -34,24 +30,26 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 				})) as unknown as User;
 
 				if (!user) {
-					// Pas d'utilisateur trouvé
-					// TODO: Redirection vers une page d'inscription?
-					throw new CustomError('Utilisateur introuvable.');
+					return null;
 				}
 
-				return user;
+				return {
+					email: user.email,
+					license: user.license
+				};
 			}
 		})
 	],
 	adapter: MongoDBAdapter(client),
 	callbacks: {
-		jwt({ token }) {
-			console.log('Creating new token', token);
+		jwt({ token, user }) {
+			if (user) {
+				token.license = user.license;
+			}
 			return token;
 		},
 		async signIn({ user, credentials }) {
 			if (!credentials) {
-				console.log('No credentials');
 				return false;
 			}
 

@@ -1,6 +1,6 @@
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
-import { SvelteKitAuth } from '@auth/sveltekit';
-import GitHub from '@auth/sveltekit/providers/github';
+import { CredentialsSignin, SvelteKitAuth, type User } from '@auth/sveltekit';
+import Credentials from '@auth/sveltekit/providers/credentials';
 import { client } from './lib/database';
 
 declare module '@auth/sveltekit' {
@@ -9,11 +9,52 @@ declare module '@auth/sveltekit' {
 	}
 }
 
+class CustomError extends CredentialsSignin {
+	code = 'custom_error';
+}
+
 export const { handle, signIn, signOut } = SvelteKitAuth({
-	providers: [GitHub],
+	providers: [
+		Credentials({
+			credentials: {
+				email: {},
+				password: {}
+			},
+			authorize: async (credentials) => {
+				console.log('Trying to authorize user', credentials);
+
+				let user = null;
+
+				// On vérifie si l'utilisateur existe déjà
+				// Le cast permet de contourner le problème de typage de Mongo
+				// TODO: Utilisation possible de mongoose?
+				user = (await client.db().collection('users').findOne({
+					email: credentials.email,
+					password: credentials.password
+				})) as unknown as User;
+
+				if (!user) {
+					// Pas d'utilisateur trouvé
+					// TODO: Redirection vers une page d'inscription?
+					throw new CustomError('Utilisateur introuvable.');
+				}
+
+				return user;
+			}
+		})
+	],
 	adapter: MongoDBAdapter(client),
 	callbacks: {
-		async signIn({ user }) {
+		jwt({ token }) {
+			console.log('Creating new token', token);
+			return token;
+		},
+		async signIn({ user, credentials }) {
+			if (!credentials) {
+				console.log('No credentials');
+				return false;
+			}
+
 			// On ajoute les propriétés supplémentaires si elles n'existent pas
 			const existingUser = await client.db().collection('users').findOne({ email: user.email });
 			user.license = existingUser?.license ?? false;

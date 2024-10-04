@@ -17,8 +17,8 @@
 		</div>
 		<SignOut />
 	{:else}
-		<a href="/signin"><button>Se connecter</button></a>
-		<a href="/register"><button>Créer un compte</button></a>
+		<a href="/signin"><button tabindex="-1">Se connecter</button></a>
+		<a href="/register"><button tabindex="-1">Créer un compte</button></a>
 	{/if}
 </main>
 

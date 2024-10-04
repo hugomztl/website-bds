@@ -6,9 +6,7 @@ import bcrypt from 'bcrypt';
 import { formatName } from '$lib/user';
 
 declare module '@auth/sveltekit' {
-	interface User {
-		license: boolean;
-	}
+	interface User {}
 }
 
 class InvalidCredentialsError extends CredentialsSignin {
@@ -46,43 +44,12 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 
 				return {
 					email: user.email,
-					name: formatName(user.email),
-					license: user.license
+					name: formatName(user.email)
 				};
 			}
 		})
 	],
 	adapter: MongoDBAdapter(client),
-	callbacks: {
-		jwt({ token, user }) {
-			if (user) {
-				token.license = user.license;
-				token.name = user.name;
-			}
-
-			return token;
-		},
-		async signIn({ user, credentials }) {
-			if (!credentials) {
-				return false;
-			}
-
-			// On ajoute les propriétés supplémentaires si elles n'existent pas
-			const existingUser = await client.db().collection('users').findOne({ email: user.email });
-			user.license = existingUser?.license ?? false;
-
-			// On pourra vérifier si le mail de l'utilisateur n'est pas (via)cesi, et refuser la connexion
-			return true;
-		},
-		// Ce callback permet d'assigner correctement le nouveau modèle
-		session({ session, token }) {
-			if (session.user) {
-				session.user.license = token.license;
-				session.user.name = token.name;
-			}
-			return session;
-		}
-	},
 	pages: {
 		signIn: '/signin'
 	}

@@ -1,8 +1,17 @@
 import { CONNECTION_STRING } from '$env/static/private';
 import { MongoClient } from 'mongodb';
 import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
 
-export const client = new MongoClient(CONNECTION_STRING);
+mongoose
+	.connect(CONNECTION_STRING)
+	.then(() => {
+		console.log('Successfully connected to MongoDB');
+	})
+	.catch((error) => {
+		console.error('Error connecting to MongoDB:', error);
+	});
+export const client: MongoClient = mongoose.connection.getClient();
 
 const salt = bcrypt.genSaltSync(10);
 export const hashPassword = (password: string) => {

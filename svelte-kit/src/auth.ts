@@ -1,9 +1,10 @@
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import { CredentialsSignin, SvelteKitAuth } from '@auth/sveltekit';
 import Credentials from '@auth/sveltekit/providers/credentials';
-import { client } from './lib/database';
 import bcrypt from 'bcrypt';
 import { formatName } from '$lib/user';
+import User from '$lib/models/User';
+import { client } from '$lib/database';
 
 declare module '@auth/sveltekit' {
 	interface User {}
@@ -33,9 +34,9 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 
 				// On vérifie si l'utilisateur existe déjà
 				// TODO: Utilisation possible de mongoose?
-				user = await client.db().collection('users').findOne({
+				user = await User.findOne({
 					email: credentials.email
-				});
+				}).select('+password');
 
 				// Si l'utilisateur n'existe pas ou que le mot de passe est incorrect
 				if (!user || !bcrypt.compareSync(credentials.password, user.password)) {

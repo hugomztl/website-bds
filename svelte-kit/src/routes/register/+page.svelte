@@ -7,6 +7,11 @@
 <main id="app">
 	<h1>Créer un compte</h1>
 
+	<p>
+		<a href="/">Retour à l'accueil</a><br />
+		<a href="/signin">Se connecter</a>
+	</p>
+
 	{#if $page.form?.taken}
 		<p class="error">Cette adresse e-mail est déjà utilisée.</p>
 	{/if}

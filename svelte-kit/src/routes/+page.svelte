@@ -13,7 +13,7 @@
 	{#if $page.data.session}
 		{@const user = $page.data.session?.user}
 		<div class="user-info">
-			<span>Bienvenue {user?.email}</span>
+			<span>Bienvenue <a href="/profile">{user?.email}</a></span>
 		</div>
 		<SignOut />
 	{:else}

@@ -9,6 +9,11 @@
 <main id="app">
 	<h1>Se connecter</h1>
 
+	<p>
+		<a href="/">Retour à l'accueil</a><br />
+		<a href="/register">Créer un compte</a>
+	</p>
+
 	{#if $page.url.searchParams.get('code')}
 		<p class="error">{$page.url.searchParams.get('code')}</p>
 	{/if}

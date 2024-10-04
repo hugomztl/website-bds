@@ -1,7 +1,7 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import { isViacesiEmail } from '$lib/email';
-import { client } from '$lib/database';
+import { client, hashPassword } from '$lib/database';
 
 export const prerender = false;
 
@@ -30,10 +30,10 @@ export const actions: Actions = {
 			return fail(400, { email, taken: true });
 		}
 
-		// FIXME: Hash + Salt les passwords
+		const hashedPassword = hashPassword(password);
 		await client.db().collection('users').insertOne({
 			email,
-			password
+			password: hashedPassword
 		});
 
 		return redirect(303, `/signin?email=${encodeURIComponent(email)}`);

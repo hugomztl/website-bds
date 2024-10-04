@@ -2,6 +2,7 @@ import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import { SvelteKitAuth, type User } from '@auth/sveltekit';
 import Credentials from '@auth/sveltekit/providers/credentials';
 import { client } from './lib/database';
+import bcrypt from 'bcrypt';
 
 declare module '@auth/sveltekit' {
 	interface User {
@@ -13,6 +14,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	session: {
 		strategy: 'jwt'
 	},
+	debug: process.env.NODE_ENV !== 'production',
 	providers: [
 		Credentials({
 			credentials: {
@@ -22,14 +24,18 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 			authorize: async (credentials) => {
 				let user = null;
 
+				if (!(typeof credentials.password === 'string' && typeof credentials.email === 'string')) {
+					return null;
+				}
+
 				// On vérifie si l'utilisateur existe déjà
 				// TODO: Utilisation possible de mongoose?
-				user = (await client.db().collection('users').findOne({
-					email: credentials.email,
-					password: credentials.password
-				})) as unknown as User;
+				user = await client.db().collection('users').findOne({
+					email: credentials.email
+				});
 
-				if (!user) {
+				// Si l'utilisateur n'existe pas ou que le mot de passe est incorrect
+				if (!user || !bcrypt.compareSync(credentials.password, user.password)) {
 					return null;
 				}
 
@@ -46,6 +52,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 			if (user) {
 				token.license = user.license;
 			}
+
 			return token;
 		},
 		async signIn({ user, credentials }) {
@@ -61,13 +68,14 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 			return true;
 		},
 		// Ce callback permet d'assigner correctement le nouveau modèle
-		session({ session }) {
+		session({ session, token }) {
+			if (session.user) {
+				session.user.license = token.license;
+			}
 			return session;
 		}
 	},
 	pages: {
-		signIn: '/',
-		error: '/',
-		signOut: '/'
+		signIn: '/signin'
 	}
 });

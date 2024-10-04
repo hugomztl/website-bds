@@ -30,6 +30,7 @@
     "@auth/sveltekit": "^1.5.3",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
-    "mongodb": "^6.9.0"
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.7.0"
   }
 }

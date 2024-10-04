@@ -11,7 +11,10 @@ const UserSchema = new Schema({
 		select: false,
 		required: true
 	},
-	fullName: String,
+	fullName: {
+		type: String,
+		required: true
+	},
 	license: {
 		type: Boolean,
 		required: true,
@@ -20,8 +23,7 @@ const UserSchema = new Schema({
 	discord: String,
 	promo: {
 		type: String,
-		enum: ['A1', 'A2', 'A3', 'A4', 'A5'],
-		required: true
+		enum: ['A1', 'A2', 'A3', 'A4', 'A5']
 	},
 	admin: {
 		type: Boolean,

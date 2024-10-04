@@ -9,8 +9,8 @@
 <main id="app">
 	<h1>Se connecter</h1>
 
-	{#if $page.url.searchParams.get('error') === 'CredentialsSignin'}
-		<p class="error">Nom d'utilisateur ou mot de passe invalide.</p>
+	{#if $page.url.searchParams.get('code')}
+		<p class="error">{$page.url.searchParams.get('code')}</p>
 	{/if}
 	<form on:submit|preventDefault={() => signIn('credentials', { email, password })}>
 		<input type="email" name="email" placeholder="Mail viacesi" bind:value={email} />

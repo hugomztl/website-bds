@@ -1,5 +1,5 @@
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
-import { SvelteKitAuth, type User } from '@auth/sveltekit';
+import { CredentialsSignin, SvelteKitAuth } from '@auth/sveltekit';
 import Credentials from '@auth/sveltekit/providers/credentials';
 import { client } from './lib/database';
 import bcrypt from 'bcrypt';
@@ -8,6 +8,10 @@ declare module '@auth/sveltekit' {
 	interface User {
 		license: boolean;
 	}
+}
+
+class InvalidCredentialsError extends CredentialsSignin {
+	code = 'Identifiant ou mot de passe invalide';
 }
 
 export const { handle, signIn, signOut } = SvelteKitAuth({

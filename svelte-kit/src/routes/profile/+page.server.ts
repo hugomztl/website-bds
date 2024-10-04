@@ -1,3 +1,4 @@
+import User from '$lib/models/User';
 import { redirect } from '@sveltejs/kit';
 
 export const load = async ({ locals }) => {
@@ -7,7 +8,13 @@ export const load = async ({ locals }) => {
 		return redirect(302, '/signin');
 	}
 
+	const maybeMongooseUser = await User.findOne({ email: session.user!.email }).lean().exec();
+
 	return {
-		session
+		session,
+		user: {
+			...maybeMongooseUser,
+			_id: maybeMongooseUser?._id.toString()
+		}
 	};
 };

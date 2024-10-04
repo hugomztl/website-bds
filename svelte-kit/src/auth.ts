@@ -3,6 +3,7 @@ import { CredentialsSignin, SvelteKitAuth } from '@auth/sveltekit';
 import Credentials from '@auth/sveltekit/providers/credentials';
 import { client } from './lib/database';
 import bcrypt from 'bcrypt';
+import { formatName } from '$lib/user';
 
 declare module '@auth/sveltekit' {
 	interface User {
@@ -40,11 +41,12 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 
 				// Si l'utilisateur n'existe pas ou que le mot de passe est incorrect
 				if (!user || !bcrypt.compareSync(credentials.password, user.password)) {
-					return null;
+					throw new InvalidCredentialsError();
 				}
 
 				return {
 					email: user.email,
+					name: formatName(user.email),
 					license: user.license
 				};
 			}
@@ -55,6 +57,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 		jwt({ token, user }) {
 			if (user) {
 				token.license = user.license;
+				token.name = user.name;
 			}
 
 			return token;
@@ -75,6 +78,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 		session({ session, token }) {
 			if (session.user) {
 				session.user.license = token.license;
+				session.user.name = token.name;
 			}
 			return session;
 		}

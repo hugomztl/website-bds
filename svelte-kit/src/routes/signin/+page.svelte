@@ -12,7 +12,9 @@
 	{#if $page.url.searchParams.get('code')}
 		<p class="error">{$page.url.searchParams.get('code')}</p>
 	{/if}
-	<form on:submit|preventDefault={() => signIn('credentials', { email, password })}>
+	<form
+		on:submit|preventDefault={() => signIn('credentials', { email, password, callbackUrl: '/' })}
+	>
 		<input type="email" name="email" placeholder="Mail viacesi" bind:value={email} />
 		<br />
 		<input type="password" name="password" placeholder="Mot de passe" bind:value={password} />

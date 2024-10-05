@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import mongoose, { model, Schema } from 'mongoose';
 
 const UserSchema = new Schema({
 	email: {
@@ -51,6 +51,11 @@ const UserSchema = new Schema({
 		default: Date.now
 	}
 });
+
+// Permet de reconstruire le modèle en mode dev pour le HMR de Vite
+if (process.env.NODE_ENV === 'development' && mongoose.models.User) {
+	delete mongoose.models.User;
+}
 
 const User = model('User', UserSchema);
 

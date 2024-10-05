@@ -26,6 +26,8 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	session: {
 		strategy: 'jwt'
 	},
+	// Nécessaire pour le déploiement Docker
+	trustHost: true,
 	debug: process.env.NODE_ENV !== 'production',
 	providers: [
 		Credentials({

@@ -14,5 +14,5 @@ README.md
 node_modules
 build
 package
-**/.env
-.env.sample
+# **/.env
+.env.example

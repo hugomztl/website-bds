@@ -3,7 +3,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { isViacesiEmail } from '$lib/email';
 import { hashPassword } from '$lib/database';
 import User from '$lib/models/User';
-import { formatName } from '$lib/user';
+import { formatName } from '$lib/email';
 
 export const prerender = false;
 

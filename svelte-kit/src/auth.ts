@@ -2,7 +2,7 @@ import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import { CredentialsSignin, SvelteKitAuth } from '@auth/sveltekit';
 import Credentials from '@auth/sveltekit/providers/credentials';
 import bcrypt from 'bcrypt';
-import { formatName } from '$lib/user';
+import { formatName } from '$lib/email';
 import User from '$lib/models/User';
 import { client } from '$lib/database';
 

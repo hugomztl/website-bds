@@ -1,12 +1,20 @@
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
-import { CredentialsSignin, SvelteKitAuth } from '@auth/sveltekit';
+import { CredentialsSignin, SvelteKitAuth, type DefaultSession } from '@auth/sveltekit';
 import Credentials from '@auth/sveltekit/providers/credentials';
 import bcrypt from 'bcrypt';
 import { formatName } from '$lib/email';
 import User from '$lib/models/User';
 import { client } from '$lib/database';
 
+// Ces deux modules permettent d'étendre la définition des types de AuthJS
+// Si on veut ajouter des propriétés, il faut également les ajouter dans les callbacks adaptés du SvelteKitAuth
+declare module '@auth/core/jwt' {
+	interface JWT {}
+}
+
 declare module '@auth/sveltekit' {
+	interface Session {}
+
 	interface User {}
 }
 
@@ -42,7 +50,6 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 				if (!user || !bcrypt.compareSync(credentials.password, user.password)) {
 					throw new InvalidCredentialsError();
 				}
-
 				return {
 					email: user.email,
 					name: formatName(user.email)

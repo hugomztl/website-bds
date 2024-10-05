@@ -15,7 +15,9 @@
 		<div class="user-info">
 			<span>Bienvenue <a href="/profile">{user?.email}</a></span>
 		</div>
-		<SignOut />
+		<SignOut>
+			<span slot="submitButton">Se déconnecter</span>
+		</SignOut>
 	{:else}
 		<a href="/signin"><button tabindex="-1">Se connecter</button></a>
 		<a href="/register"><button tabindex="-1">Créer un compte</button></a>

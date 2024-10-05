@@ -7,7 +7,7 @@ export function formatName(email: string) {
 	const dotIndex = name.indexOf('.');
 
 	if (dotIndex === -1) {
-		throw new Error('Invalid email');
+		return '';
 	}
 
 	const formattedName = name

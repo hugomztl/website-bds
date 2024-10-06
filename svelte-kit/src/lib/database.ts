@@ -17,3 +17,20 @@ const salt = bcrypt.genSaltSync(10);
 export const hashPassword = (password: string) => {
 	return bcrypt.hashSync(password, salt);
 };
+
+export const recursiveStringifyId = <T extends Record<string, any>>(obj: T): T => {
+	if (Array.isArray(obj)) {
+		return obj.map(recursiveStringifyId) as unknown as T;
+	} else if (typeof obj === 'object' && obj !== null) {
+		const result: Record<string, any> = {};
+		for (const [key, value] of Object.entries(obj)) {
+			if (key === '_id' && value instanceof mongoose.Types.ObjectId) {
+				result[key] = value.toString();
+			} else {
+				result[key] = recursiveStringifyId(value);
+			}
+		}
+		return result as T;
+	}
+	return obj;
+};

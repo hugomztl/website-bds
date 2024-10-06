@@ -19,7 +19,11 @@ const ClubSchema = new Schema({
 			type: Schema.Types.ObjectId,
 			ref: 'Post'
 		}
-	]
+	],
+	createdAt: {
+		type: Date,
+		default: Date.now
+	}
 });
 
 // Permet de reconstruire le modèle en mode dev pour le HMR de Vite

@@ -16,8 +16,14 @@ const ClubSchema = new Schema({
 	},
 	posts: [
 		{
-			type: Schema.Types.ObjectId,
-			ref: 'Post'
+			title: {
+				type: String,
+				required: true
+			},
+			content: {
+				type: String,
+				required: true
+			}
 		}
 	],
 	createdAt: {

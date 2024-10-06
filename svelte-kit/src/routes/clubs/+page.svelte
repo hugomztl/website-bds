@@ -3,6 +3,10 @@
 </script>
 
 <main id="app">
+	{#if $page.data.session?.user?.isAdmin}
+		<a href="/clubs/manage">Gérer les clubs</a>
+	{/if}
+
 	<h1>Clubs:</h1>
 
 	{#each $page.data.clubs as club}

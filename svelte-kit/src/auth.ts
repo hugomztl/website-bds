@@ -9,13 +9,17 @@ import { client } from '$lib/database';
 // Ces deux modules permettent d'étendre la définition des types de AuthJS
 // Si on veut ajouter des propriétés, il faut également les ajouter dans les callbacks adaptés du SvelteKitAuth
 declare module '@auth/core/jwt' {
-	interface JWT {}
+	interface JWT {
+		isAdmin: boolean;
+	}
 }
 
 declare module '@auth/sveltekit' {
 	interface Session {}
 
-	interface User {}
+	interface User {
+		isAdmin: boolean;
+	}
 }
 
 class InvalidCredentialsError extends CredentialsSignin {
@@ -29,6 +33,18 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	// Nécessaire pour le déploiement Docker
 	trustHost: true,
 	debug: process.env.NODE_ENV !== 'production',
+	callbacks: {
+		jwt({ token, user }) {
+			if (user) {
+				token.isAdmin = user.isAdmin;
+			}
+			return token;
+		},
+		session({ session, token }) {
+			session.user.isAdmin = token.isAdmin;
+			return session;
+		}
+	},
 	providers: [
 		Credentials({
 			credentials: {
@@ -54,7 +70,8 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 				}
 				return {
 					email: user.email,
-					name: formatName(user.email)
+					name: formatName(user.email),
+					isAdmin: user.admin
 				};
 			}
 		})

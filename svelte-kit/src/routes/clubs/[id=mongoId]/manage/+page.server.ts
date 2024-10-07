@@ -140,5 +140,34 @@ export const actions = {
 		await club.save();
 
 		return { success: true };
+	},
+	async createPost({ params, request, locals }) {
+		const session = await locals.auth();
+		const { id } = params;
+		const formData = await request.formData();
+		const title = formData.get('title');
+		const content = formData.get('content');
+
+		const club = await Club.findById(id);
+		if (!club) {
+			return fail(404, { message: 'Club non trouvé' });
+		}
+
+		if (!isOwnerOrAdmin(club.owner?.toString(), session)) {
+			return fail(403, { message: "Vous n'êtes pas autorisé à modifier ce club" });
+		}
+
+		if (!(typeof title === 'string' && typeof content === 'string')) {
+			return fail(400, { message: 'Titre ou contenu invalide.' });
+		}
+
+		club.posts.push({
+			title,
+			content
+		});
+
+		await club.save();
+
+		return { success: true };
 	}
 };

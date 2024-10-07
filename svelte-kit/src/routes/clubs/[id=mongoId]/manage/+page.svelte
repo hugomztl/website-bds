@@ -45,6 +45,19 @@
 		{/if}
 	</div>
 
+	<hr style="margin: 2rem 0;" />
+
+	<h2>Nouveau post</h2>
+	<form method="POST" action="?/createPost" use:enhance>
+		<span>
+			<input type="text" placeholder="Titre" name="title" required />
+			<input type="text" placeholder="Contenu" name="content" required />
+		</span>
+		<button>🖊️ Nouveau post</button>
+	</form>
+
+	<hr style="margin: 2rem 0;" />
+
 	{#if form?.message}
 		<p>{form.message}</p>
 	{/if}

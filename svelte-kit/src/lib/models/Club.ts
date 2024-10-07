@@ -29,13 +29,38 @@ const ClubSchema = new Schema({
 	createdAt: {
 		type: Date,
 		default: Date.now
-	}
+	},
+	members: [
+		{
+			pending: Boolean,
+			user: {
+				type: Schema.Types.ObjectId,
+				ref: 'User'
+			}
+		}
+	]
 });
 
 // Permet de reconstruire le modèle en mode dev pour le HMR de Vite
 if (process.env.NODE_ENV === 'development' && mongoose.models.Club) {
 	delete mongoose.models.Club;
 }
+
+export type ClubDocument = mongoose.Document & {
+	name: string;
+	description: string;
+	logo?: string;
+	owner?: mongoose.Types.ObjectId;
+	posts: Array<{
+		title: string;
+		content: string;
+	}>;
+	createdAt: Date;
+	members: Array<{
+		pending: boolean;
+		user?: mongoose.Types.ObjectId;
+	}>;
+};
 
 const Club = model('Club', ClubSchema);
 

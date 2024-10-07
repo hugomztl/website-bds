@@ -37,5 +37,20 @@ export const actions = {
 		await post.save();
 
 		return { success: true };
+	},
+	async deletePost({ request, locals }) {
+		const formData = await request.formData();
+		const postId = formData.get('postId');
+
+		const session = await locals.auth();
+		if (!isAdmin(session) || !session?.user?.id) {
+			return {
+				status: 403,
+				body: { message: "Vous n'êtes pas autorisé à supprimer un post de blog" }
+			};
+		}
+
+		await BlogPost.findByIdAndDelete(postId);
+		return { success: true };
 	}
 };

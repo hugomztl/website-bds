@@ -21,9 +21,22 @@
 </form>
 
 {#each posts as post}
-	<div>
+	<div class="post">
 		<h2>{post.title}</h2>
+		<span>Posté le {post.createdAt.toLocaleDateString()}</span>
 		<p>{post.content}</p>
+		<form
+			method="POST"
+			action="?/deletePost"
+			use:enhance={({ cancel }) => {
+				if (!confirm('Voulez-vous vraiment supprimer ce post ?')) {
+					cancel();
+				}
+			}}
+		>
+			<input type="hidden" name="postId" value={post._id} />
+			<button type="submit">Supprimer</button>
+		</form>
 	</div>
 {:else}
 	<h2>Le BDS n'a encore rien posté 😵</h2>
@@ -46,12 +59,6 @@
 		align-self: flex-start;
 	}
 
-	div {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
 	textarea {
 		resize: vertical;
 		min-height: 100px;
@@ -61,5 +68,12 @@
 		border-radius: 4px;
 		font-family: inherit;
 		font-size: 1rem;
+	}
+
+	.post {
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		padding: 1rem;
+		box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
 	}
 </style>

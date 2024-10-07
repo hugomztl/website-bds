@@ -32,10 +32,14 @@ const ClubSchema = new Schema({
 	},
 	members: [
 		{
-			pending: Boolean,
+			pending: {
+				type: Boolean,
+				required: true
+			},
 			user: {
 				type: Schema.Types.ObjectId,
-				ref: 'User'
+				ref: 'User',
+				required: true
 			}
 		}
 	]

@@ -13,18 +13,13 @@ export const load = async ({ params, locals }) => {
 	}
 
 	const club = await Club.findById(params.id)
-		.lean()
 		.exec()
 		.then((club) => {
 			if (club === null) {
 				throw error(404, 'Club non trouvé');
 			}
 
-			return {
-				...club,
-				_id: club._id.toString(),
-				owner: club.owner?._id?.toString() ?? ''
-			};
+			return club.toObject({ flattenObjectIds: true });
 		});
 
 	if (!club) {

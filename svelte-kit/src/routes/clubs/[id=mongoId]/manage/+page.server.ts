@@ -62,6 +62,11 @@ export const actions = {
 		return redirect(303, '/clubs');
 	},
 	async delete(event) {
+		const session = await event.locals.auth();
+		if (!session || !session?.user?.isAdmin) {
+			return fail(403, { message: "Vous n'êtes pas autorisé à supprimer un club" });
+		}
+
 		const { id } = event.params;
 		const club = await Club.findById(id);
 

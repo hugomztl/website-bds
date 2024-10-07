@@ -4,7 +4,19 @@
 	export let data;
 	export let form;
 
+	type ClubMemberType = (typeof club.members)[number];
+
 	const club = data.club;
+	const clubMembers: ClubMemberType[] = [];
+	const pendingMembers: ClubMemberType[] = [];
+
+	for (const member of club.members) {
+		if (member.pending) {
+			pendingMembers.push(member);
+		} else {
+			clubMembers.push(member);
+		}
+	}
 </script>
 
 <!-- TODO: Ajouter un popup pour afficher le résultat de la modification d'un club -->
@@ -37,6 +49,7 @@
 		<p>{form.message}</p>
 	{/if}
 
+	<!-- TODO: Utiliser Zob et SuperForms? -->
 	<form method="POST" action="?/update" use:enhance>
 		<input type="text" placeholder="name" name="name" required value={club.name} />
 		<input
@@ -59,6 +72,28 @@
 
 		<button type="submit">Mettre à jour le club</button>
 	</form>
+
+	<h2>Utilisateurs voulant rejoindre le club</h2>
+	{#each pendingMembers as member}
+		<div class="pending-member">
+			<span>{member.user.fullName} ({member.user.email})</span>
+			<div class="button-group">
+				<form method="POST" action="?/acceptMember">
+					<input type="hidden" name="userId" value={member.user._id} />
+					<button type="submit" class="accept-button">✔</button>
+				</form>
+				<form method="POST" action="?/rejectMember">
+					<input type="hidden" name="userId" value={member.user._id} />
+					<button type="submit" class="reject-button">❌</button>
+				</form>
+			</div>
+		</div>
+	{/each}
+
+	<h2>Utilisateurs dans le club</h2>
+	{#each clubMembers as member}
+		<p>{member.user.fullName} ({member.user.email})</p>
+	{/each}
 </main>
 
 <style>
@@ -83,5 +118,15 @@
 
 	.delete-button svg {
 		fill: currentColor;
+	}
+
+	.button-group {
+		display: inline-flex;
+		gap: 0.5rem;
+	}
+
+	.pending-member {
+		border: 1px solid;
+		padding: 1rem;
 	}
 </style>

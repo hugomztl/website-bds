@@ -1,6 +1,7 @@
+import { isAdmin, isOwnerOrAdmin } from '$lib/authutil';
 import { recursiveStringifyId } from '$lib/database.js';
 import Club from '$lib/models/Club';
-import User from '$lib/models/User';
+import User, { type UserType } from '$lib/models/User';
 import { error, fail, redirect } from '@sveltejs/kit';
 import { ObjectId } from 'mongodb';
 
@@ -13,6 +14,7 @@ export const load = async ({ params, locals }) => {
 	}
 
 	const club = await Club.findById(params.id)
+		.populate<{ members: { user: UserType; pending: boolean }[] }>('members.user')
 		.exec()
 		.then((club) => {
 			if (club === null) {
@@ -41,6 +43,8 @@ export const load = async ({ params, locals }) => {
 
 export const actions = {
 	async update(event) {
+		const session = await event.locals.auth();
+
 		const { id } = event.params;
 		const formData = await event.request.formData();
 		const name = formData.get('name');
@@ -51,6 +55,10 @@ export const actions = {
 
 		if (!club) {
 			return fail(404, { message: 'Club non trouvé' });
+		}
+
+		if (!isOwnerOrAdmin(club.owner?.toString(), session)) {
+			return fail(403, { message: "Vous n'êtes pas autorisé à modifier ce club" });
 		}
 
 		try {
@@ -67,7 +75,7 @@ export const actions = {
 	},
 	async delete(event) {
 		const session = await event.locals.auth();
-		if (!session || !session?.user?.isAdmin) {
+		if (!isAdmin(session)) {
 			return fail(403, { message: "Vous n'êtes pas autorisé à supprimer un club" });
 		}
 
@@ -80,5 +88,57 @@ export const actions = {
 
 		await club.deleteOne();
 		return redirect(303, '/clubs');
+	},
+	async acceptMember({ params, request, locals }) {
+		const session = await locals.auth();
+		const userId = (await request.formData()).get('userId');
+		const clubId = params.id;
+
+		const club = await Club.findById(clubId).exec();
+		if (!club) {
+			return fail(404, { message: 'Club non trouvé' });
+		}
+
+		if (!isOwnerOrAdmin(club.owner?.toString(), session)) {
+			return fail(403, { message: "Vous n'êtes pas autorisé à modifier ce club" });
+		}
+
+		if (!(typeof userId === 'string' && ObjectId.isValid(userId))) {
+			return fail(400, { message: 'ID de membre invalide' });
+		}
+
+		club.members.map((member) => {
+			if (member.user?.equals(userId)) {
+				member.pending = false;
+			}
+		});
+
+		await club.save();
+
+		return { success: true };
+	},
+	async rejectMember({ params, request, locals }) {
+		const session = await locals.auth();
+		const userId = (await request.formData()).get('userId');
+		const clubId = params.id;
+
+		const club = await Club.findById(clubId).exec();
+		if (!club) {
+			return fail(404, { message: 'Club non trouvé' });
+		}
+
+		if (!isOwnerOrAdmin(club.owner?.toString(), session)) {
+			return fail(403, { message: "Vous n'êtes pas autorisé à modifier ce club" });
+		}
+
+		if (!(typeof userId === 'string' && ObjectId.isValid(userId))) {
+			return fail(400, { message: 'ID de membre invalide' });
+		}
+
+		// @ts-expect-error On ignore parce que tkt
+		club.members = club.members.filter((member) => !member.user?.equals(userId));
+		await club.save();
+
+		return { success: true };
 	}
 };

@@ -62,7 +62,6 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 				}
 
 				// On vérifie si l'utilisateur existe déjà
-				// TODO: Utilisation possible de mongoose?
 				user = await User.findOne({
 					email: credentials.email
 				}).select('+password');

@@ -6,7 +6,12 @@ import { ObjectId } from 'mongodb';
 
 export const prerender = false;
 
-export const load = async ({ params }) => {
+export const load = async ({ params, locals }) => {
+	const session = await locals.auth();
+	if (!session) {
+		return error(403, { message: "Vous n'êtes pas autorisé à accéder à cette page" });
+	}
+
 	const club = await Club.findById(params.id)
 		.lean()
 		.exec()
@@ -26,13 +31,17 @@ export const load = async ({ params }) => {
 		throw error(404, 'Club non trouvé');
 	}
 
-	return {
-		club,
-		users: await User.find()
-			.lean()
-			.exec()
-			.then((users) => users.map(recursiveStringifyId))
-	};
+	if (session.user?.isAdmin || club.owner?.toString() === session.user?.id) {
+		return {
+			club,
+			users: await User.find()
+				.lean()
+				.exec()
+				.then((users) => users.map(recursiveStringifyId))
+		};
+	}
+
+	return error(403, "Vous n'êtes pas autorisé à accéder à cette page");
 };
 
 export const actions = {

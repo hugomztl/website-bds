@@ -1,5 +1,7 @@
 <script>
 	import { page } from '$app/stores';
+	import { enhance } from '$app/forms';
+	import { signIn } from '@auth/sveltekit/client';
 
 	let email = $page.url.searchParams.get('email') || '';
 </script>
@@ -15,7 +17,20 @@
 	{#if $page.form?.taken}
 		<p class="error">Cette adresse e-mail est déjà utilisée.</p>
 	{/if}
-	<form action="/register" method="POST">
+
+	<form
+		action="/register"
+		method="POST"
+		use:enhance={() => {
+			return async ({ formData }) => {
+				signIn('credentials', {
+					email: formData.get('email'),
+					password: formData.get('password'),
+					callbackUrl: '/'
+				});
+			};
+		}}
+	>
 		{#if $page.form?.invalid || $page.form?.missing}
 			<p class="error">Entrez une adresse e-mail viacesi.</p>
 		{/if}

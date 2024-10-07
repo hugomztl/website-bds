@@ -11,6 +11,7 @@ import { client } from '$lib/database';
 declare module '@auth/core/jwt' {
 	interface JWT {
 		isAdmin: boolean;
+		id: string;
 	}
 }
 
@@ -37,11 +38,13 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 		jwt({ token, user }) {
 			if (user) {
 				token.isAdmin = user.isAdmin;
+				token.id = user.id!;
 			}
 			return token;
 		},
 		session({ session, token }) {
 			session.user.isAdmin = token.isAdmin;
+			session.user.id = token.id;
 			return session;
 		}
 	},
@@ -71,7 +74,8 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 				return {
 					email: user.email,
 					name: formatName(user.email),
-					isAdmin: user.admin
+					isAdmin: user.admin,
+					id: user._id.toString()
 				};
 			}
 		})

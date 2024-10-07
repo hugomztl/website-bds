@@ -9,6 +9,10 @@
 <main id="app">
 	<h1>Clubs:</h1>
 
+	{#if data.session?.user?.isAdmin}
+		<a href="/clubs/create">Créer un club</a>
+	{/if}
+
 	{#each data.clubs as club}
 		<a href={`/clubs/${club._id}`}>
 			<div class="club">

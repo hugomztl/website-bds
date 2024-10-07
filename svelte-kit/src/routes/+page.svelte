@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { SignOut } from '@auth/sveltekit/components';
+
+	export let data;
+	$: posts = data.posts;
 </script>
 
 <main id="app">
@@ -22,6 +25,17 @@
 		<a href="/signin"><button tabindex="-1">Se connecter</button></a>
 		<a href="/register"><button tabindex="-1">Créer un compte</button></a>
 	{/if}
+
+	<h1>Actualités du BDS</h1>
+	{#each posts as post}
+		<div class="post">
+			<a href="/blog/{post._id}">
+				<h2>{post.title}</h2>
+			</a>
+			<span>Posté le {post.createdAt.toLocaleDateString()}</span>
+			<p>{post.content}</p>
+		</div>
+	{/each}
 </main>
 
 <style>

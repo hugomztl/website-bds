@@ -8,7 +8,9 @@
 	<h1>{data.club.name}</h1>
 	<p>{data.club.description}</p>
 
-	{#if data.member?.pending === false}
+	{#if data.isOwner}
+		<p>Tu es le propriétaire de ce club!</p>
+	{:else if data.member?.pending === false}
 		<p>Tu es dans ce club!</p>
 	{:else if data.member?.pending === true}
 		<p>Tu es en attente de validation.</p>

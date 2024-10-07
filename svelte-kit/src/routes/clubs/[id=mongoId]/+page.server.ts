@@ -3,6 +3,7 @@ import Club from '$lib/models/Club';
 import { error, fail } from '@sveltejs/kit';
 import { addUserToClub } from './util';
 import mongoose from 'mongoose';
+import { isOwner } from '$lib/authutil';
 
 export const prerender = false;
 
@@ -35,6 +36,7 @@ export const load = async ({ params, locals }) => {
 		club: recursiveStringifyId(club.toObject()),
 		member: club.members
 			.find((member) => (!session ? session : member.user?.equals(session.user?.id!)))
-			?.toObject({ flattenObjectIds: true })
+			?.toObject({ flattenObjectIds: true }),
+		isOwner: isOwner(club.owner?.toString(), session)
 	};
 };

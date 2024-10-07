@@ -37,6 +37,7 @@
 			<input type="hidden" name="postId" value={post._id} />
 			<button type="submit">Supprimer</button>
 		</form>
+		<a href="/blog/{post._id}/edit" class="edit-button">Modifier</a>
 	</div>
 {:else}
 	<h2>Le BDS n'a encore rien posté 😵</h2>

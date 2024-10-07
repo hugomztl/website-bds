@@ -1,4 +1,4 @@
-import mongoose, { model, Schema } from 'mongoose';
+import mongoose, { model, Schema, type InferSchemaType } from 'mongoose';
 
 const UserSchema = new Schema({
 	email: {
@@ -51,6 +51,9 @@ const UserSchema = new Schema({
 		default: Date.now
 	}
 });
+
+// Define the type based on the schema
+export type UserType = InferSchemaType<typeof UserSchema> & { _id: mongoose.Types.ObjectId };
 
 // Permet de reconstruire le modèle en mode dev pour le HMR de Vite
 if (process.env.NODE_ENV === 'development' && mongoose.models.User) {

@@ -7,10 +7,6 @@
 </script>
 
 <main id="app">
-	{#if data.session?.user?.isAdmin}
-		<a href="/clubs/manage">Gérer les clubs</a>
-	{/if}
-
 	<h1>Clubs:</h1>
 
 	{#each data.clubs as club}
@@ -18,7 +14,7 @@
 			<div class="club">
 				{#if canManageClub(club)}
 					<div class="club-header">
-						<a href={`/clubs/manage/${club._id}`}>
+						<a href={`/clubs/${club._id}/manage`}>
 							<svg
 								class="pen-icon"
 								xmlns="http://www.w3.org/2000/svg"

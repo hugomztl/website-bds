@@ -59,7 +59,7 @@ export const actions = {
 			return fail(400, { message: 'Erreur lors de la mise à jour du club' });
 		}
 
-		return redirect(303, '/clubs/manage');
+		return redirect(303, '/clubs');
 	},
 	async delete(event) {
 		const { id } = event.params;
@@ -70,6 +70,6 @@ export const actions = {
 		}
 
 		await club.deleteOne();
-		return redirect(303, '/clubs/manage');
+		return redirect(303, '/clubs');
 	}
 };

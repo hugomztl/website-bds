@@ -11,13 +11,19 @@
 <main id="app">
 	<h1>Modifier un club</h1>
 
-	{#if form?.success === false}
-		<p>Erreur lors de la modification du club</p>
+	{#if form?.message}
+		<p>{form.message}</p>
 	{/if}
 
 	<form method="POST" action="?/update" use:enhance>
-		<input type="text" placeholder="name" name="name" value={club.name} />
-		<input type="text" placeholder="description" name="description" value={club.description} />
+		<input type="text" placeholder="name" name="name" required value={club.name} />
+		<input
+			type="text"
+			placeholder="description"
+			name="description"
+			required
+			value={club.description}
+		/>
 
 		<label>
 			<span>Président</span>

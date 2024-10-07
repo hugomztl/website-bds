@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import paymentsRouter from "./api/payments";
 
 import api from "./api";
 import MessageResponse from "./interfaces/MessageResponse";
@@ -23,7 +24,7 @@ app.get<{}, MessageResponse>("/", (req, res) => {
 });
 
 app.use("/api/v1", api);
-
+app.use("/api/payments", paymentsRouter);
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);
 

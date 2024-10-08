@@ -1,4 +1,4 @@
-import mongoose, { model, Schema } from 'mongoose';
+import mongoose, { model, Schema, type InferSchemaType } from 'mongoose';
 
 const ClubSchema = new Schema({
 	name: {
@@ -50,21 +50,7 @@ if (process.env.NODE_ENV === 'development' && mongoose.models.Club) {
 	delete mongoose.models.Club;
 }
 
-export type ClubDocument = mongoose.Document & {
-	name: string;
-	description: string;
-	logo?: string;
-	owner?: mongoose.Types.ObjectId;
-	posts: Array<{
-		title: string;
-		content: string;
-	}>;
-	createdAt: Date;
-	members: Array<{
-		pending: boolean;
-		user?: mongoose.Types.ObjectId;
-	}>;
-};
+export type ClubType = InferSchemaType<typeof ClubSchema> & { _id: mongoose.Types.ObjectId };
 
 const Club = model('Club', ClubSchema);
 

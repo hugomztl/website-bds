@@ -20,6 +20,22 @@ export const actions = {
 		}
 
 		addUserToClub(mongoose.Types.ObjectId.createFromHexString(session.user?.id!), club);
+	},
+	leave: async ({ locals, params }) => {
+		const session = await locals.auth();
+		if (!session) {
+			return fail(403, { message: 'Vous devez être connecté pour quitter un club.' });
+		}
+
+		const club = await Club.findById(params.id).exec();
+		if (!club) {
+			throw error(404, 'Club introuvable.');
+		}
+
+		club.members = club.members.filter((member) => member.user?.toString() !== session.user?.id!);
+		await club.save();
+
+		return { success: true };
 	}
 };
 

@@ -23,6 +23,11 @@
 			{/if}
 		</form>
 	{/if}
+	{#if data.member}
+		<form method="POST" action="?/leave" use:enhance>
+			<button>Quitter le club</button>
+		</form>
+	{/if}
 
 	<h2>Derniers posts du club</h2>
 	{#each data.club.posts as post}

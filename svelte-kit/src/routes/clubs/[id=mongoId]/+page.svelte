@@ -16,7 +16,11 @@
 		<p>Tu es en attente de validation.</p>
 	{:else}
 		<form method="POST" action="?/join" use:enhance>
-			<button disabled={!data.member}>Rejoindre le club</button>
+			<button disabled={!data.session}>Rejoindre le club</button>
+			{#if !data.session}
+				<br />
+				<span>Connecte-toi pour rejoindre le club</span>
+			{/if}
 		</form>
 	{/if}
 

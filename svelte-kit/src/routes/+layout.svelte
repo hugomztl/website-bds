@@ -12,7 +12,7 @@
 		<AppBar class="shadow-xl">
 			<svelte:fragment slot="lead">
 				<button class="btn hover:variant-soft-primary p-0 ml-5">
-					<a href="/"><img src="logo-bds.png" class="w-20" alt="BDS" /></a>
+					<a href="/"><img src="/logo-bds.png" class="w-20" alt="BDS" /></a>
 				</button>
 			</svelte:fragment>
 

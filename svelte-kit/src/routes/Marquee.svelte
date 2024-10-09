@@ -1,82 +1,58 @@
 <script lang="ts">
 	export let partenaires: { nom: string; logo: string }[];
 	export let scrollSpeedSec = 5;
-	export let scrollSpeedPx: number | undefined = undefined;
-
-	let marqueeWidth = 1;
-	let wrapperWidth = 1;
-
-	$: scrollSpeed = scrollSpeedPx !== undefined ? wrapperWidth / scrollSpeedPx : scrollSpeedSec;
-	// Max 10 pour pas tout péter 🙂
-	$: totalAmount = Math.min(Math.ceil(marqueeWidth / (wrapperWidth || 1)) + 1, 10);
 </script>
 
-<div class="marquee h-20" style="--scroll-speed: {scrollSpeed}s;" bind:clientWidth={marqueeWidth}>
-	<div class="marquee-scroller" style="width: {wrapperWidth}px;">
-		{#each Array(totalAmount) as _}
-			<div class="wrapper" bind:clientWidth={wrapperWidth}>
-				{#each partenaires as partenaire}
-					<img src={partenaire.logo} alt={partenaire.nom} class="mx-8 inline-block h-20" />
-				{/each}
-			</div>
+<div class="stock-ticker" style="--scroll-speed: {scrollSpeedSec}s">
+	<ul>
+		{#each partenaires as partenaire}
+			<li><img src={partenaire.logo} alt={partenaire.nom} /></li>
 		{/each}
-	</div>
+	</ul>
+
+	<ul aria-hidden="true">
+		{#each partenaires as partenaire}
+			<li><img src={partenaire.logo} alt={partenaire.nom} /></li>
+		{/each}
+	</ul>
 </div>
 
 <style lang="postcss">
-	.marquee {
-		box-sizing: content-box;
+	img {
+		height: 5rem;
+	}
+
+	.stock-ticker {
+		font-size: 15px;
+		padding-block: 8px;
+		border-block: 1px solid;
 		overflow: hidden;
-		position: relative;
-		display: block ruby;
+		user-select: none;
+
+		--gap: 5rem;
+		display: flex;
+		gap: var(--gap);
 	}
 
-	.marquee-scroller {
-		--initial-pos: 0%;
-		--final-pos: -100%;
-		white-space: nowrap;
-		height: 100%;
-		-moz-transform: translateX(var(--initial-pos));
-		-webkit-transform: translateX(var(--initial-pos));
-		transform: translateX(var(--initial-pos));
-		-moz-animation: scroll-left var(--scroll-speed) linear infinite;
-		-webkit-animation: scroll-left var(--scroll-speed) linear infinite;
-		animation: scroll-left var(--scroll-speed) linear infinite;
+	.stock-ticker ul {
+		list-style: none;
+		flex-shrink: 0;
+		min-width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: var(--gap);
+
+		animation: scroll var(--scroll-speed) linear infinite;
 	}
 
-	.wrapper {
-		display: inline-flex;
-		width: max-content;
+	.stock-ticker:hover ul {
+		animation-play-state: paused;
 	}
 
-	@-moz-keyframes scroll-left {
-		0% {
-			-moz-transform: translateX(var(--initial-pos));
-		}
-		100% {
-			-moz-transform: translateX(var(--final-pos));
-		}
-	}
-
-	@-webkit-keyframes scroll-left {
-		0% {
-			-webkit-transform: translateX(var(--initial-pos));
-		}
-		100% {
-			-webkit-transform: translateX(var(--final-pos));
-		}
-	}
-
-	@keyframes scroll-left {
-		0% {
-			-moz-transform: translateX(var(--initial-pos));
-			-webkit-transform: translateX(var(--initial-pos));
-			transform: translateX(var(--initial-pos));
-		}
-		100% {
-			-moz-transform: translateX(var(--final-pos));
-			-webkit-transform: translateX(var(--final-pos));
-			transform: translateX(var(--final-pos));
+	@keyframes scroll {
+		to {
+			transform: translateX(calc(-100% - var(--gap)));
 		}
 	}
 </style>

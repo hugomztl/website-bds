@@ -140,7 +140,7 @@
 		<div class="container mx-auto px-4">
 			<h2 class="h2 mb-12 text-center">NOS PARTENAIRES</h2>
 			<div class="overflow-hidden">
-				<Marquee {partenaires} scrollSpeedPx={200} />
+				<Marquee {partenaires} scrollSpeedSec={partenaires.length * 2} />
 			</div>
 		</div>
 	</section>

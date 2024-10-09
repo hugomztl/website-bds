@@ -1,2 +1,4 @@
 # Fichiers de MongoDB
 /db
+/node_modules
+*.mp4

@@ -72,7 +72,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 				}
 				return {
 					email: user.email,
-					name: formatName(user.email),
+					name: user.fullName,
 					isAdmin: user.admin,
 					id: user._id.toString()
 				};
@@ -81,6 +81,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	],
 	adapter: MongoDBAdapter(client),
 	pages: {
-		signIn: '/signin'
+		signIn: '/signin',
+		signOut: '/'
 	}
 });

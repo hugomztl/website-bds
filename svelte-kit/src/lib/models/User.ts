@@ -21,6 +21,7 @@ const UserSchema = new Schema({
 		default: false
 	},
 	discord: String,
+	// FIXME: Mongoose ne valide pas les enums
 	promo: {
 		type: String,
 		enum: ['A1', 'A2', 'A3', 'A4', 'A5']
@@ -30,6 +31,7 @@ const UserSchema = new Schema({
 		default: false,
 		required: true
 	},
+	// FIXME: Mongoose ne valide pas les enums
 	sports: [
 		{
 			type: String,

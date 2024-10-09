@@ -1,5 +1,6 @@
 <script>
 	import { Volume2, VolumeX } from 'lucide-svelte';
+	import Marquee from './Marquee.svelte';
 	let isMuted = true;
 
 	// Ajout des variables manquantes
@@ -46,9 +47,9 @@
 	];
 </script>
 
-<main class="flex flex-col min-h-screen bg-surface-50-900-token">
+<main class="bg-surface-50-900-token flex min-h-screen flex-col">
 	<section class="relative h-screen w-full overflow-hidden">
-		<video autoplay loop class="absolute inset-0 w-full h-full object-cover" bind:muted={isMuted}>
+		<video autoplay loop class="absolute inset-0 h-full w-full object-cover" bind:muted={isMuted}>
 			<source src="motivation.mp4" type="video/mp4" />
 			<track kind="captions" src="" srclang="fr" label="Français" />
 			Votre navigateur ne supporte pas la vidéo HTML5.
@@ -56,18 +57,18 @@
 
 		<div class="absolute inset-0 bg-black/50"></div>
 
-		<div class="absolute inset-0 flex flex-col items-center justify-center text-white p-4">
-			<h1 class="h1 text-5xl md:text-7xl font-bold mb-8 text-center">PRÊT À TE DÉPASSER ?</h1>
+		<div class="absolute inset-0 flex flex-col items-center justify-center p-4 text-white">
+			<h1 class="h1 mb-8 text-center text-5xl font-bold md:text-7xl">PRÊT À TE DÉPASSER ?</h1>
 			<a
 				href="/register"
-				class="btn btn-xl border-2 border-none bg-transparent text-white hover:bg-primary-500 hover:text-black transition-colors duration-300"
+				class="btn btn-xl hover:bg-primary-500 border-2 border-none bg-transparent text-white transition-colors duration-300 hover:text-black"
 			>
 				<span>Rejoins le BDS</span>
 				<span>&rarr;</span>
 			</a>
 		</div>
 
-		<button on:click={() => (isMuted = !isMuted)} class="absolute top-4 right-4 z-20 btn-icon">
+		<button on:click={() => (isMuted = !isMuted)} class="btn-icon absolute right-4 top-4 z-20">
 			{#if isMuted}
 				<VolumeX size={24} color="red" />
 			{:else}
@@ -77,12 +78,12 @@
 	</section>
 
 	<section class="container mx-auto my-16 px-4">
-		<div class="grid md:grid-cols-2 gap-8">
-			<div class="card p-6 variant-soft">
+		<div class="grid gap-8 md:grid-cols-2">
+			<div class="card variant-soft p-6">
 				<h2 class="h2 mb-4">NOTRE MISSION</h2>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</p>
 			</div>
-			<div class="card p-6 variant-soft">
+			<div class="card variant-soft p-6">
 				<h2 class="h2 mb-4">NOTRE MISSION</h2>
 				<p>Vivamus luctus urna sed urna ultricies ac tempor dui sagittis.</p>
 			</div>
@@ -91,7 +92,7 @@
 
 	<section class=" variant-soft py-16">
 		<div class="container mx-auto px-4">
-			<h2 class="h2 text-center mb-12">ÉVÉNEMENTS À VENIR</h2>
+			<h2 class="h2 mb-12 text-center">ÉVÉNEMENTS À VENIR</h2>
 
 			<div class="mb-6 flex items-center justify-center space-x-4">
 				<input
@@ -115,7 +116,7 @@
 
 			<div class="space-y-6">
 				{#each evenementsFiltres as evenement}
-					<div class="card p-6 variant-ringed-surface flex justify-between items-center">
+					<div class="card variant-ringed-surface flex items-center justify-between p-6">
 						<div>
 							<h3 class="h3 mb-2">{evenement.titre}</h3>
 							<p class="mb-2">{evenement.description}</p>
@@ -137,13 +138,9 @@
 
 	<section class="bg-surface-100-800-token py-16">
 		<div class="container mx-auto px-4">
-			<h2 class="h2 text-center mb-12">NOS PARTENAIRES</h2>
+			<h2 class="h2 mb-12 text-center">NOS PARTENAIRES</h2>
 			<div class="overflow-hidden">
-				<div class="flex animate-marquee">
-					{#each [...partenaires, ...partenaires] as partenaire}
-						<img src={partenaire.logo} alt={partenaire.nom} class="h-20 mx-8 inline-block" />
-					{/each}
-				</div>
+				<Marquee {partenaires} scrollSpeedPx={200} />
 			</div>
 		</div>
 	</section>
@@ -157,7 +154,7 @@
 	</footer>
 </main>
 
-<style>
+<style lang="postcss">
 	/* Style complémentaire pour assurer le bon rendu de la vidéo */
 	video {
 		position: absolute;
@@ -169,19 +166,5 @@
 	.overflow-hidden {
 		display: flex;
 		flex-direction: column;
-	}
-
-	.animate-marquee {
-		animation: marquee 30s linear infinite;
-		white-space: nowrap;
-	}
-
-	@keyframes marquee {
-		0% {
-			transform: translateX(0%);
-		}
-		100% {
-			transform: translateX(-100%);
-		}
 	}
 </style>

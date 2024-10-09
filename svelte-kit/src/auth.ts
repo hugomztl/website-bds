@@ -29,6 +29,12 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	// Nécessaire pour le déploiement Docker
 	trustHost: true,
 	debug: process.env.NODE_ENV !== 'production',
+	callbacks: {
+		signIn: async ({ user, account, profile, email, credentials }) => {
+			console.log('Signing in: ', user, account, profile, email, credentials);
+			return true;
+		}
+	},
 	providers: [
 		Credentials({
 			credentials: {
@@ -54,13 +60,14 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 				}
 				return {
 					email: user.email,
-					name: formatName(user.email)
+					name: user.fullName
 				};
 			}
 		})
 	],
 	adapter: MongoDBAdapter(client),
 	pages: {
-		signIn: '/signin'
+		signIn: '/signin',
+		signOut: '/'
 	}
 });

@@ -1,36 +1,53 @@
 <script>
+	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 
 	let email = $page.url.searchParams.get('email') || '';
 </script>
 
-<main id="app">
-	<h1>Créer un compte</h1>
-
-	<p>
-		<a href="/">Retour à l'accueil</a><br />
-		<a href="/signin">Se connecter</a>
-	</p>
-
-	{#if $page.form?.taken}
-		<p class="error">Cette adresse e-mail est déjà utilisée.</p>
-	{/if}
-	<form action="/register" method="POST">
+<main class="flex h-full flex-col items-center justify-center">
+	<h1 class="h1">Créer un compte</h1>
+	<span>ou <a class="anchor" href="/signin">se connecter</a></span>
+	<form
+		class="mt-6 flex w-[25%] flex-col items-center"
+		action="/register"
+		method="POST"
+		use:enhance
+	>
+		{#if $page.form?.taken}
+			<p class="alert variant-filled-error mb-6 p-4 px-6">
+				Cette adresse e-mail est déjà utilisée.
+			</p>
+		{/if}
 		{#if $page.form?.invalid || $page.form?.missing}
-			<p class="error">Entrez une adresse e-mail viacesi.</p>
+			<p class="alert variant-filled-error mb-6 p-4 px-6">Entrez une adresse e-mail viacesi.</p>
 		{/if}
-		<input type="email" name="email" placeholder="Mail viacesi" value={email} />
-
-		<br />
-
 		{#if $page.form?.password_no_match}
-			<p class="error">Les mots de passe ne correspondent pas.</p>
+			<p class="alert variant-filled-error mb-6 p-4 px-6">
+				Les mots de passe ne correspondent pas.
+			</p>
 		{/if}
-		<input type="password" name="password" placeholder="Mot de passe" />
-		<input type="password" name="password_confirm" placeholder="Confirmer le mot de passe" />
-
-		<br />
-
-		<button>Créer un compte</button>
+		<input
+			class="input variant-form-material border-surface-500-400-token my-2"
+			type="email"
+			name="email"
+			placeholder="Mail viacesi"
+			bind:value={email}
+		/>
+		<input
+			class="input variant-form-material border-surface-500-400-token my-2"
+			type="password"
+			name="password"
+			placeholder="Mot de passe"
+		/>
+		<input
+			class="input variant-form-material border-surface-500-400-token my-2"
+			type="password"
+			name="password_confirm"
+			placeholder="Confirmer le mot de passe"
+		/>
+		<button class="btn variant-form-material border-surface-500-400-token mt-2 px-10" type="submit"
+			>Créer un compte</button
+		>
 	</form>
 </main>

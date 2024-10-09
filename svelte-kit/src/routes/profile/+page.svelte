@@ -1,24 +1,16 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+
 	export let data;
 	const user = data.user;
 </script>
 
-<main id="app">
-	<h1>Profil de <span class="user-name">{user.fullName}</span></h1>
+<main class="flex h-full items-center justify-center">
+	<div class="container flex flex-col items-center">
+		<h1 class="h1 mt-4">Profil de <span class="font-bold underline">{user.fullName}</span></h1>
 
-	<p><b>Licencié:</b> {user.license ? 'Oui ✔' : 'Non ❌'}</p>
+		<p class="mt-2"><b>Licencié:</b> {user.license ? 'Oui ✔' : 'Non ❌'}</p>
 
-	<p><b>Email:</b> {user.email}</p>
+		<p class="mt-2"><b>Email:</b> {user.email}</p>
+	</div>
 </main>
-
-<style>
-	h1 {
-		font-size: 1.5rem;
-		font-weight: 400;
-	}
-
-	.user-name {
-		font-weight: 600;
-		text-decoration: underline;
-	}
-</style>

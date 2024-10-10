@@ -1,29 +1,29 @@
 import PaymentIntent from '$lib/models/PaymentIntent';
 import User from '$lib/models/User';
 
-import { json, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 
-export const GET = async ({ url }) => {
+export const load = async ({ url }) => {
 	const intentId = url.searchParams.get('checkoutIntentId');
 	if (!intentId) {
-		return json({ error: 'Intent ID is required' }, { status: 400 });
+		return { error: 'Intent ID is required' };
 	}
 
 	const paymentIntent = await PaymentIntent.findOne({ intentId });
 	if (!paymentIntent) {
-		return json({ error: 'Payment intent not found' }, { status: 404 });
+		return { error: 'Payment intent not found' };
 	}
 
 	if (url.searchParams.get('code') !== 'succeeded') {
 		await paymentIntent.deleteOne();
-		return json({ error: 'Payment failed' }, { status: 400 });
+		return { error: 'Payment failed' };
 	}
 
 	const user = await User.findById(paymentIntent.user);
 	if (!user) {
 		paymentIntent.hasFailed = true;
 		await paymentIntent.save();
-		return json({ error: 'User not found' }, { status: 404 });
+		return { error: 'User not found' };
 	}
 
 	user.license = true;

@@ -50,6 +50,7 @@ export const actions = {
 		const name = formData.get('name');
 		const description = formData.get('description');
 		const owner = formData.get('owner');
+		const requireLicense = formData.get('requireLicense');
 
 		const club = await Club.findById(id);
 
@@ -65,6 +66,7 @@ export const actions = {
 			club.name = (name as string) ?? undefined;
 			club.description = (description as string) ?? undefined;
 			club.owner = owner ? ObjectId.createFromHexString(owner as string) : undefined;
+			club.requireLicense = !!requireLicense;
 
 			await club.save();
 		} catch (error) {

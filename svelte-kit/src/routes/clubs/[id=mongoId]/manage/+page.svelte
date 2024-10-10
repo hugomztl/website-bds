@@ -74,6 +74,11 @@
 		/>
 
 		<label>
+			Nécessite une license?
+			<input type="checkbox" name="requireLicense" checked={club.requireLicense}/>
+		</label>
+
+		<label>
 			<span>Président</span>
 			<select class="select" name="owner" id="owner" value={club.owner}>
 				<option value="">Aucun président assigné</option>

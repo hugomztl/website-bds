@@ -42,7 +42,11 @@ const ClubSchema = new Schema({
 				required: true
 			}
 		}
-	]
+	],
+	requireLicense: {
+		type: Boolean,
+		default: true
+	}
 });
 
 // Permet de reconstruire le modèle en mode dev pour le HMR de Vite

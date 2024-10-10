@@ -1,12 +1,24 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { popup, type PopupSettings } from '@skeletonlabs/skeleton';
 
 	export let data;
+
+	const popupHover: PopupSettings = {
+		event: 'hover',
+		target: 'popupHover',
+		placement: 'top'
+	};
+
+	const licenseOk = data.club.requireLicense ? data.licensed : true;
+	const canJoinClub = data?.session?.user?.isAdmin || (licenseOk && data.session);
 </script>
 
 <main id="app">
 	<h1>{data.club.name}</h1>
 	<p>{data.club.description}</p>
+
+	{JSON.stringify(data.club)}
 
 	{#if data.isOwner}
 		<p>Tu es le propriétaire de ce club!</p>
@@ -16,10 +28,22 @@
 		<p>Tu es en attente de validation.</p>
 	{:else}
 		<form method="POST" action="?/join" use:enhance>
-			<button disabled={!data.session}>Rejoindre le club</button>
-			{#if !data.session}
-				<br />
-				<span>Connecte-toi pour rejoindre le club</span>
+			<button disabled={!canJoinClub} use:popup={popupHover}>Rejoindre le club</button>
+			{#if !canJoinClub}
+				{#if !data.session}
+					<div class="card variant-filled-secondary p-4" data-popup="popupHover">
+						<p>Vous devez être connecté pour rejoindre un club.</p>
+						<div class="arrow variant-filled-secondary" />
+					</div>
+
+					<br />
+					<span>Connecte-toi pour rejoindre le club</span>
+				{:else if !licenseOk}
+					<div class="card variant-filled-secondary p-4" data-popup="popupHover">
+						<p>Vous devez être licensié pour rejoindre ce club.</p>
+						<div class="arrow variant-filled-secondary" />
+					</div>
+				{/if}
 			{/if}
 		</form>
 	{/if}

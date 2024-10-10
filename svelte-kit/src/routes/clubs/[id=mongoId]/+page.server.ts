@@ -4,6 +4,7 @@ import { error, fail } from '@sveltejs/kit';
 import { addUserToClub } from './util';
 import mongoose from 'mongoose';
 import { isOwner } from '$lib/authutil';
+import User from '$lib/models/User';
 
 export const prerender = false;
 
@@ -19,7 +20,21 @@ export const actions = {
 			throw error(404, 'Club introuvable.');
 		}
 
-		addUserToClub(mongoose.Types.ObjectId.createFromHexString(session.user?.id!), club);
+		const user = await User.findById(session.user?.id).exec();
+		if (!user) {
+			throw error(404, 'Utilisateur introuvable.');
+		}
+
+		const licenseOk = club.requireLicense ? user.license : true;
+		const canJoinClub = session.user?.isAdmin || (licenseOk && session);
+
+		if (!canJoinClub) {
+			return fail(403, { message: "Vous n'avez pas la permission de rejoindre ce club." });
+		}
+
+		await addUserToClub(mongoose.Types.ObjectId.createFromHexString(session.user?.id!), club);
+
+		return { success: true };
 	},
 	leave: async ({ locals, params }) => {
 		const session = await locals.auth();
@@ -53,6 +68,7 @@ export const load = async ({ params, locals }) => {
 		member: club.members
 			.find((member) => (!session ? session : member.user?.equals(session.user?.id!)))
 			?.toObject({ flattenObjectIds: true }),
-		isOwner: isOwner(club.owner?.toString(), session)
+		isOwner: isOwner(club.owner?.toString(), session),
+		licensed: (await User.findById(session?.user?.id ?? '').exec())?.license
 	};
 };

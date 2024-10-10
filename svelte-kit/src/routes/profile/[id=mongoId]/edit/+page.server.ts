@@ -34,24 +34,26 @@ export const actions = {
 		const sports = formData.getAll('sports');
 		const discord = formData.get('discord');
 
-		const user = await User.findByIdAndUpdate(params.id, {
-			fullName,
-			promo,
-			sports,
-			discord
-		});
-
-		if (!user) {
-			return error(404, 'Utilisateur non trouvé');
-		}
-
 		try {
-			await user.save();
+			const user = await User.findByIdAndUpdate(
+				params.id,
+				{
+					fullName,
+					promo,
+					sports,
+					discord
+				},
+				{ runValidators: true }
+			);
+
+			if (!user) {
+				return error(404, 'Utilisateur non trouvé');
+			}
+
+			return redirect(302, `/profile/${user._id}`);
 		} catch (e) {
 			return fail(400, { message: 'Erreur lors de la sauvegarde' });
 		}
-
-		return redirect(302, `/profile/${user._id}`);
 	}
 };
 

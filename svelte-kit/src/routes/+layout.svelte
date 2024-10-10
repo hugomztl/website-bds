@@ -3,6 +3,10 @@
 	import '../app.postcss';
 	import { AppShell, AppBar, LightSwitch } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
+	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
+	import { storePopup } from '@skeletonlabs/skeleton';
+
+	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
 	$: session = $page.data.session;
 </script>
@@ -11,7 +15,7 @@
 	<svelte:fragment slot="header">
 		<AppBar class="shadow-xl">
 			<svelte:fragment slot="lead">
-				<button class="btn hover:variant-soft-primary p-0 ml-5">
+				<button class="btn hover:variant-soft-primary ml-5 p-0">
 					<a href="/"><img src="/logo-bds.png" class="w-20" alt="BDS" /></a>
 				</button>
 			</svelte:fragment>

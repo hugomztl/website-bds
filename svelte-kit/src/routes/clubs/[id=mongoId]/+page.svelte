@@ -18,8 +18,6 @@
 	<h1>{data.club.name}</h1>
 	<p>{data.club.description}</p>
 
-	{JSON.stringify(data.club)}
-
 	{#if data.isOwner}
 		<p>Tu es le propriétaire de ce club!</p>
 	{:else if data.member?.pending === false}

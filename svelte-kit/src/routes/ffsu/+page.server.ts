@@ -41,9 +41,6 @@ export const actions = {
 		const firstName = formData.get('firstName');
 		const lastName = formData.get('lastName');
 		const dateOfBirth = formData.get('dateOfBirth');
-		const address = formData.get('address');
-		const city = formData.get('city');
-		const zipCode = formData.get('zipCode');
 		const paiementData = {
 			totalAmount: 2000,
 			initialAmount: 2000,
@@ -56,11 +53,7 @@ export const actions = {
 				firstName,
 				lastName,
 				email: user.email,
-				dateOfBirth,
-				address,
-				city,
-				zipCode,
-				country: 'FRA'
+				dateOfBirth
 			}
 		};
 

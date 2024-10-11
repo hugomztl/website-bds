@@ -27,18 +27,7 @@
 			Date de Naissance:
 			<input class="input" type="date" name="dateOfBirth" required />
 		</label>
-		<label>
-			Adresse:
-			<input class="input" type="text" name="address" required />
-		</label>
-		<label>
-			Ville:
-			<input class="input" type="text" name="city" required />
-		</label>
-		<label>
-			Code Postal:
-			<input class="input" type="text" name="zipCode" required />
-		</label>
+		<!-- TODO: Icone chargement -->
 		<button type="submit">Payer</button>
 	</form>
 </main>

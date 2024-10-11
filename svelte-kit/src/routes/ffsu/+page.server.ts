@@ -1,5 +1,6 @@
 import { HELLOASSO_ID, HELLOASSO_SECRET } from '$env/static/private';
 import PaymentIntent from '$lib/models/PaymentIntent';
+import PendingLicense from '$lib/models/PendingLicense.js';
 import User from '$lib/models/User.js';
 import { error, fail, redirect } from '@sveltejs/kit';
 
@@ -32,15 +33,24 @@ export const actions = {
 			return redirect(303, '/signin');
 		}
 
+		const formData = await request.formData();
+		let formDataObj = {};
+		formData.forEach((value, key) => (formDataObj[key] = value));
+
+		await PendingLicense.create({
+			...formDataObj,
+			autorisation: formData.get('autorisation') === 'on',
+			user: user.id
+		});
+
 		// FIXME: Utiliser Zod pour valider les données!
 
 		const host = request.headers.get('host') ?? 'bds-cesi-nancy.fr';
 		const baseUrl = `https://${host}`;
 
-		const formData = await request.formData();
-		const firstName = formData.get('firstName');
-		const lastName = formData.get('lastName');
-		const dateOfBirth = formData.get('dateOfBirth');
+		const firstName = formData.get('prenom');
+		const lastName = formData.get('nom');
+		const dateOfBirth = formData.get('datenaiss');
 		const paiementData = {
 			totalAmount: 2000,
 			initialAmount: 2000,

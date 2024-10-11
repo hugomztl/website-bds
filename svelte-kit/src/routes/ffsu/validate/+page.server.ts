@@ -1,4 +1,5 @@
 import PaymentIntent from '$lib/models/PaymentIntent';
+import type { PendingLicenseType } from '$lib/models/PendingLicense.js';
 import User from '$lib/models/User';
 
 import { redirect } from '@sveltejs/kit';
@@ -9,7 +10,9 @@ export const load = async ({ url }) => {
 		return { error: 'Intent ID is required' };
 	}
 
-	const paymentIntent = await PaymentIntent.findOne({ intentId });
+	const paymentIntent = await PaymentIntent.findOne({ intentId }).populate<{
+		pendingLicense: PendingLicenseType & { save(): Promise<void> };
+	}>('pendingLicense');
 	if (!paymentIntent) {
 		return { error: 'Payment intent not found' };
 	}
@@ -29,6 +32,8 @@ export const load = async ({ url }) => {
 	user.license = true;
 	await user.save();
 
+	paymentIntent.pendingLicense.licensePaid = true;
+	await paymentIntent.pendingLicense.save();
 	await paymentIntent.deleteOne();
 
 	return redirect(303, '/ffsu');

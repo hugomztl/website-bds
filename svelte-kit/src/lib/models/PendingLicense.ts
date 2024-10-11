@@ -1,4 +1,4 @@
-import mongoose, { model, Schema } from 'mongoose';
+import mongoose, { model, Schema, type InferSchemaType } from 'mongoose';
 
 const cmnonrisque_enum = [
 	'1',
@@ -72,6 +72,10 @@ const cmrisque_enum = ['1', '7', '10', '32', '39', '63', '53'] as const;
 // PRESIDENTOK sur oui
 // MINEUROK ne devrait pas être utilisé, car seulement des majeurs autorisés
 const PendingLicenseSchema = new Schema({
+	licensePaid: {
+		type: Boolean,
+		default: false
+	},
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User',
@@ -400,6 +404,10 @@ const PendingLicenseSchema = new Schema({
 if (process.env.NODE_ENV === 'development' && mongoose.models.PendingLicense) {
 	delete mongoose.models.PendingLicense;
 }
+
+export type PendingLicenseType = InferSchemaType<typeof PendingLicenseSchema> & {
+	_id: mongoose.Types.ObjectId;
+};
 
 const PendingLicense = model('PendingLicense', PendingLicenseSchema);
 

@@ -11,6 +11,11 @@ const PaymentIntentSchema = new Schema({
 		ref: 'User',
 		required: true
 	},
+	pendingLicense: {
+		type: Schema.Types.ObjectId,
+		ref: 'PendingLicense',
+		required: true
+	},
 	hasFailed: {
 		type: Boolean,
 		default: false

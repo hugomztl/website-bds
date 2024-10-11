@@ -34,10 +34,10 @@ export const actions = {
 		}
 
 		const formData = await request.formData();
-		let formDataObj = {};
+		let formDataObj: Record<string, FormDataEntryValue> = {};
 		formData.forEach((value, key) => (formDataObj[key] = value));
 
-		await PendingLicense.create({
+		const pendingLicense = await PendingLicense.create({
 			...formDataObj,
 			autorisation: formData.get('autorisation') === 'on',
 			user: user.id
@@ -83,7 +83,7 @@ export const actions = {
 		if ('redirectUrl' in json && 'id' in json) {
 			const { redirectUrl, id } = json;
 
-			await PaymentIntent.create({ intentId: id, user: user.id });
+			await PaymentIntent.create({ intentId: id, user: user.id, pendingLicense });
 
 			return redirect(303, redirectUrl);
 		}

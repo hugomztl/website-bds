@@ -3,6 +3,8 @@
 
 	export let data;
 	$: user = data.user;
+
+	const sameUser = data.session?.user?.id === user._id.toString();
 </script>
 
 <main id="app">
@@ -43,7 +45,7 @@
 	{/if}
 
 	<p><b>Licencié:</b> {user.license ? 'Oui ✔' : 'Non ❌'}</p>
-	{#if !user.license && data.session?.user?.id === user._id.toString()}
+	{#if !user.license && sameUser}
 		<a href="/ffsu">
 			<button
 				class="btn flex transform items-center gap-2 rounded-md bg-blue-500 px-4 py-2 font-semibold text-white shadow-md transition duration-300 ease-in-out hover:bg-blue-600"
@@ -64,6 +66,53 @@
 					<circle cx="9" cy="21" r="1"></circle>
 					<circle cx="20" cy="21" r="1"></circle>
 					<path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+				</svg>
+			</button>
+		</a>
+	{/if}
+	{#if user.license && !user.licenseGenerated && sameUser}
+		<div class="warning-banner">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="warning-icon"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			>
+				<path
+					d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+				></path>
+				<line x1="12" y1="9" x2="12" y2="13"></line>
+				<line x1="12" y1="17" x2="12.01" y2="17"></line>
+			</svg>
+			<span class="warning-text"
+				>Attention : Votre licence FFSU n'a pas encore été générée. Veuillez la générer dès que
+				possible.</span
+			>
+		</div>
+		<a href="/">
+			<button
+				class="btn flex transform items-center gap-2 rounded-md bg-blue-500 px-4 py-2 font-semibold text-white shadow-md transition duration-300 ease-in-out hover:bg-blue-600"
+			>
+				Générer ma licence FFSU
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="16"
+					height="16"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					class="inline-block"
+				>
+					<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+					<polyline points="7 10 12 15 17 10"></polyline>
+					<line x1="12" y1="15" x2="12" y2="3"></line>
 				</svg>
 			</button>
 		</a>
@@ -118,5 +167,25 @@
 
 	.edit-profile-button button:hover {
 		background-color: #45a049;
+	}
+
+	.warning-banner {
+		display: flex;
+		align-items: center;
+		background-color: #ffa500;
+		color: #ffffff;
+		padding: 0.75rem 1rem;
+		border-radius: 0.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.warning-icon {
+		width: 24px;
+		height: 24px;
+		margin-right: 0.75rem;
+	}
+
+	.warning-text {
+		font-weight: 500;
 	}
 </style>

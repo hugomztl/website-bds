@@ -20,6 +20,10 @@ const UserSchema = new Schema({
 		required: true,
 		default: false
 	},
+	licenseGenerated: {
+		type: Boolean,
+		default: false
+	},
 	discord: String,
 	// FIXME: Mongoose ne valide pas les enums
 	promo: {

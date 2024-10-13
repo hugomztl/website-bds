@@ -10,7 +10,7 @@
 
 	export let form: SuperForm<z.infer<typeof zPendingLicense>>;
 
-	const { form: _form, enhance, submitting } = form;
+	const { form: _form, enhance, submitting, errors, constraints } = form;
 
 	let conditionsAcceptees = false;
 </script>
@@ -20,26 +20,63 @@
 	<form method="POST" use:enhance>
 		<label>
 			Email*:
+			{#if $errors.email}
+				<span class="error">{$errors.email}</span>
+			{/if}
 			<input class="input" type="email" name="email" value={user.email} readonly required />
 		</label>
 
 		<label>
-			Nom*:
-			<input class="input" type="text" name="nom" required bind:value={$_form.nom} />
+			Nom de famille*:
+			{#if $errors.nom}
+				<span class="error">{$errors.nom}</span>
+			{/if}
+			<input
+				class="input"
+				type="text"
+				name="nom"
+				required
+				aria-invalid={$errors.nom ? 'true' : undefined}
+				bind:value={$_form.nom}
+				{...$constraints.nom}
+			/>
 		</label>
 
 		<label>
 			Nom de naissance:
-			<input class="input" type="text" name="nom_naissance" bind:value={$_form.nom_naissance} />
+			{#if $errors.nom_naissance}
+				<span class="error">{$errors.nom_naissance}</span>
+			{/if}
+			<input
+				class="input"
+				type="text"
+				name="nom_naissance"
+				aria-invalid={$errors.nom_naissance ? 'true' : undefined}
+				bind:value={$_form.nom_naissance}
+				{...$constraints.nom_naissance}
+			/>
 		</label>
 
 		<label>
 			Prénom*:
-			<input class="input" type="text" name="prenom" required bind:value={$_form.prenom} />
+			{#if $errors.prenom}
+				<span class="error">{$errors.prenom}</span>
+			{/if}
+			<input
+				class="input"
+				type="text"
+				name="prenom"
+				aria-invalid={$errors.prenom ? 'true' : undefined}
+				bind:value={$_form.prenom}
+				{...$constraints.prenom}
+			/>
 		</label>
 
 		<label>
 			Sexe*:
+			{#if $errors.sexe}
+				<span class="error">{$errors.sexe}</span>
+			{/if}
 			<div>
 				<label>
 					<input type="radio" name="sexe" value="M" required bind:group={$_form.sexe} />
@@ -54,23 +91,47 @@
 
 		<label>
 			Date de naissance*:
-			<input class="input" type="date" name="datenaiss" required bind:value={$_form.datenaiss} />
+			{#if $errors.datenaiss}
+				<span class="error">{$errors.datenaiss}</span>
+			{/if}
+			<input
+				class="input"
+				type="date"
+				name="datenaiss"
+				aria-invalid={$errors.datenaiss ? 'true' : undefined}
+				bind:value={$_form.datenaiss}
+				{...$constraints.datenaiss}
+			/>
 		</label>
 
 		<label>
 			Pays de naissance*:
+			{#if $errors.pays_naissance}
+				<span class="error">{$errors.pays_naissance}</span>
+			{/if}
 			<input
 				class="input"
 				type="text"
 				name="pays_naissance"
 				required
+				aria-invalid={$errors.pays_naissance ? 'true' : undefined}
 				bind:value={$_form.pays_naissance}
+				{...$constraints.pays_naissance}
 			/>
 		</label>
 
 		<label>
 			Département de naissance*:
-			<select name="dpt_naissance" required bind:value={$_form.dpt_naissance}>
+			{#if $errors.dpt_naissance}
+				<span class="error">{$errors.dpt_naissance}</span>
+			{/if}
+			<select
+				name="dpt_naissance"
+				required
+				aria-invalid={$errors.dpt_naissance ? 'true' : undefined}
+				bind:value={$_form.dpt_naissance}
+				{...$constraints.dpt_naissance}
+			>
 				<option value="01">01 - Ain</option>
 				<option value="02">02 - Aisne</option>
 				<option value="03">03 - Allier</option>
@@ -179,48 +240,124 @@
 
 		<label>
 			Ville de naissance*:
+			{#if $errors.ville_naissance}
+				<span class="error">{$errors.ville_naissance}</span>
+			{/if}
 			<input
 				class="input"
 				type="text"
 				name="ville_naissance"
 				required
+				aria-invalid={$errors.ville_naissance ? 'true' : undefined}
 				bind:value={$_form.ville_naissance}
+				{...$constraints.ville_naissance}
 			/>
 		</label>
 
 		<label>
 			Adresse 1*:
-			<input class="input" type="text" name="adresse1" required bind:value={$_form.adresse1} />
+			{#if $errors.adresse1}
+				<span class="error">{$errors.adresse1}</span>
+			{/if}
+			<input
+				class="input"
+				type="text"
+				name="adresse1"
+				required
+				aria-invalid={$errors.adresse1 ? 'true' : undefined}
+				bind:value={$_form.adresse1}
+				{...$constraints.adresse1}
+			/>
 		</label>
 
 		<label>
 			Adresse 2:
-			<input class="input" type="text" name="adresse2" bind:value={$_form.adresse2} />
+			{#if $errors.adresse2}
+				<span class="error">{$errors.adresse2}</span>
+			{/if}
+			<input
+				class="input"
+				type="text"
+				name="adresse2"
+				aria-invalid={$errors.adresse2 ? 'true' : undefined}
+				bind:value={$_form.adresse2}
+				{...$constraints.adresse2}
+			/>
 		</label>
 
 		<label>
 			Code postal*:
-			<input class="input" type="text" name="codepostal" required bind:value={$_form.codepostal} />
+			{#if $errors.codepostal}
+				<span class="error">{$errors.codepostal}</span>
+			{/if}
+			<input
+				class="input"
+				type="text"
+				name="codepostal"
+				required
+				aria-invalid={$errors.codepostal ? 'true' : undefined}
+				bind:value={$_form.codepostal}
+				{...$constraints.codepostal}
+			/>
 		</label>
 
 		<label>
 			Ville*:
-			<input class="input" type="text" name="ville" required bind:value={$_form.ville} />
+			{#if $errors.ville}
+				<span class="error">{$errors.ville}</span>
+			{/if}
+			<input
+				class="input"
+				type="text"
+				name="ville"
+				required
+				aria-invalid={$errors.ville ? 'true' : undefined}
+				bind:value={$_form.ville}
+				{...$constraints.ville}
+			/>
 		</label>
 
 		<label>
 			Téléphone:
-			<input class="input" type="tel" name="telephone" bind:value={$_form.telephone} />
+			{#if $errors.telephone}
+				<span class="error">{$errors.telephone}</span>
+			{/if}
+			<input
+				class="input"
+				type="tel"
+				name="telephone"
+				aria-invalid={$errors.telephone ? 'true' : undefined}
+				bind:value={$_form.telephone}
+				{...$constraints.telephone}
+			/>
 		</label>
 
 		<label>
 			Instagram:
-			<input class="input" type="text" name="instagram" bind:value={$_form.instagram} />
+			{#if $errors.instagram}
+				<span class="error">{$errors.instagram}</span>
+			{/if}
+			<input
+				class="input"
+				type="text"
+				name="instagram"
+				aria-invalid={$errors.instagram ? 'true' : undefined}
+				bind:value={$_form.instagram}
+				{...$constraints.instagram}
+			/>
 		</label>
 
 		<label>
 			Discipline:
-			<select name="discipline" bind:value={$_form.discipline}>
+			{#if $errors.discipline}
+				<span class="error">{$errors.discipline}</span>
+			{/if}
+			<select
+				name="discipline"
+				aria-invalid={$errors.discipline ? 'true' : undefined}
+				bind:value={$_form.discipline}
+				{...$constraints.discipline}
+			>
 				<option value="1">Droit / Sciences Po.</option>
 				<option value="2">Science Eco./Gestion</option>
 				<option value="3">Lettres</option>
@@ -245,12 +382,30 @@
 
 		<label>
 			Autre fédération:
-			<input class="input" type="text" name="autrefede" bind:value={$_form.autrefede} />
+			{#if $errors.autrefede}
+				<span class="error">{$errors.autrefede}</span>
+			{/if}
+			<input
+				class="input"
+				type="text"
+				name="autrefede"
+				aria-invalid={$errors.autrefede ? 'true' : undefined}
+				bind:value={$_form.autrefede}
+				{...$constraints.autrefede}
+			/>
 		</label>
 
 		<label>
 			Sport*:
-			<select name="sport" required bind:value={$_form.sport}>
+			{#if $errors.sport}
+				<span class="error">{$errors.sport}</span>
+			{/if}
+			<select
+				name="sport"
+				aria-invalid={$errors.sport ? 'true' : undefined}
+				bind:value={$_form.sport}
+				{...$constraints.sport}
+			>
 				<option value="Athlétisme - Courses hors stade">Athlétisme - Courses hors stade</option>
 				<option value="Aviron (en ligne,longue distance, de mer, indoor)"
 					>Aviron (en ligne,longue distance, de mer, indoor)</option
@@ -336,7 +491,12 @@
 
 		<div>
 			Activités sans contrainte particulière:
-			<select name="cmnonrisque1" required bind:value={$_form.cmnonrisque1}>
+			<select
+				name="cmnonrisque1"
+				aria-invalid={$errors.cmnonrisque1 ? 'true' : undefined}
+				bind:value={$_form.cmnonrisque1}
+				{...$constraints.cmnonrisque1}
+			>
 				<option value="1">Aucune</option>
 				<option value="59"> Multisports</option>
 				<option value="2">Athlétisme - Courses hors stade</option>
@@ -399,7 +559,16 @@
 				<option value="57">Volley - Beach Volley</option>
 				<option value="58">Water-polo</option>
 			</select>
-			<select name="cmnonrisque2" required bind:value={$_form.cmnonrisque2}>
+			{#if $errors.cmnonrisque1}
+				<span class="error">{$errors.cmnonrisque1}</span>
+			{/if}
+			<select
+				name="cmnonrisque2"
+				required
+				aria-invalid={$errors.cmnonrisque2 ? 'true' : undefined}
+				bind:value={$_form.cmnonrisque2}
+				{...$constraints.cmnonrisque2}
+			>
 				<option value="1">Aucune</option>
 				<option value="59"> Multisports</option>
 				<option value="2">Athlétisme - Courses hors stade</option>
@@ -462,8 +631,17 @@
 				<option value="57">Volley - Beach Volley</option>
 				<option value="58">Water-polo</option>
 			</select>
+			{#if $errors.cmnonrisque2}
+				<span class="error">{$errors.cmnonrisque2}</span>
+			{/if}
 
-			<select name="cmnonrisque3" required bind:value={$_form.cmnonrisque3}>
+			<select
+				name="cmnonrisque3"
+				required
+				aria-invalid={$errors.cmnonrisque3 ? 'true' : undefined}
+				bind:value={$_form.cmnonrisque3}
+				{...$constraints.cmnonrisque3}
+			>
 				<option value="1">Aucune</option>
 				<option value="59"> Multisports</option>
 				<option value="2">Athlétisme - Courses hors stade</option>
@@ -526,8 +704,17 @@
 				<option value="57">Volley - Beach Volley</option>
 				<option value="58">Water-polo</option>
 			</select>
+			{#if $errors.cmnonrisque3}
+				<span class="error">{$errors.cmnonrisque3}</span>
+			{/if}
 
-			<select name="cmnonrisque4" required bind:value={$_form.cmnonrisque4}>
+			<select
+				name="cmnonrisque4"
+				required
+				aria-invalid={$errors.cmnonrisque4 ? 'true' : undefined}
+				bind:value={$_form.cmnonrisque4}
+				{...$constraints.cmnonrisque4}
+			>
 				<option value="1">Aucune</option>
 				<option value="59"> Multisports</option>
 				<option value="2">Athlétisme - Courses hors stade</option>
@@ -590,8 +777,17 @@
 				<option value="57">Volley - Beach Volley</option>
 				<option value="58">Water-polo</option>
 			</select>
+			{#if $errors.cmnonrisque4}
+				<span class="error">{$errors.cmnonrisque4}</span>
+			{/if}
 
-			<select name="cmnonrisque5" required bind:value={$_form.cmnonrisque5}>
+			<select
+				name="cmnonrisque5"
+				required
+				aria-invalid={$errors.cmnonrisque5 ? 'true' : undefined}
+				bind:value={$_form.cmnonrisque5}
+				{...$constraints.cmnonrisque5}
+			>
 				<option value="1">Aucune</option>
 				<option value="59"> Multisports</option>
 				<option value="2">Athlétisme - Courses hors stade</option>
@@ -654,6 +850,9 @@
 				<option value="57">Volley - Beach Volley</option>
 				<option value="58">Water-polo</option>
 			</select>
+			{#if $errors.cmnonrisque5}
+				<span class="error">{$errors.cmnonrisque5}</span>
+			{/if}
 		</div>
 
 		<label>
@@ -661,6 +860,7 @@
 				type="checkbox"
 				name="checkbox_fiche_indiv_3"
 				bind:checked={$_form.checkbox_fiche_indiv_3}
+				{...$constraints.checkbox_fiche_indiv_3}
 			/>
 			Je souhaite pratiquer une activité à contraintes particulières (Boxe(s) combat plein contact, Tir
 			sportif, Biathlon, Karting, Pentathlon, Taekwondo combat) et atteste avoir présenté un certificat
@@ -671,7 +871,13 @@
 			<div>
 				Activités à contraintes particulières
 
-				<select name="cmrisque1" required bind:value={$_form.cmrisque1}>
+				<select
+					name="cmrisque1"
+					required
+					aria-invalid={$errors.cmrisque1 ? 'true' : undefined}
+					bind:value={$_form.cmrisque1}
+					{...$constraints.cmrisque1}
+				>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -683,7 +889,13 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmrisque2" required bind:value={$_form.cmrisque2}>
+				<select
+					name="cmrisque2"
+					required
+					aria-invalid={$errors.cmrisque2 ? 'true' : undefined}
+					bind:value={$_form.cmrisque2}
+					{...$constraints.cmrisque2}
+				>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -695,7 +907,13 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmrisque3" required bind:value={$_form.cmrisque3}>
+				<select
+					name="cmrisque3"
+					required
+					aria-invalid={$errors.cmrisque3 ? 'true' : undefined}
+					bind:value={$_form.cmrisque3}
+					{...$constraints.cmrisque3}
+				>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -707,7 +925,13 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmrisque4" required bind:value={$_form.cmrisque4}>
+				<select
+					name="cmrisque4"
+					required
+					aria-invalid={$errors.cmrisque4 ? 'true' : undefined}
+					bind:value={$_form.cmrisque4}
+					{...$constraints.cmrisque4}
+				>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -719,7 +943,13 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmrisque5" required bind:value={$_form.cmrisque5}>
+				<select
+					name="cmrisque5"
+					required
+					aria-invalid={$errors.cmrisque5 ? 'true' : undefined}
+					bind:value={$_form.cmrisque5}
+					{...$constraints.cmrisque5}
+				>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -777,7 +1007,7 @@
 	</form>
 </main>
 
-<style>
+<style lang="postcss">
 	button[disabled] > .helloasso {
 		filter: grayscale(50%);
 		opacity: 0.5;
@@ -786,6 +1016,10 @@
 
 	button[disabled].loading > .helloasso {
 		cursor: progress;
+	}
+
+	.error {
+		@apply my-1 block text-red-500;
 	}
 
 	main {

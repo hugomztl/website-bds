@@ -1,12 +1,11 @@
 <script lang="ts">
-	import SuperDebug, { superForm } from 'sveltekit-superforms';
+	import { superForm } from 'sveltekit-superforms';
 	import Payment from './Payment.svelte';
 
 	export let data;
 
 	const user = data.user;
 	const _superForm = superForm(data.form);
-	const { form } = _superForm;
 </script>
 
 {#if user.license}

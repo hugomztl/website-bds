@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { z } from 'zod';
-	import type { SubmitFunction } from '@sveltejs/kit';
 	import { CircleAlert } from 'lucide-svelte';
 	import type { SuperForm } from 'sveltekit-superforms';
 	import type { zPendingLicense } from '$lib/models/PendingLicense';

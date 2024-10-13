@@ -265,11 +265,127 @@ export const zPendingLicense = z.object({
 			message: 'Invalid ObjectId'
 		})
 		.optional(),
-	nom: z.string(),
+	nom: z.string().superRefine((val, ctx) => {
+		const forbiddenValues = [
+			'firstname',
+			'lastname',
+			'unknown',
+			'first_name',
+			'last_name',
+			'anonyme',
+			'user',
+			'admin',
+			'name',
+			'nom',
+			'prénom',
+			'test'
+		];
+		if (/(.)\1\1/.test(val)) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le nom ne doit pas contenir 3 caractères répétitifs'
+			});
+		}
+		if (/\d/.test(val)) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le nom ne doit pas contenir de chiffres'
+			});
+		}
+		if (val.length === 1) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le nom ne doit pas être un seul caractère'
+			});
+		}
+		if (!/[aeiouy]/i.test(val)) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le nom doit contenir au moins une voyelle'
+			});
+		}
+		if (/[^a-zA-Zéèêëàâäùûüç'\-]/.test(val)) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le nom contient des caractères non autorisés'
+			});
+		}
+		if (forbiddenValues.includes(val.toLowerCase())) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le nom contient une valeur interdite'
+			});
+		}
+	}),
 	nom_naissance: z.string().optional(),
-	prenom: z.string(),
+	prenom: z.string().superRefine((val, ctx) => {
+		const forbiddenValues = [
+			'firstname',
+			'lastname',
+			'unknown',
+			'first_name',
+			'last_name',
+			'anonyme',
+			'user',
+			'admin',
+			'name',
+			'nom',
+			'prénom',
+			'test'
+		];
+		if (/(.)\1\1/.test(val)) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le prénom ne doit pas contenir 3 caractères répétitifs'
+			});
+		}
+		if (/\d/.test(val)) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le prénom ne doit pas contenir de chiffres'
+			});
+		}
+		if (val.length === 1) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le prénom ne doit pas être un seul caractère'
+			});
+		}
+		if (!/[aeiouy]/i.test(val)) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le prénom doit contenir au moins une voyelle'
+			});
+		}
+		if (/[^a-zA-Zéèêëàâäùûüç'\-]/.test(val)) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le prénom contient des caractères non autorisés'
+			});
+		}
+		if (forbiddenValues.includes(val.toLowerCase())) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Le prénom contient une valeur interdite'
+			});
+		}
+	}),
 	sexe: z.enum(['M', 'F']),
-	datenaiss: z.string(),
+	datenaiss: z.string().refine(
+		(val) => {
+			const today = new Date();
+			const birthDate = new Date(val);
+			let age = today.getFullYear() - birthDate.getFullYear();
+			const monthDifference = today.getMonth() - birthDate.getMonth();
+			if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+				age--;
+			}
+			return age >= 18;
+		},
+		{
+			message: "L'acheteur doit avoir plus de 18 ans"
+		}
+	),
 	pays_naissance: z.string(),
 	dpt_naissance: z.enum(dpt_enum),
 	ville_naissance: z.string(),

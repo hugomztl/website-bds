@@ -1,30 +1,24 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { z } from 'zod';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { CircleAlert } from 'lucide-svelte';
+	import type { SuperForm } from 'sveltekit-superforms';
+	import type { zPendingLicense } from '$lib/models/PendingLicense';
 
 	export let user: {
 		email: string;
 	};
 
-	let loading = false;
+	export let form: SuperForm<z.infer<typeof zPendingLicense>>;
 
-	let activiteContrainte = false;
+	const { form: _form, enhance, submitting } = form;
+
 	let conditionsAcceptees = false;
-
-	const handleSubmit: SubmitFunction = () => {
-		loading = true;
-		// Logique de soumission du formulaire
-		return ({ update }) => {
-			loading = false;
-			update();
-		};
-	};
 </script>
 
 <main>
 	<h1>Formulaire de Paiement</h1>
-	<form method="POST" use:enhance={handleSubmit}>
+	<form method="POST" use:enhance>
 		<label>
 			Email*:
 			<input class="input" type="email" name="email" value={user.email} readonly required />
@@ -32,28 +26,28 @@
 
 		<label>
 			Nom*:
-			<input class="input" type="text" name="nom" required />
+			<input class="input" type="text" name="nom" required bind:value={$_form.nom} />
 		</label>
 
 		<label>
 			Nom de naissance:
-			<input class="input" type="text" name="nom_naissance" />
+			<input class="input" type="text" name="nom_naissance" bind:value={$_form.nom_naissance} />
 		</label>
 
 		<label>
 			Prénom*:
-			<input class="input" type="text" name="prenom" required />
+			<input class="input" type="text" name="prenom" required bind:value={$_form.prenom} />
 		</label>
 
 		<label>
 			Sexe*:
 			<div>
 				<label>
-					<input type="radio" name="sexe" value="M" required />
+					<input type="radio" name="sexe" value="M" required bind:group={$_form.sexe} />
 					Masculin
 				</label>
 				<label>
-					<input type="radio" name="sexe" value="F" required />
+					<input type="radio" name="sexe" value="F" required bind:group={$_form.sexe} />
 					Féminin
 				</label>
 			</div>
@@ -61,17 +55,23 @@
 
 		<label>
 			Date de naissance*:
-			<input class="input" type="date" name="datenaiss" required />
+			<input class="input" type="date" name="datenaiss" required bind:value={$_form.datenaiss} />
 		</label>
 
 		<label>
 			Pays de naissance*:
-			<input class="input" type="text" name="pays_naissance" required />
+			<input
+				class="input"
+				type="text"
+				name="pays_naissance"
+				required
+				bind:value={$_form.pays_naissance}
+			/>
 		</label>
 
 		<label>
 			Département de naissance*:
-			<select name="dpt_naissance" required>
+			<select name="dpt_naissance" required bind:value={$_form.dpt_naissance}>
 				<option value="01">01 - Ain</option>
 				<option value="02">02 - Aisne</option>
 				<option value="03">03 - Allier</option>
@@ -180,42 +180,48 @@
 
 		<label>
 			Ville de naissance*:
-			<input class="input" type="text" name="ville_naissance" required />
+			<input
+				class="input"
+				type="text"
+				name="ville_naissance"
+				required
+				bind:value={$_form.ville_naissance}
+			/>
 		</label>
 
 		<label>
 			Adresse 1*:
-			<input class="input" type="text" name="adresse1" required />
+			<input class="input" type="text" name="adresse1" required bind:value={$_form.adresse1} />
 		</label>
 
 		<label>
 			Adresse 2:
-			<input class="input" type="text" name="adresse2" />
+			<input class="input" type="text" name="adresse2" bind:value={$_form.adresse2} />
 		</label>
 
 		<label>
 			Code postal*:
-			<input class="input" type="text" name="codepostal" required />
+			<input class="input" type="text" name="codepostal" required bind:value={$_form.codepostal} />
 		</label>
 
 		<label>
 			Ville*:
-			<input class="input" type="text" name="ville" required />
+			<input class="input" type="text" name="ville" required bind:value={$_form.ville} />
 		</label>
 
 		<label>
 			Téléphone:
-			<input class="input" type="tel" name="telephone" />
+			<input class="input" type="tel" name="telephone" bind:value={$_form.telephone} />
 		</label>
 
 		<label>
 			Instagram:
-			<input class="input" type="text" name="instagram" />
+			<input class="input" type="text" name="instagram" bind:value={$_form.instagram} />
 		</label>
 
 		<label>
 			Discipline:
-			<select name="discipline">
+			<select name="discipline" bind:value={$_form.discipline}>
 				<option value="1">Droit / Sciences Po.</option>
 				<option value="2">Science Eco./Gestion</option>
 				<option value="3">Lettres</option>
@@ -240,12 +246,12 @@
 
 		<label>
 			Autre fédération:
-			<input class="input" type="text" name="autrefede" />
+			<input class="input" type="text" name="autrefede" bind:value={$_form.autrefede} />
 		</label>
 
 		<label>
 			Sport*:
-			<select name="sport" required>
+			<select name="sport" required bind:value={$_form.sport}>
 				<option value="Athlétisme - Courses hors stade">Athlétisme - Courses hors stade</option>
 				<option value="Aviron (en ligne,longue distance, de mer, indoor)"
 					>Aviron (en ligne,longue distance, de mer, indoor)</option
@@ -331,7 +337,70 @@
 
 		<div>
 			Activités sans contrainte particulière:
-			<select name="cmnonrisque1" required>
+			<select name="cmnonrisque1" required bind:value={$_form.cmnonrisque1}>
+				<option value="1">Aucune</option>
+				<option value="59"> Multisports</option>
+				<option value="2">Athlétisme - Courses hors stade</option>
+				<option value="3">Aviron (en ligne,longue distance, de mer, indoor)</option>
+				<option value="4">Badminton</option>
+				<option value="5">Baseball - Softball</option>
+				<option value="6">Basket - Basket 3x3</option>
+				<option value="8">Bowling</option>
+				<option value="9">Boxe éducative Assaut</option>
+				<option value="11">Bridge</option>
+				<option value="12">Canoë-kayak</option>
+				<option value="13">Cheerleading</option>
+				<option value="14">Course d'orientation</option>
+				<option value="15">Cyclisme - VTT - BMX</option>
+				<option value="16">Danse (toutes formes)</option>
+				<option value="60">E-sport</option>
+				<option value="17">Echecs</option>
+				<option value="18">Equitation</option>
+				<option value="19">Escalade</option>
+				<option value="20">Escrime</option>
+				<option value="21">Fitness</option>
+				<option value="62">Fléchettes</option>
+				<option value="22">Football - Futsal</option>
+				<option value="23">Football américain</option>
+				<option value="24">Force Athlétique</option>
+				<option value="25">Golf</option>
+				<option value="26">Gymnastiques : Artistique, GR, Team Gym, Trampoline, Parkour Gym</option>
+				<option value="27">Haltérophilie - Musculation</option>
+				<option value="28">Handball - Beach Handball</option>
+				<option value="29">Hockey</option>
+				<option value="30">Judo - Ju-Jitsu - Ne Waza</option>
+				<option value="31">Karaté</option>
+				<option value="33">Kick Boxing- Muay-Thaï Light et Pré combat</option>
+				<option value="34">Lutte - Sambo sportif - Beach Wrestling</option>
+				<option value="35">Nage avec palmes</option>
+				<option value="36">Natation - Natation synchronisée - Natation en eau libre</option>
+				<option value="61">Pancrace assaut</option>
+				<option value="37">Patinage artistique et de vitesse</option>
+				<option value="38">Pelote basque</option>
+				<option value="40">Pétanque</option>
+				<option value="41">Roller hockey</option>
+				<option value="64">Rugby sans contact</option>
+				<option value="42">Rugby(s) (XV, X, 7, XIII)</option>
+				<option value="43">Sauvetage sportif</option>
+				<option value="44">Savate Boxe Française en assaut</option>
+				<option value="45">Skateboard - Trottinette</option>
+				<option value="46">Ski - Snowboard (toutes formes)</option>
+				<option value="47">Squash</option>
+				<option value="48">Surf - Stand Up Paddle</option>
+				<option value="49">Taekwondo</option>
+				<option value="51">Tennis - Padel - Beach Tennis</option>
+				<option value="50">Tennis de table</option>
+				<option value="52">Tir à l'arc</option>
+				<option value="54"
+					>Triathlon et Disciplines enchainées : [Bike &amp; Run, Duathlon,Raids multisports,
+					Swimrun]</option
+				>
+				<option value="55">Ultimate - Beach Ultimate</option>
+				<option value="56">Voile - Kite Surf</option>
+				<option value="57">Volley - Beach Volley</option>
+				<option value="58">Water-polo</option>
+			</select>
+			<select name="cmnonrisque2" required bind:value={$_form.cmnonrisque2}>
 				<option value="1">Aucune</option>
 				<option value="59"> Multisports</option>
 				<option value="2">Athlétisme - Courses hors stade</option>
@@ -395,7 +464,7 @@
 				<option value="58">Water-polo</option>
 			</select>
 
-			<select name="cmnonrisque2" required>
+			<select name="cmnonrisque3" required bind:value={$_form.cmnonrisque3}>
 				<option value="1">Aucune</option>
 				<option value="59"> Multisports</option>
 				<option value="2">Athlétisme - Courses hors stade</option>
@@ -459,7 +528,7 @@
 				<option value="58">Water-polo</option>
 			</select>
 
-			<select name="cmnonrisque3" required>
+			<select name="cmnonrisque4" required bind:value={$_form.cmnonrisque4}>
 				<option value="1">Aucune</option>
 				<option value="59"> Multisports</option>
 				<option value="2">Athlétisme - Courses hors stade</option>
@@ -523,71 +592,7 @@
 				<option value="58">Water-polo</option>
 			</select>
 
-			<select name="cmnonrisque4" required>
-				<option value="1">Aucune</option>
-				<option value="59"> Multisports</option>
-				<option value="2">Athlétisme - Courses hors stade</option>
-				<option value="3">Aviron (en ligne,longue distance, de mer, indoor)</option>
-				<option value="4">Badminton</option>
-				<option value="5">Baseball - Softball</option>
-				<option value="6">Basket - Basket 3x3</option>
-				<option value="8">Bowling</option>
-				<option value="9">Boxe éducative Assaut</option>
-				<option value="11">Bridge</option>
-				<option value="12">Canoë-kayak</option>
-				<option value="13">Cheerleading</option>
-				<option value="14">Course d'orientation</option>
-				<option value="15">Cyclisme - VTT - BMX</option>
-				<option value="16">Danse (toutes formes)</option>
-				<option value="60">E-sport</option>
-				<option value="17">Echecs</option>
-				<option value="18">Equitation</option>
-				<option value="19">Escalade</option>
-				<option value="20">Escrime</option>
-				<option value="21">Fitness</option>
-				<option value="62">Fléchettes</option>
-				<option value="22">Football - Futsal</option>
-				<option value="23">Football américain</option>
-				<option value="24">Force Athlétique</option>
-				<option value="25">Golf</option>
-				<option value="26">Gymnastiques : Artistique, GR, Team Gym, Trampoline, Parkour Gym</option>
-				<option value="27">Haltérophilie - Musculation</option>
-				<option value="28">Handball - Beach Handball</option>
-				<option value="29">Hockey</option>
-				<option value="30">Judo - Ju-Jitsu - Ne Waza</option>
-				<option value="31">Karaté</option>
-				<option value="33">Kick Boxing- Muay-Thaï Light et Pré combat</option>
-				<option value="34">Lutte - Sambo sportif - Beach Wrestling</option>
-				<option value="35">Nage avec palmes</option>
-				<option value="36">Natation - Natation synchronisée - Natation en eau libre</option>
-				<option value="61">Pancrace assaut</option>
-				<option value="37">Patinage artistique et de vitesse</option>
-				<option value="38">Pelote basque</option>
-				<option value="40">Pétanque</option>
-				<option value="41">Roller hockey</option>
-				<option value="64">Rugby sans contact</option>
-				<option value="42">Rugby(s) (XV, X, 7, XIII)</option>
-				<option value="43">Sauvetage sportif</option>
-				<option value="44">Savate Boxe Française en assaut</option>
-				<option value="45">Skateboard - Trottinette</option>
-				<option value="46">Ski - Snowboard (toutes formes)</option>
-				<option value="47">Squash</option>
-				<option value="48">Surf - Stand Up Paddle</option>
-				<option value="49">Taekwondo</option>
-				<option value="51">Tennis - Padel - Beach Tennis</option>
-				<option value="50">Tennis de table</option>
-				<option value="52">Tir à l'arc</option>
-				<option value="54"
-					>Triathlon et Disciplines enchainées : [Bike &amp; Run, Duathlon,Raids multisports,
-					Swimrun]</option
-				>
-				<option value="55">Ultimate - Beach Ultimate</option>
-				<option value="56">Voile - Kite Surf</option>
-				<option value="57">Volley - Beach Volley</option>
-				<option value="58">Water-polo</option>
-			</select>
-
-			<select name="cmnonrisque5" required>
+			<select name="cmnonrisque5" required bind:value={$_form.cmnonrisque5}>
 				<option value="1">Aucune</option>
 				<option value="59"> Multisports</option>
 				<option value="2">Athlétisme - Courses hors stade</option>
@@ -653,17 +658,21 @@
 		</div>
 
 		<label>
-			<input type="checkbox" name="checkbox_fiche_indiv_3" bind:checked={activiteContrainte} />
+			<input
+				type="checkbox"
+				name="checkbox_fiche_indiv_3"
+				bind:checked={$_form.checkbox_fiche_indiv_3}
+			/>
 			Je souhaite pratiquer une activité à contraintes particulières (Boxe(s) combat plein contact, Tir
 			sportif, Biathlon, Karting, Pentathlon, Taekwondo combat) et atteste avoir présenté un certificat
 			médical de non-contre-indication à la pratique des sports de compétition de moins d'un an
 		</label>
 
-		{#if activiteContrainte}
+		{#if $_form.checkbox_fiche_indiv_3}
 			<div>
 				Activités à contraintes particulières
 
-				<select name="cmrisque1" required>
+				<select name="cmrisque1" required bind:value={$_form.cmrisque1}>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -675,7 +684,7 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmrisque2" required>
+				<select name="cmrisque2" required bind:value={$_form.cmrisque2}>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -687,7 +696,7 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmrisque3" required>
+				<select name="cmrisque3" required bind:value={$_form.cmrisque3}>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -699,7 +708,7 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmrisque4" required>
+				<select name="cmrisque4" required bind:value={$_form.cmrisque4}>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -711,7 +720,7 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmrisque5" required>
+				<select name="cmrisque5" required bind:value={$_form.cmrisque5}>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -728,7 +737,7 @@
 		<hr class="my-4" />
 
 		<label>
-			<input type="checkbox" name="autorisation" />
+			<input type="checkbox" name="autorisation" bind:checked={$_form.autorisation} />
 			Droit à l'image : Le soussigné autorise l'A.S., la Fédération et ses organes déconcentrés à utiliser
 			son image sur tout support destiné à la promotion des activités de l'A.S. et de la Fédération,
 			à l'exclusion de toute utilisation à titre commercial. Cette autorisation est donnée à titre gracieux
@@ -761,9 +770,9 @@
 		<button
 			class="btn m-auto block self-center"
 			type="submit"
-			disabled={loading || !conditionsAcceptees}
+			disabled={$submitting || !conditionsAcceptees}
 		>
-			{#if loading}
+			{#if $submitting}
 				Chargement...
 			{:else}
 				Payer

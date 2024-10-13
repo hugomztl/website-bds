@@ -1,8 +1,10 @@
 import { HELLOASSO_ID, HELLOASSO_SECRET } from '$env/static/private';
 import PaymentIntent from '$lib/models/PaymentIntent';
-import PendingLicense from '$lib/models/PendingLicense.js';
+import PendingLicense, { zPendingLicense } from '$lib/models/PendingLicense.js';
 import User from '$lib/models/User.js';
-import { error, fail, redirect } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
+import { zod } from 'sveltekit-superforms/adapters';
+import { superValidate } from 'sveltekit-superforms';
 
 export const prerender = false;
 
@@ -23,7 +25,9 @@ export const load = async ({ locals }) => {
 		return redirect(303, '/signin');
 	}
 
-	return { user };
+	const form = await superValidate(zod(zPendingLicense));
+
+	return { user, form };
 };
 
 export const actions = {
@@ -33,25 +37,24 @@ export const actions = {
 			return redirect(303, '/signin');
 		}
 
-		const formData = await request.formData();
-		let formDataObj: Record<string, FormDataEntryValue> = {};
-		formData.forEach((value, key) => (formDataObj[key] = value));
+		const form = await superValidate(request, zod(zPendingLicense));
+
+		if (!form.valid) {
+			return fail(400, { form });
+		}
 
 		const pendingLicense = await PendingLicense.create({
-			...formDataObj,
-			autorisation: formData.get('autorisation') === 'on',
-			checkbox_fiche_indiv_3: formData.get('checkbox_fiche_indiv_3') === 'on',
+			...form.data,
+			email: user.email,
 			user: user.id
 		});
-
-		// FIXME: Utiliser Zod pour valider les données!
 
 		const host = request.headers.get('host') ?? 'bds-cesi-nancy.fr';
 		const baseUrl = `https://${host}`;
 
-		const firstName = formData.get('prenom');
-		const lastName = formData.get('nom');
-		const dateOfBirth = formData.get('datenaiss');
+		const firstName = form.data.prenom;
+		const lastName = form.data.nom;
+		const dateOfBirth = form.data.datenaiss;
 		const paiementData = {
 			totalAmount: 2000,
 			initialAmount: 2000,

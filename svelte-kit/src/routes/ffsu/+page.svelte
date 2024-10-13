@@ -1,10 +1,12 @@
 <script lang="ts">
+	import SuperDebug, { superForm } from 'sveltekit-superforms';
 	import Payment from './Payment.svelte';
 
 	export let data;
-	export let form;
 
 	const user = data.user;
+	const _superForm = superForm(data.form);
+	const { form } = _superForm;
 </script>
 
 {#if user.license}
@@ -15,10 +17,5 @@
 
 	<br />
 
-	<div class="container">
-		{#each form?.errors ?? [] as error}
-			<p class="variant-soft-error p-2">{error.message}</p>
-		{/each}
-	</div>
-	<Payment {user} />
+	<Payment {user} form={_superForm} />
 {/if}

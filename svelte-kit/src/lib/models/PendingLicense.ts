@@ -1,5 +1,6 @@
 import { zodSchema } from '@zodyac/zod-mongoose';
 import mongoose, { model } from 'mongoose';
+import { z } from 'zod';
 
 const cmnonrisque_enum = [
 	'1',
@@ -256,13 +257,14 @@ const sport_enum = [
 	'Water-polo'
 ] as const;
 
-import { z } from 'zod';
-
 export const zPendingLicense = z.object({
 	licensePaid: z.boolean().default(false),
-	user: z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
-		message: 'Invalid ObjectId'
-	}),
+	user: z
+		.string()
+		.refine((val) => mongoose.Types.ObjectId.isValid(val), {
+			message: 'Invalid ObjectId'
+		})
+		.optional(),
 	nom: z.string(),
 	nom_naissance: z.string().optional(),
 	prenom: z.string(),

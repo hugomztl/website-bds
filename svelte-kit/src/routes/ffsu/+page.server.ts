@@ -40,6 +40,7 @@ export const actions = {
 		const pendingLicense = await PendingLicense.create({
 			...formDataObj,
 			autorisation: formData.get('autorisation') === 'on',
+			checkbox_fiche_indiv_3: formData.get('checkbox_fiche_indiv_3') === 'on',
 			user: user.id
 		});
 

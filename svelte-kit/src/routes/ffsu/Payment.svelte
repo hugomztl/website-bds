@@ -663,7 +663,7 @@
 			<div>
 				Activités à contraintes particulières
 
-				<select name="cmnonrisque1" required>
+				<select name="cmrisque1" required>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -675,7 +675,7 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmnonrisque2" required>
+				<select name="cmrisque2" required>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -687,7 +687,7 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmnonrisque3" required>
+				<select name="cmrisque3" required>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -699,7 +699,7 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmnonrisque4" required>
+				<select name="cmrisque4" required>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"
@@ -711,7 +711,7 @@
 					<option value="53">Tir sportif</option>
 				</select>
 
-				<select name="cmnonrisque5" required>
+				<select name="cmrisque5" required>
 					<option value="1">Aucune</option>
 					<option value="7">Biathlon</option>
 					<option value="10"

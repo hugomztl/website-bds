@@ -56,9 +56,9 @@ export const actions = {
 			totalAmount: 2000,
 			initialAmount: 2000,
 			itemName: 'Licence FFSU',
-			backUrl: `${baseUrl}/ffsu/validate`,
+			backUrl: `${baseUrl}/ffsu`,
 			errorUrl: `${baseUrl}/ffsu/validate`,
-			returnUrl: `${baseUrl}/ffsu`,
+			returnUrl: `${baseUrl}/ffsu/validate`,
 			containsDonation: false,
 			payer: {
 				firstName,

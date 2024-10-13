@@ -767,20 +767,27 @@
 		<br />
 
 		<button
-			class="btn m-auto block self-center"
+			class="m-auto block bg-transparent"
+			class:loading={$submitting}
 			type="submit"
 			disabled={$submitting || !conditionsAcceptees}
 		>
-			{#if $submitting}
-				Chargement...
-			{:else}
-				Payer
-			{/if}
+			<img class="helloasso m-auto" src="/payer-avec-helloasso.svg" alt="Payer avec helloasso" />
 		</button>
 	</form>
 </main>
 
 <style>
+	button[disabled] > .helloasso {
+		filter: grayscale(50%);
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+
+	button[disabled].loading > .helloasso {
+		cursor: progress;
+	}
+
 	main {
 		max-width: 600px;
 		margin: auto;
@@ -798,24 +805,9 @@
 		padding: 0.5rem;
 		margin-bottom: 1rem;
 	}
-	button {
-		padding: 0.5rem 1rem;
-		background-color: #28a745;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		cursor: pointer;
-	}
-	button:hover {
-		background-color: #218838;
-	}
 	select {
 		width: 100%;
 		padding: 0.5rem;
 		margin-bottom: 1rem;
-	}
-	button:disabled {
-		background-color: #cccccc;
-		cursor: not-allowed;
 	}
 </style>

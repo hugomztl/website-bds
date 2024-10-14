@@ -3,8 +3,7 @@
 
 	export let data;
 	$: user = data.user;
-
-	const sameUser = data.session?.user?.id === user._id.toString();
+	$: sameUser = data.session?.user?.id === user._id.toString();
 </script>
 
 <main id="app">

@@ -6,7 +6,7 @@
 	}
 </script>
 
-<main id="app">
+<main class="container m-auto">
 	<h1>Clubs:</h1>
 
 	{#if data.session?.user?.isAdmin}
@@ -68,14 +68,5 @@
 	a {
 		text-decoration: none;
 		color: inherit;
-	}
-
-	a > div {
-		transition: 0.3s ease-in-out;
-	}
-
-	a:hover > div {
-		transform: scale(1.05);
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	}
 </style>

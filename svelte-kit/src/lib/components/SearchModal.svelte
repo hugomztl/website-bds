@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onNavigate } from '$app/navigation';
-	import { User, Users } from 'lucide-svelte';
+	import { Search, User, Users } from 'lucide-svelte';
 	import type { SvelteComponent } from 'svelte';
 
 	export let parent: SvelteComponent;
@@ -36,7 +36,7 @@
 	class="modal-search card bg-surface-100/60 dark:bg-surface-500/30 mb-auto mt-8 w-full max-w-[800px] overflow-hidden shadow-xl backdrop-blur-lg"
 >
 	<header class="bg-surface-300-600-token flex items-center shadow-md">
-		<i class="fa-solid fa-magnifying-glass ml-4 text-xl"></i>
+		<Search class="ml-4 text-xl" />
 		<input
 			class="m-2 ml-4 w-full border-0 bg-transparent text-lg ring-0 focus:ring-0"
 			type="search"

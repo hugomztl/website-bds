@@ -8,7 +8,7 @@ export default z.object({
 	owner: z
 		.string()
 		.optional()
-		.refine((val) => val && mongoose.Types.ObjectId.isValid(val), {
+		.refine((val) => (val ? mongoose.Types.ObjectId.isValid(val) : true), {
 			message: 'Invalid ObjectId'
 		})
 });

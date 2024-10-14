@@ -1,25 +1,35 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	import { superForm } from 'sveltekit-superforms';
 
 	export let data;
-	export let form;
+
+	const { form, enhance, errors, constraints } = superForm(data.form);
 </script>
 
-<!-- TODO: Ajouter un popup pour afficher le résultat de la création d'un club -->
-<main id="app">
+<main>
 	<h1>Créer un club</h1>
 
-	{#if form?.success === false}
-		<p>Erreur lors de la création du club</p>
-	{/if}
-
 	<form method="POST" use:enhance>
-		<input type="text" placeholder="name" name="name" />
-		<input type="text" placeholder="description" name="description" />
+		<input
+			type="text"
+			placeholder="name"
+			name="name"
+			aria-invalid={$errors.name ? 'true' : undefined}
+			bind:value={$form.name}
+			{...$constraints.name}
+		/>
+		<input
+			type="text"
+			placeholder="description"
+			name="description"
+			aria-invalid={$errors.description ? 'true' : undefined}
+			bind:value={$form.description}
+			{...$constraints.description}
+		/>
 
 		<label>
 			<span>Président</span>
-			<select class="select" name="owner" id="owner">
+			<select class="select" name="owner" id="owner" bind:value={$form.owner}>
 				<option value="">Aucun président assigné</option>
 				{#each data.users as user}
 					<option value={user._id}>{user.email}</option>

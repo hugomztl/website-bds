@@ -9,9 +9,7 @@
 <main class="container m-auto">
 	<h1>Clubs:</h1>
 
-	{#if data.session?.user?.isAdmin}
-		<a href="/clubs/create">Créer un club</a>
-	{/if}
+	<a href="/clubs/create">Créer un club</a>
 
 	{#each data.clubs as club}
 		<a href={`/clubs/${club._id}`}>

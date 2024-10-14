@@ -27,15 +27,17 @@
 			{...$constraints.description}
 		/>
 
-		<label>
-			<span>Président</span>
-			<select class="select" name="owner" id="owner" bind:value={$form.owner}>
-				<option value="">Aucun président assigné</option>
-				{#each data.users as user}
-					<option value={user._id}>{user.email}</option>
-				{/each}
-			</select>
-		</label>
+		{#if data.session?.user?.isAdmin}
+			<label>
+				<span>Président</span>
+				<select class="select" name="owner" bind:value={$form.owner}>
+					<option value="">Aucun président assigné</option>
+					{#each data.users as user}
+						<option value={user._id}>{user.email}</option>
+					{/each}
+				</select>
+			</label>
+		{/if}
 
 		<button type="submit">Créer un club</button>
 	</form>

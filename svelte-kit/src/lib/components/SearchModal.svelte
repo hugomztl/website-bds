@@ -1,5 +1,9 @@
 <script lang="ts">
+	import { onNavigate } from '$app/navigation';
 	import { User, Users } from 'lucide-svelte';
+	import type { SvelteComponent } from 'svelte';
+
+	export let parent: SvelteComponent;
 
 	let clubs: { _id: string; name: string; description: string }[] = [];
 	let users: { _id: string; fullName: string; email: string }[] = [];
@@ -8,9 +12,14 @@
 	let debouceTimer: NodeJS.Timeout;
 
 	async function search() {
-		const result = await fetch('/api/search?q=' + searchText).then((r) => r.json());
-		users = result.users;
-		clubs = result.clubs;
+		const result = await fetch('/api/search?q=' + encodeURIComponent(searchText));
+
+		if (result.status !== 200) return;
+
+		const json = await result.json();
+
+		users = json.users;
+		clubs = json.clubs;
 	}
 
 	function debouncedSearch() {
@@ -19,6 +28,8 @@
 	}
 
 	search();
+
+	onNavigate(parent.onClose);
 </script>
 
 <div
@@ -35,43 +46,39 @@
 		/>
 	</header>
 	<nav class="list-nav hide-scrollbar max-h-[480px] overflow-x-auto" tabindex="-1">
-		{#if !search && false}
-			<p class="h1 my-6 text-center text-2xl text-zinc-800">Commencez à taper pour rechercher</p>
-		{:else}
-			<div class="p-4 text-sm font-bold">Membres</div>
-			<ul>
-				{#each users as user}
-					<li class="text-lg">
-						<a
-							class="hover:variant-soft focus:!variant-filled-primary justify-between !rounded-none outline-0"
-							href="/users/{user._id}"
-							><div class="flex items-center gap-4">
-								<User />
-								<span class="flex-auto font-bold opacity-75">{user.fullName}</span>
-							</div>
-							<!-- <span class="hidden text-xs opacity-50 md:block">/users/{user._id}</span></a -->
-						</a>
-					</li>
-				{/each}
-			</ul>
+		<div class="p-4 text-sm font-bold">Membres</div>
+		<ul>
+			{#each users as user}
+				<li class="text-lg">
+					<a
+						class="hover:variant-soft focus:!variant-filled-primary justify-between !rounded-none outline-0"
+						href="/profile/{user._id}"
+					>
+						<div class="flex items-center gap-4">
+							<User />
+							<span class="flex-auto font-bold opacity-75">{user.fullName}</span>
+						</div>
+					</a>
+				</li>
+			{/each}
+		</ul>
 
-			<div class="p-4 text-sm font-bold">Clubs</div>
-			<ul>
-				{#each clubs as club}
-					<li class="text-lg">
-						<a
-							class="hover:variant-soft focus:!variant-filled-primary justify-between !rounded-none outline-0"
-							href="/clubs/{club._id}"
-							><div class="flex items-center gap-4">
-								<Users />
-								<span class="flex-auto font-bold opacity-75">{club.name}</span>
-							</div>
-							<span class="hidden text-xs opacity-50 md:block">/clubs/{club._id}</span></a
-						>
-					</li>
-				{/each}
-			</ul>
-		{/if}
+		<div class="p-4 text-sm font-bold">Clubs</div>
+		<ul>
+			{#each clubs as club}
+				<li class="text-lg">
+					<a
+						class="hover:variant-soft focus:!variant-filled-primary justify-between !rounded-none outline-0"
+						href="/clubs/{club._id}"
+					>
+						<div class="flex items-center gap-4">
+							<Users />
+							<span class="flex-auto font-bold opacity-75">{club.name}</span>
+						</div>
+					</a>
+				</li>
+			{/each}
+		</ul>
 	</nav>
 	<footer
 		class="modal-search-footer bg-surface-300-600-token hidden items-center gap-2 p-4 text-xs font-bold md:flex"

@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 
 	export let data;
-	const user = data.user;
+	$: user = data.user;
 </script>
 
 <main id="app">

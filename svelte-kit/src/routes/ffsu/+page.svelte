@@ -6,6 +6,11 @@
 
 	const user = data.user;
 	const _superForm = superForm(data.form);
+
+	export const snapshot = {
+		capture: _superForm.capture,
+		restore: _superForm.restore
+	};
 </script>
 
 {#if user.license}

@@ -1,9 +1,10 @@
-import Club from '$lib/models/Club';
+import Club, { type ClubType } from '$lib/models/Club';
 import User from '$lib/models/User.js';
 import { redirect } from '@sveltejs/kit';
 import { fail, superValidate } from 'sveltekit-superforms';
 import zClubForm from './zClubForm';
 import { zod } from 'sveltekit-superforms/adapters';
+import PendingClub from '$lib/models/PendingClub';
 
 export const prerender = false;
 
@@ -40,19 +41,24 @@ export const actions = {
 		}
 
 		const { name, description, logo } = form.data;
-		let { owner } = form.data;
-		if (!session.user.isAdmin && form.data.owner !== session.user.id) {
-			owner = session.user.id;
-		}
-
-		try {
-			const club = new Club({
+		let club: InstanceType<typeof Club> | InstanceType<typeof PendingClub>; // Assigning type to club
+		if (session.user.isAdmin) {
+			club = new Club({
 				name,
 				description,
 				logo,
-				owner
+				owner: session.user.id
 			});
+		} else {
+			club = new PendingClub({
+				name,
+				description,
+				logo,
+				owner: form.data.owner
+			});
+		}
 
+		try {
 			await club.save();
 		} catch (error) {
 			return fail(400, { success: false });

@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
+	import { Check, Clock, X } from 'lucide-svelte';
+
 	export let data;
 
 	function canManageClub(club: (typeof data.clubs)[number]) {
@@ -10,6 +14,48 @@
 	<h1>Clubs:</h1>
 
 	<a href="/clubs/create">Créer un club</a>
+
+	{#if data.session?.user?.isAdmin}
+		<h2>Clubs en attente</h2>
+
+		{#if data.pendingClubs.length > 0}
+			<Accordion>
+				<AccordionItem>
+					<svelte:fragment slot="lead"><Clock /></svelte:fragment>
+					<svelte:fragment slot="summary">
+						[{data.pendingClubs.length}] club(s) en attente
+					</svelte:fragment>
+					<svelte:fragment slot="content">
+						{#each data.pendingClubs as club}
+							<div class="container">
+								<p><b>{club.name}</b></p>
+								<p>{club.description}</p>
+
+								<div class="btn-group">
+									<form method="POST" action="?/acceptClub" use:enhance>
+										<input type="hidden" name="id" value={club._id} />
+										<button class="btn variant-filled-success">
+											<Check />
+											Accepter e
+										</button>
+									</form>
+									<form method="POST" action="?/rejectClub" use:enhance>
+										<input type="hidden" name="id" value={club._id} />
+										<button class="btn variant-outline-error text-error-600">
+											<X />
+											Refuser
+										</button>
+									</form>
+								</div>
+							</div>
+						{/each}
+					</svelte:fragment>
+				</AccordionItem>
+			</Accordion>
+		{:else}
+			<p class="text-gray-500">Aucun club en attente pour le moment</p>
+		{/if}
+	{/if}
 
 	{#each data.clubs as club}
 		<a href={`/clubs/${club._id}`}>

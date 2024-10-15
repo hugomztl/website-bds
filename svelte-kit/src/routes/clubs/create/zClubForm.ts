@@ -10,5 +10,6 @@ export default z.object({
 		.optional()
 		.refine((val) => (val ? mongoose.Types.ObjectId.isValid(val) : true), {
 			message: 'Invalid ObjectId'
-		})
+		}),
+	requireLicense: z.boolean().default(false)
 });

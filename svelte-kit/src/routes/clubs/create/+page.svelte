@@ -26,6 +26,16 @@
 			bind:value={$form.description}
 			{...$constraints.description}
 		/>
+		<label>
+			Nécessite une license FFSU
+			<input
+				type="checkbox"
+				name="requireLicense"
+				aria-invalid={$errors.requireLicense ? 'true' : undefined}
+				bind:checked={$form.requireLicense}
+				{...$constraints.requireLicense}
+			/>
+		</label>
 
 		{#if data.session?.user?.isAdmin}
 			<label>

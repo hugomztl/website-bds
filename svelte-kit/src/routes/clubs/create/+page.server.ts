@@ -8,7 +8,9 @@ import PendingClub from '$lib/models/PendingClub';
 
 export const prerender = false;
 
-export const load = async ({}) => {
+export const load = async ({ locals }) => {
+	if (!(await locals.auth())?.user) return redirect(303, '/signin');
+
 	const form = await superValidate(zod(zClubForm));
 
 	return {

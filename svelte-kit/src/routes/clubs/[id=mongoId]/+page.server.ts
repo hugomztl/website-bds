@@ -69,6 +69,6 @@ export const load = async ({ params, locals }) => {
 			.find((member) => (!session ? session : member.user?.equals(session.user?.id!)))
 			?.toObject({ flattenObjectIds: true }),
 		isOwner: isOwner(club.owner?.toString(), session),
-		licensed: (await User.findById(session?.user?.id ?? '').exec())?.license
+		licensed: session?.user?.id ? (await User.findById(session.user.id).exec())?.license : false
 	};
 };

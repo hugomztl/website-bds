@@ -3,14 +3,22 @@ import { MongoClient } from 'mongodb';
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 
-mongoose
-	.connect(CONNECTION_STRING)
-	.then(() => {
-		console.log('Successfully connected to MongoDB');
-	})
-	.catch((error) => {
-		console.error('Error connecting to MongoDB:', error);
-	});
+let dbConnected = false;
+
+export async function dbConnect() {
+	if (dbConnected) return;
+
+	mongoose
+		.connect(CONNECTION_STRING)
+		.then(() => {
+			console.info('Successfully connected to MongoDB');
+			dbConnected = true;
+		})
+		.catch((error) => {
+			console.error('Error connecting to MongoDB:', error);
+		});
+}
+
 export const client: MongoClient = mongoose.connection.getClient();
 
 const salt = bcrypt.genSaltSync(10);

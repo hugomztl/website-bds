@@ -49,14 +49,14 @@ export const actions = {
 				name,
 				description,
 				logo,
-				owner: session.user.id
+				owner: form.data.owner
 			});
 		} else {
 			club = new PendingClub({
 				name,
 				description,
 				logo,
-				owner: form.data.owner
+				owner: session.user.id
 			});
 		}
 

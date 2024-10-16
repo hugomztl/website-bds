@@ -36,7 +36,7 @@
 										<input type="hidden" name="id" value={club._id} />
 										<button class="btn variant-filled-success">
 											<Check />
-											Accepter e
+											Accepter
 										</button>
 									</form>
 									<form method="POST" action="?/rejectClub" use:enhance>
@@ -55,6 +55,33 @@
 		{:else}
 			<p class="text-gray-500">Aucun club en attente pour le moment</p>
 		{/if}
+	{:else if data.pendingClubs.length > 0}
+		<h2>Mes clubs en attente</h2>
+
+		<Accordion>
+			<AccordionItem>
+				<svelte:fragment slot="lead"><Clock /></svelte:fragment>
+				<svelte:fragment slot="summary">
+					[{data.pendingClubs.length}] club(s) en attente
+				</svelte:fragment>
+				<svelte:fragment slot="content">
+					{#each data.pendingClubs as club}
+						<div class="container">
+							<p><b>{club.name}</b></p>
+							<p>{club.description}</p>
+
+							<form method="POST" action="?/cancelRequest" use:enhance>
+								<input type="hidden" name="id" value={club._id} />
+								<button class="btn variant-outline-error text-error-600">
+									<X />
+									Supprimer la demande
+								</button>
+							</form>
+						</div>
+					{/each}
+				</svelte:fragment>
+			</AccordionItem>
+		</Accordion>
 	{/if}
 
 	{#each data.clubs as club}

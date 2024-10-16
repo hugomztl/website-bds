@@ -7,7 +7,12 @@ import mongoose from 'mongoose';
 import { isValidObjectId } from 'mongoose';
 
 export const load = async ({ locals }) => {
-	const userId = (await locals.auth())?.user?.id ?? '';
+	const session = await locals.auth();
+	const userId = session?.user?.id ?? '';
+	const isAdmin = session?.user?.isAdmin ?? false;
+
+	const pendingClubsFilter = isAdmin ? {} : { owner: { _id: userId } };
+
 	return {
 		clubs: await Club.find()
 			.populate<{ owner: User }>('owner')
@@ -21,7 +26,7 @@ export const load = async ({ locals }) => {
 					return 0;
 				});
 			}),
-		pendingClubs: await PendingClub.find()
+		pendingClubs: await PendingClub.find(pendingClubsFilter)
 			.populate<{ owner: User }>('owner')
 			.lean()
 			.exec()
@@ -88,5 +93,20 @@ export const actions = {
 		}
 
 		await PendingClub.findByIdAndDelete(id);
+	},
+	cancelRequest: async ({ locals, request }) => {
+		const session = await locals.auth();
+
+		if (!session?.user) return fail(401);
+
+		const id = (await request.formData()).get('id');
+		if (!isValidObjectId(id)) return fail(400);
+
+		const club = await PendingClub.findById(id);
+		if (!club) return fail(404);
+
+		if (session.user.id !== club.owner?._id.toString()) return fail(403);
+
+		await club.deleteOne();
 	}
 };

@@ -33,11 +33,11 @@ export const actions = {
 	acceptClub: async ({ locals, request }) => {
 		const session = await locals.auth();
 
-		if (!session?.user?.isAdmin) {
+		if (!session?.user) {
 			return fail(401);
 		}
 
-		if (!session?.user?.isAdmin) {
+		if (!session.user.isAdmin) {
 			return fail(403);
 		}
 
@@ -74,11 +74,11 @@ export const actions = {
 	rejectClub: async ({ locals, request }) => {
 		const session = await locals.auth();
 
-		if (!session?.user?.isAdmin) {
+		if (!session?.user) {
 			return fail(401);
 		}
 
-		if (!session?.user?.isAdmin) {
+		if (!session.user.isAdmin) {
 			return fail(403);
 		}
 

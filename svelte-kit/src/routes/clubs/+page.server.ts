@@ -11,21 +11,26 @@ export const load = async ({ locals }) => {
 	const userId = session?.user?.id ?? '';
 	const isAdmin = session?.user?.isAdmin ?? false;
 
-	const pendingClubsFilter = isAdmin ? {} : { owner: { _id: userId } };
+	const clubs = await Club.find()
+		.populate<{ owner: User }>('owner')
+		.lean()
+		.exec()
+		.then((clubs) => clubs.map(recursiveStringifyId))
+		.then((clubs) => {
+			return clubs.sort((a, b) => {
+				if (a.owner?._id === userId) return -1;
+				if (b.owner?._id === userId) return 1;
+				return 0;
+			});
+		});
 
+	if (!session?.user) {
+		return { clubs };
+	}
+
+	const pendingClubsFilter = isAdmin ? {} : { owner: { _id: userId } };
 	return {
-		clubs: await Club.find()
-			.populate<{ owner: User }>('owner')
-			.lean()
-			.exec()
-			.then((clubs) => clubs.map(recursiveStringifyId))
-			.then((clubs) => {
-				return clubs.sort((a, b) => {
-					if (a.owner?._id === userId) return -1;
-					if (b.owner?._id === userId) return 1;
-					return 0;
-				});
-			}),
+		clubs: clubs,
 		pendingClubs: await PendingClub.find(pendingClubsFilter)
 			.populate<{ owner: User }>('owner')
 			.lean()

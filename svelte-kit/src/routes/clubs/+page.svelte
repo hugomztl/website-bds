@@ -13,12 +13,14 @@
 <main class="container m-auto">
 	<h1>Clubs:</h1>
 
-	<a href="/clubs/create">Créer un club</a>
+	{#if data.session?.user}
+		<a href="/clubs/create">Créer un club</a>
+	{/if}
 
 	{#if data.session?.user?.isAdmin}
 		<h2>Clubs en attente</h2>
 
-		{#if data.pendingClubs.length > 0}
+		{#if data.pendingClubs && data.pendingClubs.length > 0}
 			<Accordion>
 				<AccordionItem>
 					<svelte:fragment slot="lead"><Clock /></svelte:fragment>
@@ -55,7 +57,7 @@
 		{:else}
 			<p class="text-gray-500">Aucun club en attente pour le moment</p>
 		{/if}
-	{:else if data.pendingClubs.length > 0}
+	{:else if data.pendingClubs && data.pendingClubs.length > 0}
 		<h2>Mes clubs en attente</h2>
 
 		<Accordion>

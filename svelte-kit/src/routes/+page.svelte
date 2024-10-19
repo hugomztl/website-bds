@@ -1,6 +1,12 @@
-<script>
+<script lang="ts">
 	import { Volume2, VolumeX } from 'lucide-svelte';
 	import Marquee from './Marquee.svelte';
+	import { browser } from '$app/environment';
+	import Calendar from '@event-calendar/core';
+	import DayGrid from '@event-calendar/day-grid';
+	import TimeGrid from '@event-calendar/time-grid';
+	import List from '@event-calendar/list';
+	import '@event-calendar/core/index.css';
 	let isMuted = true;
 
 	// Ajout des variables manquantes
@@ -45,6 +51,28 @@
 		{ nom: "Caisse d'Épargne", logo: '/logos/caisse_epargne.png' }
 		// Ajoutez d'autres partenaires selon vos besoins
 	];
+
+	let plugins: Calendar.Plugin[] = [DayGrid, TimeGrid, List];
+	let options: Calendar.Options = {
+		view: 'dayGridMonth',
+		headerToolbar: {
+			start: 'prev,next today',
+			center: 'title',
+			end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+		},
+		firstDay: 1,
+		events: [
+			{
+				start: new Date(2024, 9, 17, 17, 30, 0),
+				end: new Date(2024, 9, 18, 17, 30, 0)
+			},
+			{
+				allDay: true,
+				start: new Date(2024, 9, 17),
+				end: new Date(2024, 9, 17, 0, 0, 1)
+			}
+		]
+	};
 </script>
 
 <main class="bg-surface-50-900-token flex min-h-screen flex-col">
@@ -93,6 +121,13 @@
 	<section class=" variant-soft py-16">
 		<div class="container mx-auto px-4">
 			<h2 class="h2 mb-12 text-center">ÉVÉNEMENTS À VENIR</h2>
+
+			<div>
+				<!-- Ne marche pas en SSR 😥 -->
+				{#if browser}
+					<Calendar {options} {plugins} />
+				{/if}
+			</div>
 
 			<div class="mb-6 flex items-center justify-center space-x-4">
 				<input

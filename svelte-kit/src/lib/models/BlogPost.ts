@@ -1,4 +1,4 @@
-import mongoose, { model, Schema } from 'mongoose';
+import mongoose, { model, Schema, type InferSchemaType } from 'mongoose';
 
 const BlogPostSchema = new Schema({
 	title: {
@@ -24,6 +24,8 @@ const BlogPostSchema = new Schema({
 if (process.env.NODE_ENV === 'development' && mongoose.models.BlogPost) {
 	delete mongoose.models.BlogPost;
 }
+
+export type BlogPostType = InferSchemaType<typeof BlogPostSchema> & { _id: mongoose.Types.ObjectId };
 
 const BlogPost = model('BlogPost', BlogPostSchema);
 

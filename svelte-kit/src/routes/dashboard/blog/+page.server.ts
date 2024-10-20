@@ -5,7 +5,6 @@ import { redirect } from '@sveltejs/kit';
 export const prerender = false;
 
 export const load = async ({}) => {
-	console.info('Getting posts!');
 	const posts = await BlogPost.find()
 		.exec()
 		.then((posts) => posts.map((post) => post.toObject({ flattenObjectIds: true })));

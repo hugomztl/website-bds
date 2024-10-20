@@ -64,13 +64,11 @@
 						<a href="/"><img src="/logo-bds.png" class="w-20" alt="BDS" /></a>
 					</button>
 					{#if session?.user?.isAdmin}
-						<button class="btn hover:variant-soft-primary variant-ghost-primary">
-							<a href="/dashboard">Dashboard</a>
-						</button>
+						<a class="btn hover:variant-soft-primary variant-ghost-primary" href="/dashboard">
+							Dashboard
+						</a>
 					{/if}
-					<button class="btn hover:variant-soft-primary variant-ghost-primary">
-						<a href="/blog">Blog</a>
-					</button>
+					<a class="btn hover:variant-soft-primary variant-ghost-primary" href="/blog">Blog</a>
 				</div>
 			</svelte:fragment>
 

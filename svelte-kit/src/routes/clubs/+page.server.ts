@@ -1,7 +1,7 @@
 import { recursiveStringifyId } from '$lib/database.js';
 import Club from '$lib/models/Club';
 import PendingClub from '$lib/models/PendingClub.js';
-import type { User } from '@auth/sveltekit/providers/notion';
+import type { UserType } from '$lib/models/User.js';
 import { fail } from '@sveltejs/kit';
 import mongoose from 'mongoose';
 import { isValidObjectId } from 'mongoose';
@@ -12,14 +12,14 @@ export const load = async ({ locals }) => {
 	const isAdmin = session?.user?.isAdmin ?? false;
 
 	const clubs = await Club.find()
-		.populate<{ owner: User }>('owner')
+		.populate<{ owner: UserType }>('owner')
 		.lean()
 		.exec()
 		.then((clubs) => clubs.map(recursiveStringifyId))
 		.then((clubs) => {
 			return clubs.sort((a, b) => {
-				if (a.owner?._id === userId) return -1;
-				if (b.owner?._id === userId) return 1;
+				if (a.owner?._id.toString() === userId) return -1;
+				if (b.owner?._id.toString() === userId) return 1;
 				return 0;
 			});
 		});
@@ -32,7 +32,7 @@ export const load = async ({ locals }) => {
 	return {
 		clubs: clubs,
 		pendingClubs: await PendingClub.find(pendingClubsFilter)
-			.populate<{ owner: User }>('owner')
+			.populate<{ owner: UserType }>('owner')
 			.lean()
 			.exec()
 			.then((clubs) => clubs.map(recursiveStringifyId))

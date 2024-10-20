@@ -41,13 +41,15 @@
 
 		<ul class="list">
 			{#each events as event}
-				<li>
-					<h3>{event.title}</h3>
-					<p>{event.description}</p>
-					<p>Date: {event.date}</p>
-					<p>Prix: {event.price}</p>
-					<p>Tag: {event.tag}</p>
-				</li>
+				<a href="/dashboard/events/{event._id}">
+					<li>
+						<h3>{event.title}</h3>
+						<p>{event.description}</p>
+						<p>Date: {event.date}</p>
+						<p>Prix: {event.price}</p>
+						<p>Tag: {event.tag}</p>
+					</li>
+				</a>
 			{:else}
 				Aucun évènement!{/each}
 		</ul>

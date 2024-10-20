@@ -35,5 +35,33 @@ export const actions = {
 		}
 
 		await Event.findByIdAndDelete(id);
+	},
+	async updateEvent({ request, locals }) {
+		const formData = await request.formData();
+		const title = formData.get('title');
+		const description = formData.get('description');
+		const date = formData.get('date');
+		const price = formData.get('price');
+		const tag = formData.get('tag');
+		const id = formData.get('id');
+
+		const session = await locals.auth();
+		if (!isAdmin(session) || !session?.user?.id) {
+			return fail(403);
+		}
+
+		// TODO: Ajouter vérification avec SuperForms
+
+		const updatedPost = await Event.findByIdAndUpdate(
+			id,
+			{ title, description, date, price, tag },
+			{ new: true, runValidators: true }
+		);
+
+		if (!updatedPost) {
+			return fail(404);
+		}
+
+		return redirect(303, '/dashboard');
 	}
 };

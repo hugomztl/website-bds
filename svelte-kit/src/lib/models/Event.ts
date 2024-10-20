@@ -1,17 +1,7 @@
 import { zodSchema } from '@zodyac/zod-mongoose';
 import mongoose, { model } from 'mongoose';
-import z from 'zod';
-
-// TODO: Remplir les tags
-const tags = ['sport'] as const;
-
-export const zEvent = z.object({
-	title: z.string(),
-	description: z.string(),
-	date: z.date(),
-	price: z.number().int().min(0),
-	tag: z.enum(tags).optional()
-});
+import zEvent from './schemas/zEvent';
+import { z } from 'zod';
 
 const EventSchema = zodSchema(zEvent);
 

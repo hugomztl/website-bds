@@ -34,6 +34,11 @@
 		class="rounded-container-token bg-surface-400-500-token text-on-surface-token relative col-span-1 row-span-1 m-4 p-4 shadow-md"
 	>
 		<h2 class="h2">Évènements</h2>
+
+		<a href="/dashboard/events/create" class="btn variant-filled-primary">
+			Créer un nouvel évènement
+		</a>
+
 		<ul class="list">
 			{#each events as event}
 				<li>

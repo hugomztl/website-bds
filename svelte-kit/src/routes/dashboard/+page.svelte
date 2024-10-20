@@ -79,7 +79,7 @@
 						</p>
 					</div>
 					<div class="rounded-container-token btn-group variant-filled flex w-full !rounded-t-none">
-						<a href="dashboard/blog/{blogPost._id}/edit" class="btn flex-grow">Modifier</a>
+						<a href="dashboard/blog/{blogPost._id}" class="btn flex-grow">Modifier</a>
 						<button class="btn flex-grow" on:click={() => deletePost(blogPost)}>Supprimer</button>
 					</div>
 				</div>

@@ -1,5 +1,5 @@
 import { zodSchema } from '@zodyac/zod-mongoose';
-import mongoose, { model } from 'mongoose';
+import mongoose, { model, type InferSchemaType } from 'mongoose';
 import zEvent from './schemas/zEvent';
 import { z } from 'zod';
 
@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'development' && mongoose.models.Event) {
 	delete mongoose.models.Event;
 }
 
-export type EventType = mongoose.Document & z.infer<typeof zEvent>;
+export type EventType = InferSchemaType<typeof EventSchema> & { _id: mongoose.Types.ObjectId };
 
 const Event = model('Event', EventSchema);
 

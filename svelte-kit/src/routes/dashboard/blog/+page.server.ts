@@ -4,14 +4,6 @@ import { redirect } from '@sveltejs/kit';
 
 export const prerender = false;
 
-export const load = async ({}) => {
-	const posts = await BlogPost.find()
-		.exec()
-		.then((posts) => posts.map((post) => post.toObject({ flattenObjectIds: true })));
-
-	return { posts };
-};
-
 export const actions = {
 	async createPost({ request, locals }) {
 		const formData = await request.formData();

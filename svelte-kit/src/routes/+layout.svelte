@@ -59,9 +59,19 @@
 	<svelte:fragment slot="header">
 		<AppBar class="shadow-xl">
 			<svelte:fragment slot="lead">
-				<button class="btn hover:variant-soft-primary ml-5 p-0">
-					<a href="/"><img src="/logo-bds.png" class="w-20" alt="BDS" /></a>
-				</button>
+				<div class="flex items-center gap-4">
+					<button class="btn hover:variant-soft-primary ml-5 p-0">
+						<a href="/"><img src="/logo-bds.png" class="w-20" alt="BDS" /></a>
+					</button>
+					{#if session?.user?.isAdmin}
+						<button class="btn hover:variant-soft-primary variant-ghost-primary">
+							<a href="/dashboard">Dashboard</a>
+						</button>
+					{/if}
+					<button class="btn hover:variant-soft-primary variant-ghost-primary">
+						<a href="/blog">Blog</a>
+					</button>
+				</div>
 			</svelte:fragment>
 
 			<svelte:fragment slot="trail">

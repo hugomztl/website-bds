@@ -12,7 +12,8 @@
 
 	const { errors, enhance, form } = superForm;
 
-	const proxyDate = dateProxy(superForm, 'date', { format: 'date', taint: false });
+	const proxyStartDate = dateProxy(superForm, 'startDate', { format: 'date', taint: false });
+	const proxyEndDate = dateProxy(superForm, 'endDate', { format: 'date', taint: false });
 
 	function getTommorrow(): string {
 		const date = new Date();
@@ -55,17 +56,31 @@
 		{/if}
 	</div>
 	<div>
-		<label for="date">Date:</label>
+		<label for="startDate">Date de début:</label>
 		<input
 			class="input"
 			type="date"
-			name="date"
-			aria-invalid={$errors.date ? 'true' : undefined}
-			bind:value={$proxyDate}
+			name="startDate"
+			aria-invalid={$errors.startDate ? 'true' : undefined}
+			bind:value={$proxyStartDate}
 			min={getTommorrow()}
 		/>
-		{#if $errors.date}
-			<p class="variant-filled-error">{$errors.date}</p>
+		{#if $errors.startDate}
+			<p class="variant-filled-error">{$errors.startDate}</p>
+		{/if}
+	</div>
+	<div>
+		<label for="endDate">Date de fin:</label>
+		<input
+			class="input"
+			type="date"
+			name="endDate"
+			aria-invalid={$errors.endDate ? 'true' : undefined}
+			bind:value={$proxyEndDate}
+			min={getTommorrow()}
+		/>
+		{#if $errors.endDate}
+			<p class="variant-filled-error">{$errors.endDate}</p>
 		{/if}
 	</div>
 	<div>

@@ -22,7 +22,7 @@
 
 	// Fonction pour filtrer les événements
 	$: evenementsFiltres = evenements.filter((evt) => {
-		const dateMatch = !dateFilter || evt.date.toString() === dateFilter;
+		const dateMatch = !dateFilter || evt.startDate.toString() === dateFilter;
 		const prixMatch =
 			!prixFilter ||
 			(prixFilter === 'gratuit' && evt.price === 0) ||
@@ -49,8 +49,8 @@
 		},
 		firstDay: 1,
 		events: evenements.map((evt) => ({
-			start: evt.date,
-			end: evt.date,
+			start: evt.startDate,
+			end: evt.endDate,
 			title: evt.title
 		}))
 	} satisfies Calendar.Options;
@@ -136,7 +136,7 @@
 						<div>
 							<h3 class="h3 mb-2">{evenement.title}</h3>
 							<p class="mb-2">{evenement.description}</p>
-							<p class="text-sm">Date : {evenement.date}</p>
+							<p class="text-sm">Date : {evenement.startDate}</p>
 							<p class="text-sm">
 								Prix : {evenement.price === 0 ? 'Gratuit' : `${evenement.price}€`}
 							</p>

@@ -5,8 +5,8 @@
 	export let data;
 
 	$: posts = data.posts;
-	$: events = data.events.filter((event) => event.date >= new Date());
-	$: pastEvents = data.events.filter((event) => event.date < new Date());
+	$: events = data.events.filter((event) => event.startDate >= new Date());
+	$: pastEvents = data.events.filter((event) => event.startDate < new Date());
 
 	function formatDate(d: Date) {
 		const h = String(d.getHours()).padStart(2, '0'),
@@ -45,7 +45,7 @@
 					<li>
 						<h3>{event.title}</h3>
 						<p>{event.description}</p>
-						<p>Date: {event.date}</p>
+						<p>Date: {event.startDate}</p>
 						<p>Prix: {event.price}</p>
 						<p>Tag: {event.tag}</p>
 					</li>

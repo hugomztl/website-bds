@@ -19,8 +19,8 @@ export const actions = {
 			return fail(400, { form });
 		}
 
-		const { title, tag, date, description, price } = form.data;
-		const event = new Event({ title, tag, date, description, price });
+		const { title, tag, startDate, endDate, description, price } = form.data;
+		const event = new Event({ title, tag, startDate, endDate, description, price });
 		await event.save();
 
 		return redirect(303, '/dashboard');

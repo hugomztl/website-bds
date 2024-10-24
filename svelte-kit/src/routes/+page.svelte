@@ -7,6 +7,9 @@
 	import TimeGrid from '@event-calendar/time-grid';
 	import List from '@event-calendar/list';
 	import '@event-calendar/core/index.css';
+
+	export let data;
+
 	let isMuted = true;
 
 	// Ajout des variables manquantes
@@ -15,31 +18,15 @@
 	let tagFilter = '';
 
 	// Exemple de données d'événements (à remplacer par vos vraies données)
-	let evenements = [
-		{
-			titre: 'Tournoi de football',
-			description: 'Grand tournoi inter-écoles',
-			date: '2023-06-15',
-			prix: 5,
-			tag: 'sport'
-		},
-		{
-			titre: "Soirée d'intégration",
-			description: 'Venez rencontrer vos camarades',
-			date: '2023-09-01',
-			prix: 0,
-			tag: 'social'
-		}
-		// Ajoutez d'autres événements ici
-	];
+	let evenements = data.events;
 
 	// Fonction pour filtrer les événements
 	$: evenementsFiltres = evenements.filter((evt) => {
-		const dateMatch = !dateFilter || evt.date === dateFilter;
+		const dateMatch = !dateFilter || evt.date.toString() === dateFilter;
 		const prixMatch =
 			!prixFilter ||
-			(prixFilter === 'gratuit' && evt.prix === 0) ||
-			(prixFilter === 'payant' && evt.prix > 0);
+			(prixFilter === 'gratuit' && evt.price === 0) ||
+			(prixFilter === 'payant' && evt.price > 0);
 		const tagMatch = !tagFilter || evt.tag === tagFilter;
 		return dateMatch && prixMatch && tagMatch;
 	});
@@ -53,7 +40,7 @@
 	];
 
 	let plugins: Calendar.Plugin[] = [DayGrid, TimeGrid, List];
-	let options: Calendar.Options = {
+	$: options = {
 		view: 'dayGridMonth',
 		headerToolbar: {
 			start: 'prev,next today',
@@ -61,18 +48,12 @@
 			end: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
 		},
 		firstDay: 1,
-		events: [
-			{
-				start: new Date(2024, 9, 17, 17, 30, 0),
-				end: new Date(2024, 9, 18, 17, 30, 0)
-			},
-			{
-				allDay: true,
-				start: new Date(2024, 9, 17),
-				end: new Date(2024, 9, 17, 0, 0, 1)
-			}
-		]
-	};
+		events: evenements.map((evt) => ({
+			start: evt.date,
+			end: evt.date,
+			title: evt.title
+		}))
+	} satisfies Calendar.Options;
 </script>
 
 <main class="bg-surface-50-900-token flex min-h-screen flex-col">
@@ -153,11 +134,11 @@
 				{#each evenementsFiltres as evenement}
 					<div class="card variant-ringed-surface flex items-center justify-between p-6">
 						<div>
-							<h3 class="h3 mb-2">{evenement.titre}</h3>
+							<h3 class="h3 mb-2">{evenement.title}</h3>
 							<p class="mb-2">{evenement.description}</p>
 							<p class="text-sm">Date : {evenement.date}</p>
 							<p class="text-sm">
-								Prix : {evenement.prix === 0 ? 'Gratuit' : `${evenement.prix}€`}
+								Prix : {evenement.price === 0 ? 'Gratuit' : `${evenement.price}€`}
 							</p>
 							<p class="text-sm">Tag : {evenement.tag}</p>
 						</div>

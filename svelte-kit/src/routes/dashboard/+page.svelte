@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
 	import type { BlogPostType } from '$lib/models/BlogPost.js';
-	import { Trash } from 'lucide-svelte';
+	import Event from './Event.svelte';
 
 	export let data;
 
@@ -43,29 +42,18 @@
 
 		<ul class="list">
 			{#each events as event}
-				<li>
-					<a class="flex" href="/dashboard/events/{event._id}">
-						<h3>{event.title}</h3>
-						<p>{event.description}</p>
-						<p>Date: {event.startDate}</p>
-						<p>Prix: {event.price}</p>
-						<p>Tag: {event.tag}</p>
-					</a>
-					<form
-						action="/dashboard/events/?/deleteEvent"
-						method="POST"
-						use:enhance={({ cancel }) => {
-							if (!confirm('Voulez-vous vraiment supprimer cet évènement ?')) cancel();
-						}}
-					>
-						<input type="hidden" name="id" value={event._id} />
-						<button>
-							<Trash />
-						</button>
-					</form>
-				</li>
+				<Event {event}/>
 			{:else}
 				Aucun évènement!{/each}
+		</ul>
+
+		<h2 class="h2">Évènements passés</h2>
+
+		<ul class="list">
+			{#each pastEvents as event}
+				<Event {event}/>
+			{:else}
+				Aucun évènement passé!{/each}
 		</ul>
 	</div>
 

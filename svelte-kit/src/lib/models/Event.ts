@@ -1,7 +1,6 @@
 import { zodSchema } from '@zodyac/zod-mongoose';
 import mongoose, { model, type InferSchemaType } from 'mongoose';
 import zEvent from './schemas/zEvent';
-import { z } from 'zod';
 
 const EventSchema = zodSchema(zEvent);
 

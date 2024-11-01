@@ -1,27 +1,54 @@
 <script lang="ts">
 	import type { EventType } from '$lib/models/Event';
 	import { tags } from '$lib/models/schemas/zEvent';
-	import { dateProxy, type SuperForm } from 'sveltekit-superforms';
+	import { DateInput } from 'date-picker-svelte';
+	import type { Types } from 'mongoose';
+	import SuperDebug, { type SuperForm } from 'sveltekit-superforms';
 
 	export let title: string;
-	export let id = undefined;
+	export let id: Types.ObjectId | undefined = undefined;
 	export let superForm: SuperForm<Omit<EventType, '_id'>, unknown>;
 
 	$: action =
-		id !== undefined ? '/dashboard/events/?/updateEvent' : '/dashboard/events/?/createEvent';
+		id !== undefined ? `/dashboard/events/${id}/?/updateEvent` : '/dashboard/events/?/createEvent';
 
 	const { errors, enhance, form } = superForm;
 
-	const proxyStartDate = dateProxy(superForm, 'startDate', { format: 'date', taint: false });
-	const proxyEndDate = dateProxy(superForm, 'endDate', { format: 'date', taint: false });
-
-	function getTommorrow(): string {
-		const date = new Date();
-		date.setDate(date.getDate() + 1);
-
-		return date.toISOString().slice(0, 10);
-	}
+	const locale = {
+		months: [
+			'janvier',
+			'fevrier',
+			'mars',
+			'avril',
+			'mai',
+			'juin',
+			'juillet',
+			'août',
+			'septembre',
+			'octobre',
+			'novembre',
+			'decembre'
+		],
+		shortMonths: [
+			'jan',
+			'fev',
+			'mar',
+			'avr',
+			'mai',
+			'juin',
+			'juil',
+			'aou',
+			'sep',
+			'oct',
+			'nov',
+			'dec'
+		],
+		weekdays: ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim'],
+		weekStartsOn: 0
+	};
 </script>
+
+<SuperDebug data={$form} />
 
 <form method="POST" {action} use:enhance>
 	<input type="hidden" name="id" value={id} />
@@ -55,33 +82,37 @@
 			<p class="variant-filled-error">{$errors.tag}</p>
 		{/if}
 	</div>
-	<div>
-		<label for="startDate">Date de début:</label>
-		<input
-			class="input"
-			type="date"
-			name="startDate"
-			aria-invalid={$errors.startDate ? 'true' : undefined}
-			bind:value={$proxyStartDate}
-			min={getTommorrow()}
-		/>
-		{#if $errors.startDate}
-			<p class="variant-filled-error">{$errors.startDate}</p>
-		{/if}
-	</div>
-	<div>
-		<label for="endDate">Date de fin:</label>
-		<input
-			class="input"
-			type="date"
-			name="endDate"
-			aria-invalid={$errors.endDate ? 'true' : undefined}
-			bind:value={$proxyEndDate}
-			min={getTommorrow()}
-		/>
-		{#if $errors.endDate}
-			<p class="variant-filled-error">{$errors.endDate}</p>
-		{/if}
+	<div class="flex">
+		<div>
+			<label for="startDate">Date de début:</label>
+			<DateInput
+				required
+				bind:value={$form.startDate}
+				timePrecision="minute"
+				format="yyyy-MM-dd HH:mm"
+				placeholder={'2024-10-25 12:00'}
+				{locale}
+			/>
+			{#if $errors.startDate}
+				<p class="variant-filled-error">{$errors.startDate}</p>
+			{/if}
+		</div>
+		<div>
+			<label for="endDate">Date de fin:</label>
+			<DateInput
+				required
+				valid
+				min={$form.startDate}
+				bind:value={$form.endDate}
+				timePrecision="minute"
+				format="yyyy-MM-dd HH:mm"
+				placeholder={'2024-10-25 12:00'}
+				{locale}
+			/>
+			{#if $errors.endDate}
+				<p class="variant-filled-error">{$errors.endDate}</p>
+			{/if}
+		</div>
 	</div>
 	<div>
 		<label for="description">Description:</label>

@@ -26,8 +26,6 @@ export const GET: RequestHandler = async ({ url }) => {
 	maxDate.setDate(date.getDate() + weekRange * 7);
 	maxDate.setDate(maxDate.getDate() - maxDate.getDay() + 7);
 
-	console.info(minDate, maxDate);
-
 	try {
 		const users = (
 			await Event.find({

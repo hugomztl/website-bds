@@ -2,6 +2,7 @@ import { isAdmin } from '$lib/authutil.js';
 import Event from '$lib/models/Event';
 import zEvent from '$lib/models/schemas/zEvent.js';
 import { fail, redirect } from '@sveltejs/kit';
+import { isValidObjectId } from 'mongoose';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
@@ -36,6 +37,10 @@ export const actions = {
 		const session = await locals.auth();
 		if (!isAdmin(session) || !session?.user?.id) {
 			return fail(403);
+		}
+
+		if (!isValidObjectId(id)) {
+			return fail(400);
 		}
 
 		await Event.findByIdAndDelete(id);

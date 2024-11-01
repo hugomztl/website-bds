@@ -11,11 +11,9 @@
 		validators: zod(zEvent),
 		validationMethod: 'onblur',
 		autoFocusOnError: false,
-		scrollToError: false
+		scrollToError: false,
+		dataType: 'json'
 	});
-
-	const { capture, restore } = _superForm;
-	export const snapshot = { capture, restore };
 </script>
 
 <div class="container mx-auto">

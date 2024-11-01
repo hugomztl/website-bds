@@ -11,17 +11,15 @@
 		validators: zod(zEvent),
 		validationMethod: 'onblur',
 		autoFocusOnError: false,
-		scrollToError: false
+		scrollToError: false,
+		dataType: 'json'
 	});
-
-	const { capture, restore } = _superForm;
-	export const snapshot = { capture, restore };
 </script>
 
 <h1>Modifier l'évènement</h1>
 
 <div class="container mx-auto">
-	<EventForm superForm={_superForm} title="Modifier un évènement" id={data.event._id}>
+	<EventForm superForm={_superForm} title="Modifier un évènement" id={data.event?._id}>
 		<button slot="button" type="submit" class="btn variant-filled-success variant-outline-primary">
 			Modifier l'évènement
 		</button>

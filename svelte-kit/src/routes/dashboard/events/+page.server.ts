@@ -39,5 +39,7 @@ export const actions = {
 		}
 
 		await Event.findByIdAndDelete(id);
+
+		return redirect(303, '/dashboard');
 	}
 };

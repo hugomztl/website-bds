@@ -27,16 +27,16 @@ export const GET: RequestHandler = async ({ url }) => {
 	maxDate.setDate(maxDate.getDate() - maxDate.getDay() + 7);
 
 	try {
-		const users = (
+		const events = (
 			await Event.find({
-				date: {
+				startDate: {
 					$gte: minDate,
 					$lte: maxDate
 				}
 			}).exec()
-		).map((user) => user.toObject({ flattenObjectIds: true }));
+		).map((event) => event.toObject({ flattenObjectIds: true }));
 
-		return json(users);
+		return json(events);
 	} catch (_) {}
 
 	return json([]);

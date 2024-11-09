@@ -1,4 +1,9 @@
-import { HELLOASSO_ID, HELLOASSO_SECRET } from '$env/static/private';
+import {
+	HELLOASSO_ID,
+	HELLOASSO_SECRET,
+	HELLOASSO_API_CHECKOUT_URL,
+	HELLOASSO_API_URL_TOKEN
+} from '$env/static/private';
 import PaymentIntent from '$lib/models/PaymentIntent';
 import PendingLicense, { zPendingLicense } from '$lib/models/PendingLicense.js';
 import User from '$lib/models/User.js';
@@ -7,11 +12,6 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms';
 
 export const prerender = false;
-
-// FIXME: Changer l'url pour ne plus être en sandbox
-const helloassoApiCheckouUrl =
-	'https://api.helloasso-sandbox.com/v5/organizations/test-bds/checkout-intents';
-const helloAssoApiUrlToken = 'https://api.helloasso-sandbox.com/oauth2/token/';
 
 export const load = async ({ locals }) => {
 	const session = await locals.auth();
@@ -73,7 +73,7 @@ export const actions = {
 
 		const { access_token } = await obtenirToken();
 
-		const response = fetch(helloassoApiCheckouUrl, {
+		const response = fetch(HELLOASSO_API_CHECKOUT_URL, {
 			body: JSON.stringify(paiementData),
 			method: 'POST',
 			headers: {
@@ -99,7 +99,7 @@ export const actions = {
 
 // FIXME: Enregistrer les tokens et utiliser les refresh tokens
 async function obtenirToken() {
-	const response = await fetch(`${helloAssoApiUrlToken}`, {
+	const response = await fetch(`${HELLOASSO_API_URL_TOKEN}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded'

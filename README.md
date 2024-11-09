@@ -9,10 +9,16 @@ architecture micro-services
   ![helloasso](https://files.readme.io/09e4b42-image.png)
 - notifications
 - API > ExpressJs
--
 
-Pour lancer le projet:
- 1. Copier le fichier `.env.example` et le renmmer en `.env` dans svelte-kit et renseigner les variables d'environnement
- 2. Lancer le docker compose avec la commande:
-    -  `docker compose up -d --build` pour le **dev**
-    -  `docker compose -f compose.yaml -f compose.prod.yaml up -d --build` pour le **prod**
+Pour lancer le projet en **dev**:
+ 1. A la racine, démarrer la base de données `docker compose up database -d`
+ 2. Dans le dossier **svelte-kit**, copier le fichier ***.env.example*** et le renommer en ***.env*** , puis renseigner les variables d'environnement
+    - ⚠️ Écrire *localhost* comme adresse de la BDD
+ 3. Installer les dépendances `npm install`
+ 4. Générer le secret `npx auth secret`
+ 5. Lancer le serveur de dev `npm run dev`
+
+Pour lancer le projet en **prod**:
+ 1. Dans le dossier **svelte-kit**, copier le fichier ***.env.example*** et le renommer en ***.env*** , puis renseigner les variables d'environnement
+    - ⚠️ Écrire *database* comme adresse de la BDD
+ 2. Démarrer les conteneurs `docker compose -f compose.yaml -f compose.prod.yaml up -d --build`

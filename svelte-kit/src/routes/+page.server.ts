@@ -9,7 +9,7 @@ export async function load({ fetch }) {
 				'/api/event?' +
 					new URLSearchParams({
 						date: new Date().toISOString(),
-						range: 10 + ''
+						weekRange: 10 + ''
 					})
 			)
 		).json();

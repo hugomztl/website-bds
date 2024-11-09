@@ -21,4 +21,5 @@ Pour lancer le projet en **dev**:
 Pour lancer le projet en **prod**:
  1. Dans le dossier **svelte-kit**, copier le fichier ***.env.example*** et le renommer en ***.env*** , puis renseigner les variables d'environnement
     - ⚠️ Écrire *database* comme adresse de la BDD
- 2. Démarrer les conteneurs `docker compose -f compose.yaml -f compose.prod.yaml up -d --build`
+ 2. Générer le secret `npx auth secret`
+ 3. Démarrer les conteneurs dans le dossier racine `docker compose -f compose.yaml -f compose.prod.yaml up -d --build`

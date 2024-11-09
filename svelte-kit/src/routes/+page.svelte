@@ -7,8 +7,11 @@
 	import TimeGrid from '@event-calendar/time-grid';
 	import List from '@event-calendar/list';
 	import '@event-calendar/core/index.css';
+	import { getModalStore } from '@skeletonlabs/skeleton';
 
 	export let data;
+
+	let modalStore = getModalStore();
 
 	let isMuted = true;
 
@@ -49,10 +52,23 @@
 		},
 		firstDay: 1,
 		events: evenements.map((evt) => ({
+			id: evt._id.toString(),
 			start: evt.startDate,
 			end: evt.endDate,
 			title: evt.title
-		}))
+		})),
+		eventClick(info) {
+			const event = evenements.find((evt) => evt._id.toString() === info.event.id);
+
+			if (!event) return;
+
+			modalStore.trigger({
+				title: event.title,
+				body: event.description,
+				type: 'alert',
+				buttonTextCancel: 'Fermer'
+			});
+		}
 	} satisfies Calendar.Options;
 </script>
 

@@ -1,26 +1,54 @@
 <script lang="ts">
 	import type { EventType } from '$lib/models/Event';
 	import { tags } from '$lib/models/schemas/zEvent';
-	import { dateProxy, type SuperForm } from 'sveltekit-superforms';
+	import { DateInput } from 'date-picker-svelte';
+	import type { Types } from 'mongoose';
+	import SuperDebug, { type SuperForm } from 'sveltekit-superforms';
 
 	export let title: string;
-	export let id = undefined;
+	export let id: Types.ObjectId | undefined = undefined;
 	export let superForm: SuperForm<Omit<EventType, '_id'>, unknown>;
 
 	$: action =
-		id !== undefined ? '/dashboard/events/?/updateEvent' : '/dashboard/events/?/createEvent';
+		id !== undefined ? `/dashboard/events/${id}/?/updateEvent` : '/dashboard/events/?/createEvent';
 
 	const { errors, enhance, form } = superForm;
 
-	const proxyDate = dateProxy(superForm, 'date', { format: 'date', taint: false });
-
-	function getTommorrow(): string {
-		const date = new Date();
-		date.setDate(date.getDate() + 1);
-
-		return date.toISOString().slice(0, 10);
-	}
+	const locale = {
+		months: [
+			'janvier',
+			'fevrier',
+			'mars',
+			'avril',
+			'mai',
+			'juin',
+			'juillet',
+			'août',
+			'septembre',
+			'octobre',
+			'novembre',
+			'decembre'
+		],
+		shortMonths: [
+			'jan',
+			'fev',
+			'mar',
+			'avr',
+			'mai',
+			'juin',
+			'juil',
+			'aou',
+			'sep',
+			'oct',
+			'nov',
+			'dec'
+		],
+		weekdays: ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim'],
+		weekStartsOn: 0
+	};
 </script>
+
+<SuperDebug data={$form} />
 
 <form method="POST" {action} use:enhance>
 	<input type="hidden" name="id" value={id} />
@@ -54,19 +82,37 @@
 			<p class="variant-filled-error">{$errors.tag}</p>
 		{/if}
 	</div>
-	<div>
-		<label for="date">Date:</label>
-		<input
-			class="input"
-			type="date"
-			name="date"
-			aria-invalid={$errors.date ? 'true' : undefined}
-			bind:value={$proxyDate}
-			min={getTommorrow()}
-		/>
-		{#if $errors.date}
-			<p class="variant-filled-error">{$errors.date}</p>
-		{/if}
+	<div class="flex">
+		<div>
+			<label for="startDate">Date de début:</label>
+			<DateInput
+				required
+				bind:value={$form.startDate}
+				timePrecision="minute"
+				format="yyyy-MM-dd HH:mm"
+				placeholder={'2024-10-25 12:00'}
+				{locale}
+			/>
+			{#if $errors.startDate}
+				<p class="variant-filled-error">{$errors.startDate}</p>
+			{/if}
+		</div>
+		<div>
+			<label for="endDate">Date de fin:</label>
+			<DateInput
+				required
+				valid
+				min={$form.startDate ?? undefined}
+				bind:value={$form.endDate}
+				timePrecision="minute"
+				format="yyyy-MM-dd HH:mm"
+				placeholder={'2024-10-25 12:00'}
+				{locale}
+			/>
+			{#if $errors.endDate}
+				<p class="variant-filled-error">{$errors.endDate}</p>
+			{/if}
+		</div>
 	</div>
 	<div>
 		<label for="description">Description:</label>

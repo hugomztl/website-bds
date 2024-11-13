@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
 	import type { BlogPostType } from '$lib/models/BlogPost.js';
+	import Event from './Event.svelte';
 
 	export let data;
 
 	$: posts = data.posts;
-	$: events = data.events.filter((event) => event.date >= new Date());
-	$: pastEvents = data.events.filter((event) => event.date < new Date());
+	$: events = data.events.filter((event) => event.startDate >= new Date());
+	$: pastEvents = data.events.filter((event) => event.startDate < new Date());
 
 	function formatDate(d: Date) {
 		const h = String(d.getHours()).padStart(2, '0'),
@@ -41,17 +42,18 @@
 
 		<ul class="list">
 			{#each events as event}
-				<a href="/dashboard/events/{event._id}">
-					<li>
-						<h3>{event.title}</h3>
-						<p>{event.description}</p>
-						<p>Date: {event.date}</p>
-						<p>Prix: {event.price}</p>
-						<p>Tag: {event.tag}</p>
-					</li>
-				</a>
+				<Event {event}/>
 			{:else}
 				Aucun évènement!{/each}
+		</ul>
+
+		<h2 class="h2">Évènements passés</h2>
+
+		<ul class="list">
+			{#each pastEvents as event}
+				<Event {event}/>
+			{:else}
+				Aucun évènement passé!{/each}
 		</ul>
 	</div>
 

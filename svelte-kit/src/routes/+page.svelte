@@ -68,6 +68,22 @@
 				type: 'alert',
 				buttonTextCancel: 'Fermer'
 			});
+		},
+		buttonText: {
+			close: 'Fermer',
+			dayGridMonth: 'mois',
+			listDay: 'liste',
+			listMonth: 'liste',
+			listWeek: 'liste',
+			listYear: 'liste',
+			resourceTimeGridDay: 'ressources',
+			resourceTimeGridWeek: 'ressources',
+			resourceTimelineDay: 'timeline',
+			resourceTimelineMonth: 'timeline',
+			resourceTimelineWeek: 'timeline',
+			timeGridDay: 'jour',
+			timeGridWeek: 'semaine',
+			today: "aujourd'hui"
 		}
 	} satisfies Calendar.Options;
 </script>

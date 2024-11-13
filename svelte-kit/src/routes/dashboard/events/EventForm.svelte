@@ -102,7 +102,7 @@
 			<DateInput
 				required
 				valid
-				min={$form.startDate}
+				min={$form.startDate ?? undefined}
 				bind:value={$form.endDate}
 				timePrecision="minute"
 				format="yyyy-MM-dd HH:mm"

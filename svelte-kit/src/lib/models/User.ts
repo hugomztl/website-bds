@@ -1,3 +1,4 @@
+import { promos, sports } from '$lib/enums';
 import mongoose, { model, Schema, type InferSchemaType } from 'mongoose';
 
 const UserSchema = new Schema({
@@ -28,7 +29,7 @@ const UserSchema = new Schema({
 	// FIXME: Mongoose ne valide pas les enums
 	promo: {
 		type: String,
-		enum: ['A1', 'A2', 'A3', 'A4', 'A5']
+		enum: promos
 	},
 	admin: {
 		type: Boolean,
@@ -40,16 +41,7 @@ const UserSchema = new Schema({
 		{
 			type: String,
 			// FIXME: Changer les sports plus tard
-			enum: [
-				'football',
-				'basketball',
-				'tennis',
-				'natation',
-				'athlétisme',
-				'volleyball',
-				'rugby',
-				'autre'
-			]
+			enum: sports
 		}
 	],
 	dateInscription: {

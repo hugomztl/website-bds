@@ -1,9 +1,13 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import { promos, sports } from '$lib/enums';
+	import { superForm } from 'sveltekit-superforms';
 
 	export let data;
-	const user = data.user;
+
+	const _superForm = superForm(data.form);
+
+	const { form, enhance } = _superForm;
 </script>
 
 {#if $page.data.error}
@@ -13,26 +17,30 @@
 <form method="POST" action="?/editProfile" use:enhance>
 	<div>
 		<label for="fullName">Nom complet:</label>
-		<input type="text" id="fullName" name="fullName" value={user.fullName} required />
+		<input type="text" id="fullName" name="fullName" bind:value={$form.fullName} required />
 	</div>
 
 	<div>
 		<label for="promo">Promo:</label>
-		<select id="promo" name="promo" value={user.promo}>
+		<select id="promo" name="promo" bind:value={$form.promo}>
 			<option value="">Sélectionner une promo</option>
-			<option value="A1">A1</option>
-			<option value="A2">A2</option>
-			<option value="A3">A3</option>
-			<option value="A4">A4</option>
-			<option value="A5">A5</option>
+			{#each promos as promo}
+				<option value={promo}>{promo}</option>
+			{/each}
 		</select>
 	</div>
 
 	<div>
-		<label>Sports:</label>
-		{#each ['football', 'basketball', 'tennis', 'natation', 'athlétisme', 'volleyball', 'rugby', 'autre'] as sport}
+		<p>Sports:</p>
+		{#each sports as sport}
 			<label>
-				<input type="checkbox" name="sports" value={sport} checked={user.sports?.includes(sport)} />
+				<input
+					type="checkbox"
+					name="sports"
+					value={sport}
+					bind:group={$form.sports}
+					checked={$form.sports?.includes(sport)}
+				/>
 				{sport}
 			</label>
 		{/each}
@@ -40,7 +48,7 @@
 
 	<div>
 		<label for="discord">Discord:</label>
-		<input type="text" id="discord" name="discord" value={user.discord || ''} />
+		<input type="text" id="discord" name="discord" bind:value={$form.discord} />
 	</div>
 
 	<button type="submit">Enregistrer les modifications</button>

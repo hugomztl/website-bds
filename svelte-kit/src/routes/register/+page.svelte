@@ -15,7 +15,9 @@
 		action="/register"
 		method="POST"
 		use:enhance={() => {
-			return async ({ update, formData }) => {
+			return async ({ update, formData, result }) => {
+				if (['error', 'failure'].includes(result.type)) return update();
+
 				const signInResult = await signIn('credentials', {
 					email: formData.get('email'),
 					password: formData.get('password')

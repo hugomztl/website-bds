@@ -50,7 +50,9 @@
 		"@auth/sveltekit": "^1.5.3",
 		"@floating-ui/dom": "^1.6.11",
 		"bcrypt": "^5.1.1",
+		"carta-md": "^4.6.7",
 		"dotenv": "^16.4.5",
+		"isomorphic-dompurify": "^2.16.0",
 		"lucide-svelte": "^0.451.0",
 		"mongodb": "^6.9.0",
 		"mongoose": "^8.7.0"

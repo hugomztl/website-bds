@@ -23,17 +23,6 @@
 	// Exemple de données d'événements (à remplacer par vos vraies données)
 	let evenements = data.events;
 
-	// Fonction pour filtrer les événements
-	$: evenementsFiltres = evenements.filter((evt) => {
-		const dateMatch = !dateFilter || evt.startDate.toString() === dateFilter;
-		const prixMatch =
-			!prixFilter ||
-			(prixFilter === 'gratuit' && evt.price === 0) ||
-			(prixFilter === 'payant' && evt.price > 0);
-		const tagMatch = !tagFilter || evt.tag === tagFilter;
-		return dateMatch && prixMatch && tagMatch;
-	});
-
 	let partenaires = [
 		{ nom: 'FFSU', logo: '/logos/ffsu.png' },
 		{ nom: "Jeun'Est", logo: '/logos/jeun_est.png' },
@@ -140,46 +129,6 @@
 				{#if browser}
 					<Calendar {options} {plugins} />
 				{/if}
-			</div>
-
-			<div class="mb-6 flex items-center justify-center space-x-4">
-				<input
-					type="date"
-					class="input variant-filled-surface"
-					bind:value={dateFilter}
-					placeholder="Filtrer par date"
-				/>
-				<select class="select variant-filled-surface" bind:value={prixFilter}>
-					<option value="">Tous les prix</option>
-					<option value="gratuit">Gratuit</option>
-					<option value="payant">Payant</option>
-				</select>
-				<select class="select variant-filled-surface" bind:value={tagFilter}>
-					<option value="">Tous les tags</option>
-					<option value="sport">Sport</option>
-					<option value="social">Social</option>
-					<option value="culture">Culture</option>
-				</select>
-			</div>
-
-			<div class="space-y-6">
-				{#each evenementsFiltres as evenement}
-					<div class="card variant-ringed-surface flex items-center justify-between p-6">
-						<div>
-							<h3 class="h3 mb-2">{evenement.title}</h3>
-							<p class="mb-2">{evenement.description}</p>
-							<p class="text-sm">Date : {evenement.startDate}</p>
-							<p class="text-sm">
-								Prix : {evenement.price === 0 ? 'Gratuit' : `${evenement.price}€`}
-							</p>
-							<p class="text-sm">Tag : {evenement.tag}</p>
-						</div>
-						<button class="btn variant-filled-primary">
-							<span>Participer</span>
-							<span>&rarr;</span>
-						</button>
-					</div>
-				{/each}
 			</div>
 		</div>
 	</section>

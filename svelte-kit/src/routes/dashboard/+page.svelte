@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
 	import type { BlogPostType } from '$lib/models/BlogPost.js';
+	import { carta } from '$lib/carta';
+	import { CartaViewer } from 'carta-md';
 	import Event from './Event.svelte';
 
 	export let data;
@@ -42,7 +44,7 @@
 
 		<ul class="list">
 			{#each events as event}
-				<Event {event}/>
+				<Event {event} />
 			{:else}
 				Aucun évènement!{/each}
 		</ul>
@@ -51,7 +53,7 @@
 
 		<ul class="list">
 			{#each pastEvents as event}
-				<Event {event}/>
+				<Event {event} />
 			{:else}
 				Aucun évènement passé!{/each}
 		</ul>
@@ -79,7 +81,7 @@
 							>
 						</p>
 						<p class="blog-content overflow-y-auto overflow-x-hidden pr-4 text-justify">
-							{blogPost.content}
+							<CartaViewer {carta} value={blogPost.content} />
 						</p>
 					</div>
 					<div class="rounded-container-token btn-group variant-filled flex w-full !rounded-t-none">

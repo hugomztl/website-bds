@@ -1,6 +1,7 @@
 import { join } from 'path';
 import type { Config } from 'tailwindcss';
 import forms from '@tailwindcss/forms';
+import typography from '@tailwindcss/typography';
 import { bdsTheme } from './bdstheme';
 
 // 1. Import the Skeleton plugin
@@ -15,6 +16,7 @@ const config = {
 	],
 	plugins: [
 		forms,
+		typography,
 		// 4. Append the Skeleton plugin (after other plugins)
 		skeleton({
 			themes: {

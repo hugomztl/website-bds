@@ -69,6 +69,9 @@
 						</a>
 					{/if}
 					<a class="btn hover:variant-soft-primary variant-ghost-primary" href="/blog">Blog</a>
+					<a class="btn hover:variant-soft-primary variant-ghost-primary" href="/events"
+						>Évènements</a
+					>
 				</div>
 			</svelte:fragment>
 

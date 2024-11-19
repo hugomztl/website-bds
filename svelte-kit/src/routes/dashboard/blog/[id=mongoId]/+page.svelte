@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { page } from '$app/stores';
 
 	export let data;
 	$: post = data.post;
@@ -7,7 +8,8 @@
 
 <h1>Modifier le post</h1>
 
-<form method="POST" action="dashboard/blog/?updatePost" use:enhance>
+<form method="POST" action="/dashboard/blog/?/updatePost" use:enhance>
+	<input type="hidden" name="id" value={$page.params.id?.toString()} />
 	<div>
 		<label for="title">Titre:</label>
 		<input type="text" id="title" name="title" value={post.title} required />

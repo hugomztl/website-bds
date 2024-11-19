@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { carta } from '$lib/carta';
 	import type { EventType } from '$lib/models/Event';
+	import { CartaViewer } from 'carta-md';
 	import { Trash } from 'lucide-svelte';
 
 	export let event: EventType;
@@ -9,7 +11,7 @@
 <li>
 	<a class="flex" href="/dashboard/events/{event._id}">
 		<h3>{event.title}</h3>
-		<p>{event.description}</p>
+		<CartaViewer {carta} value={event.description} />
 		<p>Date: {event.startDate}</p>
 		<p>Prix: {event.price}</p>
 		<p>Tag: {event.tag}</p>

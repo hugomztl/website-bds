@@ -120,18 +120,6 @@
 		</div>
 	</div>
 	<div>
-		<label for="description">Description:</label>
-		<textarea
-			class="textarea form-textarea"
-			name="description"
-			aria-invalid={$errors.description ? 'true' : undefined}
-			bind:value={$form.description}
-		></textarea>
-		{#if $errors.description}
-			<p class="variant-filled-error">{$errors.description}</p>
-		{/if}
-	</div>
-	<div>
 		<label for="price">Prix:</label>
 		<input
 			class="input"
@@ -147,4 +135,4 @@
 	<slot name="button" />
 </form>
 
-<MarkdownEditor {carta} />
+<MarkdownEditor {carta} bind:value={$form.description} />

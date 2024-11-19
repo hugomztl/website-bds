@@ -4,15 +4,11 @@
 	import { DateInput } from 'date-picker-svelte';
 	import type { Types } from 'mongoose';
 	import SuperDebug, { type SuperForm } from 'sveltekit-superforms';
-	import DOMPurify from 'isomorphic-dompurify';
-	import { Carta, MarkdownEditor } from 'carta-md';
+	import { MarkdownEditor } from 'carta-md';
+	import { carta } from '$lib/carta';
+
 	// Component default theme
 	import 'carta-md/default.css';
-
-	const carta = new Carta({
-		// Remember to use a sanitizer to prevent XSS attacks
-		sanitizer: DOMPurify.sanitize
-	});
 
 	export let title: string;
 	export let id: Types.ObjectId | undefined = undefined;

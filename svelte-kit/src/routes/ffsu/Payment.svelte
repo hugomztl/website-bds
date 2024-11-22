@@ -15,9 +15,9 @@
 	let conditionsAcceptees = false;
 </script>
 
-<main>
+<main class="bg-surface-100-800-token">
 	<h1>Formulaire de Paiement</h1>
-	<form method="POST" use:enhance>
+	<form method="POST" use:enhance class="grid grid-cols-4 md:grid-cols-4 gap-4">
 		<label>
 			Email*:
 			{#if $errors.email}
@@ -396,7 +396,7 @@
 		</label>
 
 		<label>
-			Sport*:
+			Sport principal*:
 			{#if $errors.sport}
 				<span class="error">{$errors.sport}</span>
 			{/if}
@@ -1023,7 +1023,7 @@
 	}
 
 	main {
-		max-width: 600px;
+		max-width: 80%;
 		margin: auto;
 		padding: 1rem;
 		border: 1px solid #ccc;

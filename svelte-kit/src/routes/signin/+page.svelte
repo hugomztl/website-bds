@@ -33,8 +33,8 @@
 		<svelte:fragment slot="submitButton">
 			<button
 				class="btn variant-form-material border-surface-500-400-token mt-2 px-10"
-				type="submit">Se connecter</button
-			>
+				type="submit">Se connecter
+			</button>
 		</svelte:fragment>
 	</SignIn>
 </main>

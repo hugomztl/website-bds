@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.postcss';
 	import * as Avatar from '$lib/components/ui/avatar';
+	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import { Button } from '$lib/components/ui/button';
 	import * as Command from '$lib/components/ui/command/index.js';
 	import { Separator } from '$lib/components/ui/separator';
@@ -8,30 +9,45 @@
 	import Moon from 'lucide-svelte/icons/moon';
 	import { toggleMode, ModeWatcher } from 'mode-watcher';
 	import Calendar from 'lucide-svelte/icons/calendar';
-	import Search from 'lucide-svelte/icons/search';
 	import CreditCard from 'lucide-svelte/icons/credit-card';
 	import Settings from 'lucide-svelte/icons/settings';
 	import User from 'lucide-svelte/icons/user';
+	import { LogOut } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import AccordionTrigger from '$lib/components/ui/accordion/accordion-trigger.svelte';
 
-	let isAuthenticated = false; // Simuler l'état d'authentification
+	let isAuthenticated = true;
 	let open = false;
+	let shortcut = 'Unknown';
+
 
 	onMount(() => {
-		function handleKeydown(e: KeyboardEvent) {
-			if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-				e.preventDefault();
-				open = !open;
-			}
-		}
+        // Détecter l'OS
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (userAgent.includes('macintosh') || userAgent.includes('mac os x')) {
+            shortcut = '⌘';
+        } else if (userAgent.includes('windows')) {
+            shortcut = 'Ctrl+';
+        } else if (userAgent.includes('linux')) {
+            shortcut = '⌘';
+        }
 
-		document.addEventListener('keydown', handleKeydown);
+        // Ajouter un listener pour les raccourcis clavier
+        function handleKeydown(e: KeyboardEvent) {
+            if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+                e.preventDefault();
+                open = !open;
+            }
+        }
 
-		return () => {
-			document.removeEventListener('keydown', handleKeydown);
-		};
-	});
+        document.addEventListener('keydown', handleKeydown);
+
+        // Nettoyage lors du démontage du composant
+        return () => {
+            document.removeEventListener('keydown', handleKeydown);
+        };
+    });
 </script>
 
 <ModeWatcher />
@@ -43,27 +59,27 @@
 		<Command.List>
 			<Command.Empty>Aucun résultat.</Command.Empty>
 			<Command.Group heading="Suggestions">
-				<Command.Item onSelect={() => goto('/profile')}>
+				<Command.Item onSelect={() => {goto('/profile'); open = false}}>
 					<Calendar class="mr-2 h-4 w-4" />
 					<span>Évènements</span>
 				</Command.Item>
 			</Command.Group>
 			<Command.Separator />
 			<Command.Group heading="Paramètres">
-				<Command.Item onSelect={() => goto('/profile')}>
+				<Command.Item onSelect={() => {goto('/profile'); open = false}}>
 					<User class="mr-2 h-4 w-4" />
 					<span>Mon profile</span>
-					<Command.Shortcut>⌘P</Command.Shortcut>
+					<Command.Shortcut>{shortcut}P</Command.Shortcut>
 				</Command.Item>
-				<Command.Item>
+				<Command.Item onSelect={() => {goto('/profile'); open = false}}>
 					<CreditCard class="mr-2 h-4 w-4" />
 					<span>Ma licence</span>
-					<Command.Shortcut>⌘B</Command.Shortcut>
+					<Command.Shortcut>{shortcut}L</Command.Shortcut>
 				</Command.Item>
-				<Command.Item>
+				<Command.Item onSelect={() => {goto('/profile'); open = false}}>
 					<Settings class="mr-2 h-4 w-4" />
 					<span>Réglages</span>
-					<Command.Shortcut>⌘S</Command.Shortcut>
+					<Command.Shortcut>{shortcut}R</Command.Shortcut>
 				</Command.Item>
 			</Command.Group>
 		</Command.List>
@@ -72,11 +88,17 @@
 	<div class="container mx-auto flex h-16 items-center justify-between px-4">
 		<!-- Logo et navigation -->
 		<div class="flex items-center space-x-4">
-			<a href="/" class="text-xl font-bold">Logo</a>
-			<div class="hidden space-x-4 md:flex">
-				<Button href="/about" variant="ghost">About</Button>
-				<Button href="/services" variant="ghost">Services</Button>
-				<Button href="/contact" variant="ghost">Contact</Button>
+			
+			<a href="/" class="flex items-center">
+				<img src="logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
+			</a>
+			
+			<div class="hidden  items-center space-x-4 md:flex">
+				<Button href="/blog" variant="link">Blog</Button>
+				<Separator orientation="vertical" class="h-6" />
+				<Button href="/services" variant="link">Activités</Button>
+				<Separator orientation="vertical" class="h-6" />
+				<Button href="/contact" variant="link">Contact</Button>
 			</div>
 		</div>
 
@@ -89,39 +111,53 @@
 				data-button-root=""	
 				><span class="hidden lg:inline-flex" data-svelte-h="svelte-1y8n1ih"
 					>Recherche...</span
-				> <span class="inline-flex lg:hidden" data-svelte-h="svelte-1fzukxx">Search...</span>
+				> <span class="inline-flex lg:hidden" data-svelte-h="svelte-1fzukxx">Rechercher...</span>
 				<kbd
 					class="bg-muted pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"
-					data-svelte-h="svelte-1cdrngm"><span class="text-xs">⌘</span>K</kbd
+					data-svelte-h="svelte-1cdrngm"><span class="text-xs">{shortcut}</span>K</kbd
 				></Button
 			>
 		</div>
-		<!-- <div class="flex-grow items-center mx-4">
-		<Button variant="outline" on:click={() => open = !open} class="flex justify-between">
-			<Search/>
-			Recherche
-			<kbd
-			class="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100">
-			<span class="text-xs">ctrl</span>
-			</kbd>
-			+
-			<kbd
-			class="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100">
-			<span class="text-xs">K</span>
-			</kbd>
-		</Button>	
-	  </div> -->
 
 		<!-- Actions utilisateur -->
 		<div class="flex items-center space-x-4">
 			{#if isAuthenticated}
-				<div class="flex items-center space-x-2">
-					<Avatar.Root>
-						<Avatar.Image src="https://picsum.photos/seed/picsum/200/300" alt="User Avatar" />
-						<Avatar.Fallback>U</Avatar.Fallback>
-					</Avatar.Root>
-					<span class="hidden font-medium md:block">Username</span>
-				</div>
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger asChild let:builder>
+					<Button
+					variant="link"
+					builders={[builder]}
+					class="flex items-center space-x-2 cursor-pointer">
+						<Avatar.Root>
+							<Avatar.Image src="https://picsum.photos/seed/picsum/200/300" alt="User Avatar" />
+							<Avatar.Fallback>U</Avatar.Fallback>
+						</Avatar.Root>
+						<span class="hidden font-medium md:block">Username</span>
+					</Button >
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content class="w-56">
+					<DropdownMenu.Item on:click={() => goto('/profile')}>
+						<User class="mr-2 h-4 w-4" />
+						<span>Mon profile</span>
+						<DropdownMenu.Shortcut>{shortcut}P</DropdownMenu.Shortcut>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item on:click={() => goto('/license')}>
+						<CreditCard class="mr-2 h-4 w-4" />
+						<span>Ma licence</span>
+						<DropdownMenu.Shortcut>{shortcut}L</DropdownMenu.Shortcut>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item on:click={() => goto('/settings')}>
+						<Settings class="mr-2 h-4 w-4" />
+						<span>Réglages</span>
+						<DropdownMenu.Shortcut>{shortcut}R</DropdownMenu.Shortcut>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item on:click={() => isAuthenticated=false}>
+						<LogOut class="mr-2 h-4 w-4" />
+						<span>Réglages</span>
+						<DropdownMenu.Shortcut>{shortcut}E</DropdownMenu.Shortcut>
+					</DropdownMenu.Item>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
 			{:else}
 				<Button on:click={() => console.log('Redirect to login')} variant="default"
 					>Se connecter</Button

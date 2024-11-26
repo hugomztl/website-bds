@@ -15,11 +15,11 @@
 	import { LogOut } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import AccordionTrigger from '$lib/components/ui/accordion/accordion-trigger.svelte';
 
 	let isAuthenticated = true;
 	let open = false;
 	let shortcut = 'Unknown';
+
 
 
 	onMount(() => {
@@ -52,7 +52,7 @@
 
 <ModeWatcher />
 <nav
-	class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-gray-900/75 dark:border-gray-800"
+	class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-gray-900/75 dark:border-gray-800 shadow-lg"
 >
 	<Command.Dialog bind:open>
 		<Command.Input placeholder="Rechercher un membre, un club..." />
@@ -102,25 +102,27 @@
 			</div>
 		</div>
 
-		<!--TODO: faire fonctionner la barre de recherche avec le nouveau composant shadcn-->
-		<div class="w-full flex-1 md:w-auto md:flex-none">
-			<Button
-				on:click={() => open = !open}
-				type="button"
-				class="focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64"
-				data-button-root=""	
-				><span class="hidden lg:inline-flex"
-					>Recherche...</span
-				> <span class="inline-flex lg:hidden">Rechercher...</span>
-				<kbd
-					class="bg-muted pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"
-					data-svelte-h="svelte-1cdrngm"><span class="text-xs">{shortcut}</span>K</kbd
-				></Button
-			>
-		</div>
-
-		<!-- TODO: afficher les données de l'utilisateur lorsqu'il est connecté (username + pp) -->
 		<div class="flex items-center space-x-4">
+			<!--TODO: faire fonctionner la barre de recherche avec le nouveau composant shadcn-->
+			<div class="w-full flex-1 md:w-auto md:flex-none">
+				<Button
+					on:click={() => open = !open}
+					type="button"
+					class="focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64"
+					data-button-root=""	
+					><span class="hidden lg:inline-flex"
+						>Recherche...</span
+					> <span class="inline-flex lg:hidden">Rechercher...</span>
+					<kbd
+						class="bg-muted pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"
+						data-svelte-h="svelte-1cdrngm"><span class="text-xs">{shortcut}</span>K</kbd
+					></Button
+				>
+			</div>
+
+			<Separator orientation="vertical" class="h-6" />
+
+			<!-- TODO: afficher les données de l'utilisateur lorsqu'il est connecté (username + pp) -->
 			{#if isAuthenticated}
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger asChild let:builder>
@@ -129,8 +131,8 @@
 					builders={[builder]}
 					class="flex items-center space-x-2 cursor-pointer">
 						<Avatar.Root>
-							<Avatar.Image src="https://picsum.photos/seed/picsum/200/300" alt="User Avatar" />
-							<Avatar.Fallback>U</Avatar.Fallback>
+							<Avatar.Image src="" alt="User Avatar" />
+							<Avatar.Fallback class="no-underline"><User/></Avatar.Fallback>
 						</Avatar.Root>
 						<span class="hidden font-medium md:block">Username</span>
 					</Button >
@@ -151,7 +153,7 @@
 						<span>Réglages</span>
 						<DropdownMenu.Shortcut>{shortcut}R</DropdownMenu.Shortcut>
 					</DropdownMenu.Item>
-					<DropdownMenu.Item on:click={() => isAuthenticated=false}>
+					<DropdownMenu.Item on:click={() => isAuthenticated=false}><!-- FIXME: déconnecter l'utilisateur -->
 						<LogOut class="mr-2 h-4 w-4" />
 						<span>Se déconnecter</span>
 						<DropdownMenu.Shortcut>{shortcut}E</DropdownMenu.Shortcut>
@@ -159,7 +161,7 @@
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
 			{:else}
-				<Button on:click={() => console.log('Redirect to login')} variant="default"
+				<Button on:click={() => goto('/signin')} variant="default"
 					>Se connecter</Button
 				>
 			{/if}
@@ -167,11 +169,11 @@
 			<Separator orientation="vertical" class="h-6" />
 
 			<!-- Toggle Mode -->
-			<Button on:click={toggleMode} variant="outline" size="icon">
+			<Button on:click={toggleMode} variant="ghost" size="icon">
 				<Sun class="h-5 w-5 dark:hidden" />
 				<Moon class="hidden h-5 w-5 dark:block" />
 			</Button>
 		</div>
 	</div>
 </nav>
-<slot />
+<slot/>

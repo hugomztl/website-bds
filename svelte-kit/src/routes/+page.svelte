@@ -12,8 +12,11 @@
 	import '@event-calendar/core/index.css';
 	import Autoplay from "embla-carousel-autoplay";
 	import '../app.postcss';
+	import { onMount } from 'svelte';
 
 	let isMuted = true;
+	let videoElement: HTMLVideoElement | null = null;
+	let isGrabbing = false; // Variable pour l'état du curseur
 
 	let partenaires = [
 		{ nom: 'FFSU', logo: '/logos/ffsu.png' },
@@ -33,11 +36,47 @@
 
  	const plugin = Autoplay({ delay: 2000, stopOnInteraction: true });
 
+	let shortcut = 'Unknown';
+
+	onMount(() => {
+	// Détecter l'OS
+	const userAgent = navigator.userAgent.toLowerCase();
+	if (userAgent.includes('macintosh') || userAgent.includes('mac os x')) {
+		shortcut = '⌘';
+	} else if (userAgent.includes('windows')) {
+		shortcut = 'Ctrl+';
+	} else if (userAgent.includes('linux')) {
+		shortcut = '⌘';
+	}
+	// Observer la visibilité de la vidéo
+	if (videoElement) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (!entry.isIntersecting) {
+						isMuted = true; // Désactiver le son si la vidéo sort de l'écran
+					}
+				});
+			},
+			{ threshold: 0.1 } // Observer à partir de 10% de visibilité
+		);
+		observer.observe(videoElement);
+
+		// Nettoyage de l'observateur lors du démontage
+		return () => observer.disconnect();
+	}
+});
+
 </script>
 
 <main>
 	<section class="relative h-screen w-full overflow-hidden">
-		<video autoplay loop class="absolute inset-0 h-full w-full object-cover" bind:muted={isMuted}>
+		<video 
+		autoplay 
+		loop 
+		class="absolute inset-0 h-full w-full object-cover" 
+		bind:muted={isMuted}
+		bind:this={videoElement}>
 			<source src="motivation.mp4" type="video/mp4" />
 			<track kind="captions" src="" srclang="fr" label="Français" />
 			Votre navigateur ne supporte pas la vidéo HTML5.
@@ -67,38 +106,39 @@
 
 	<section class="container w-full">
 		<h2 class="my-[5%] text-center font-bold">ACTUALITÉS</h2>
-			<Carousel.Root 
-			orientation="vertical"
-			plugins={[plugin]}
-			class="w-full"
-			on:mousenter={plugin.stop}
-  			on:mouseleave={plugin.reset}
+		<Carousel.Root 
+		orientation="horizontal"
+		plugins={[plugin]}
+		class="w-full"
+		on:mousenter={plugin.stop}
+		on:mouseleave={plugin.reset}
+		>
+			<Carousel.Content
+			class={`w-full select-none active:cursor-grabbing hover:cursor-grab`}
 			>
-				<Carousel.Content class="h-[300px]">
-				  {#each actu as _, i (i)}
-					<Carousel.Item class="pt-[1.5%] md:basis-1/2">
-					  <div class="p-1">
-						<Card.Root>
-							<Card.Header>
-								<Card.Title>{_.titre}</Card.Title>
-								<Card.Description>Ceci est l'actualité {i+1}</Card.Description>
-							  </Card.Header>
-							  <Card.Content>
-								{_.desc}
-							  </Card.Content>
-							  <Card.Footer class="flex justify-between">
-								<date>{_.date}</date>
-								<Button>Participer </Button>
-							  </Card.Footer>
-						</Card.Root>
-					  </div>
-					</Carousel.Item>
-				  {/each}
-				</Carousel.Content>
-				<Carousel.Previous />
-				<Carousel.Next />
-			  </Carousel.Root>
-
+				{#each actu as _, i (i)}
+				<Carousel.Item class="pt-[1.5%]">
+					<div class="p-1">
+					<Card.Root class="w-full">
+						<Card.Header>
+							<Card.Title>{_.titre}</Card.Title>
+							<Card.Description>Ceci est l'actualité {i+1}</Card.Description>
+							</Card.Header>
+							<Card.Content>
+							{_.desc}
+							</Card.Content>
+							<Card.Footer class="flex justify-between">
+							<date>{_.date}</date>
+							<Button>En savoir plus <ChevronRight/></Button>
+							</Card.Footer>
+					</Card.Root>
+					</div>
+				</Carousel.Item>
+				{/each}
+			</Carousel.Content>
+			<Carousel.Previous />
+			<Carousel.Next />
+			</Carousel.Root>
 	</section>
 
 	<section class="container mt-[5%] flex justify-between">
@@ -141,12 +181,7 @@
 					  Pour rejoindre un club, ouvrez la barre de recherche en appuyant sur 
 					  <kbd
 					  class="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100">
-					  <span class="text-xs">ctrl</span>
-					  </kbd>
-					  +
-					  <kbd
-					  class="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100">
-					  <span class="text-xs">K</span>
+					  <span class="text-xs">{shortcut}K</span>
 					  </kbd>
 					  et cherchez le nom du club que vous souhaitez rejoindre pour accéder à sa page. La liste des clubs est disponible plus haut ci-dessus.
 					</Accordion.Content>
@@ -186,16 +221,16 @@
 			
 	</section>
 
-	<section class="bg-surface-100-800-token py-16">
-		<div class="container mx-auto px-4">
-			<h2 class="h2 mb-12 text-center">NOS PARTENAIRES</h2>
-			<div class="overflow-hidden">
-				<Marquee {partenaires} scrollSpeedSec={partenaires.length * 2.5} />
-			</div>
+	<section class="container w-full mt-[5%]">
+
+		<h2 class="mb-12 text-center font-bold">NOS PARTENAIRES</h2>
+		<div class="overflow-hidden">
+			<Marquee {partenaires} scrollSpeedSec={partenaires.length * 2.5} />
 		</div>
+		
 	</section>
 
-	<footer class="bg-surface-100-800-token py-8">
+	<footer class="container w-full mt-[5%]">
 		<div class="container mx-auto px-4 text-center">
 			<p class="text-surface-900-50-token">
 				© {new Date().getFullYear()} BDS - Tous droits réservés

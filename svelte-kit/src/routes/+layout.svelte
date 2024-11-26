@@ -52,7 +52,7 @@
 
 <ModeWatcher />
 <nav
-	class="sticky top-0 z-50 border-b border-gray-200 bg-opacity-75 backdrop-blur-lg dark:border-gray-800"
+	class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-gray-900/75 dark:border-gray-800"
 >
 	<Command.Dialog bind:open>
 		<Command.Input placeholder="Rechercher un membre, un club..." />
@@ -102,16 +102,16 @@
 			</div>
 		</div>
 
-		<!-- Barre de recherche -->
+		<!--TODO: faire fonctionner la barre de recherche avec le nouveau composant shadcn-->
 		<div class="w-full flex-1 md:w-auto md:flex-none">
 			<Button
 				on:click={() => open = !open}
 				type="button"
 				class="focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64"
 				data-button-root=""	
-				><span class="hidden lg:inline-flex" data-svelte-h="svelte-1y8n1ih"
+				><span class="hidden lg:inline-flex"
 					>Recherche...</span
-				> <span class="inline-flex lg:hidden" data-svelte-h="svelte-1fzukxx">Rechercher...</span>
+				> <span class="inline-flex lg:hidden">Rechercher...</span>
 				<kbd
 					class="bg-muted pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"
 					data-svelte-h="svelte-1cdrngm"><span class="text-xs">{shortcut}</span>K</kbd
@@ -119,7 +119,7 @@
 			>
 		</div>
 
-		<!-- Actions utilisateur -->
+		<!-- TODO: afficher les données de l'utilisateur lorsqu'il est connecté (username + pp) -->
 		<div class="flex items-center space-x-4">
 			{#if isAuthenticated}
 			<DropdownMenu.Root>
@@ -153,7 +153,7 @@
 					</DropdownMenu.Item>
 					<DropdownMenu.Item on:click={() => isAuthenticated=false}>
 						<LogOut class="mr-2 h-4 w-4" />
-						<span>Réglages</span>
+						<span>Se déconnecter</span>
 						<DropdownMenu.Shortcut>{shortcut}E</DropdownMenu.Shortcut>
 					</DropdownMenu.Item>
 				</DropdownMenu.Content>

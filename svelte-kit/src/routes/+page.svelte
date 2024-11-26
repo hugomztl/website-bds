@@ -23,6 +23,14 @@
 		// Ajoutez d'autres partenaires selon vos besoins
 	];
 
+	let actu = [
+		{ titre: 'Soirée BBQ', date:'26/11/2024', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+		{ titre: 'Club BFC (Brat Fight Club)', date:'26/11/2024', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+		{ titre: 'Randonnée Vosges', date:'26/11/2024', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+		{ titre: 'Nouveaux prix licences FFSU', date:'26/11/2024', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+		{ titre: 'CESI, finito ou masterclass ?', date:'26/11/2024', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+	];
+
  	const plugin = Autoplay({ delay: 2000, stopOnInteraction: true });
 
 </script>
@@ -57,6 +65,42 @@
 		</button>
 	</section>
 
+	<section class="container w-full">
+		<h2 class="my-[5%] text-center font-bold">ACTUALITÉS</h2>
+			<Carousel.Root 
+			orientation="vertical"
+			plugins={[plugin]}
+			class="w-full"
+			on:mousenter={plugin.stop}
+  			on:mouseleave={plugin.reset}
+			>
+				<Carousel.Content class="h-[300px]">
+				  {#each actu as _, i (i)}
+					<Carousel.Item class="pt-[1.5%] md:basis-1/2">
+					  <div class="p-1">
+						<Card.Root>
+							<Card.Header>
+								<Card.Title>{_.titre}</Card.Title>
+								<Card.Description>Ceci est l'actualité {i+1}</Card.Description>
+							  </Card.Header>
+							  <Card.Content>
+								{_.desc}
+							  </Card.Content>
+							  <Card.Footer class="flex justify-between">
+								<date>{_.date}</date>
+								<Button>Participer </Button>
+							  </Card.Footer>
+						</Card.Root>
+					  </div>
+					</Carousel.Item>
+				  {/each}
+				</Carousel.Content>
+				<Carousel.Previous />
+				<Carousel.Next />
+			  </Carousel.Root>
+
+	</section>
+
 	<section class="container mt-[5%] flex justify-between">
 
 		<Card.Root class="w-[49%]">
@@ -88,9 +132,9 @@
 
 	</section>
 
-	<section class="container mt-[5%] flex justify-between">
+	<section class="container w-full mt-[5%]">
 			<h2 class="mb-12 text-center font-bold">FAQ</h2>
-			<Accordion.Root class="w-[60%]">
+			<Accordion.Root>
 				<Accordion.Item value="item-1">
 					<Accordion.Trigger>Comment rejoindre un club existant ?</Accordion.Trigger>
 					<Accordion.Content>
@@ -139,32 +183,7 @@
 				  </Accordion.Item>
 			  </Accordion.Root>
 
-			<h2 class="h2 mb-12 text-center font-bold">ACTUALITÉS</h2>
-			<Carousel.Root 
-			plugins={[plugin]}
-			class="w-full max-w-xs"
-			on:mousenter={plugin.stop}
-  			on:mouseleave={plugin.reset}
-			>
-				<Carousel.Content>
-				  {#each Array(5) as _, i (i)}
-					<Carousel.Item>
-					  <div class="p-1">
-						<Card.Root>
-						  <Card.Content
-							class="flex aspect-square items-center justify-center p-6"
-						  >
-							<span class="text-4xl font-semibold">{i + 1}</span>
-						  </Card.Content>
-						</Card.Root>
-					  </div>
-					</Carousel.Item>
-				  {/each}
-				</Carousel.Content>
-				<Carousel.Previous />
-				<Carousel.Next />
-			  </Carousel.Root>
-
+			
 	</section>
 
 	<section class="bg-surface-100-800-token py-16">

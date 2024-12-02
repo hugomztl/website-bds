@@ -15,8 +15,11 @@
 	import { LogOut } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+	import { signOut } from '@auth/sveltekit/client';
 
-	let isAuthenticated = true; //FIXME: à supprimer quand la gestion de session sera ré-implémenté
+	$: session = $page.data.session;
+
 	let open = false;
 	let shortcut = 'Unknown';
 
@@ -120,8 +123,7 @@
 
 			<Separator orientation="vertical" class="h-6 bg-white" />
 
-			<!-- TODO: afficher les données de l'utilisateur lorsqu'il est connecté (username + pp) -->
-			{#if isAuthenticated}
+			{#if session?.user}
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger asChild let:builder>
 					<Button
@@ -129,10 +131,11 @@
 					builders={[builder]}
 					class="flex items-center space-x-2 cursor-pointer text-white">
 						<Avatar.Root>
+						<!-- TODO: Avatar utilisaeur -->
 							<Avatar.Image src="" alt="User Avatar" />
 							<Avatar.Fallback class="no-underline"><User class="text-black dark:text-white"/></Avatar.Fallback>
 						</Avatar.Root>
-						<span class="hidden font-medium md:block">Username</span>
+						<span class="hidden font-medium md:block">{session.user.name}</span>
 					</Button >
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content class="w-56">
@@ -151,7 +154,7 @@
 						<span>Réglages</span>
 						<DropdownMenu.Shortcut>{shortcut}R</DropdownMenu.Shortcut>
 					</DropdownMenu.Item>
-					<DropdownMenu.Item on:click={() => isAuthenticated=false}><!-- FIXME: déconnecter l'utilisateur -->
+					<DropdownMenu.Item on:click={() => signOut()}>
 						<LogOut class="mr-2 h-4 w-4" />
 						<span>Se déconnecter</span>
 						<DropdownMenu.Shortcut>{shortcut}E</DropdownMenu.Shortcut>

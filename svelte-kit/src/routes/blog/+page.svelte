@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-
+	import * as Card from "$lib/components/ui/card";
+	import * as Table from "$lib/components/ui/table";
 	export let data;
 	$: posts = data.posts;
 </script>
@@ -9,12 +10,21 @@
 
 <div class="container mx-auto mt-10 flex flex-col gap-8">
 	{#each posts as post}
-		<div class="rounded-token bg-surface-300-600-token text-surface-600-300-token p-4 shadow-md">
-			<h2>{post.title}</h2>
-			<span>Posté le {post.createdAt.toLocaleDateString()}</span>
-			<p>{post.content}</p>
-		</div>
+	<Card.Root>
+		<Card.Header>
+		  <Card.Title>{post.title}</Card.Title>
+		  <Card.Description>Posté le {post.createdAt.toLocaleDateString()}</Card.Description>
+		</Card.Header>
+		<Card.Content>
+		  <p>{post.content}</p>
+		</Card.Content>
+		<Card.Footer>
+		  <p>Card Footer</p>
+		</Card.Footer>
+	</Card.Root>
+	  
 	{:else}
 		<h2>Le BDS n'a encore rien posté 😵</h2>
 	{/each}
+
 </div>

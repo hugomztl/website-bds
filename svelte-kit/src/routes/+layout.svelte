@@ -8,7 +8,7 @@
 	import Sun from 'lucide-svelte/icons/sun';
 	import Moon from 'lucide-svelte/icons/moon';
 	import { toggleMode, ModeWatcher } from 'mode-watcher';
-	import Calendar from 'lucide-svelte/icons/calendar';
+	import { Calendar } from 'lucide-svelte';
 	import CreditCard from 'lucide-svelte/icons/credit-card';
 	import Settings from 'lucide-svelte/icons/settings';
 	import User from 'lucide-svelte/icons/user';
@@ -50,7 +50,7 @@
 
 <ModeWatcher />
 <nav
-	class="fixed w-full top-0 z-50 backdrop-blur-md bg-white/10 dark:bg-black/10 dark:border-gray-800 shadow-xl"
+	class="sticky w-full top-0 z-50 backdrop-blur-md bg-white/10 dark:bg-black/10 dark:border-gray-800 shadow-xl"
 >
 	<Command.Dialog bind:open>
 		<Command.Input placeholder="Rechercher un membre, un club..." />
@@ -85,10 +85,10 @@
 
 	<div class="container mx-auto flex h-16 items-center justify-between px-4">
 		<!-- Logo et navigation -->
-		<div class="flex items-center space-x-4">
+		<div class="flex items-center space-x-4"> <!-- FIXME: "mix-blend-difference" ne fonctionne pas pour inverser la couleur des texte dynamiquement -->
 			
 			<a href="/" class="flex items-center">
-				<img src="logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
+				<img src="/logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
 			</a>
 			
 			<div class="hidden items-center space-x-4 md:flex">

@@ -21,7 +21,7 @@
 	$: session = $page.data.session;
 
 	let open = false;
-	let shortcut = 'Unknown';
+	let shortcut = 'Ctrl+';
 
 	onMount(() => {
 		// Détecter l'OS
@@ -61,7 +61,7 @@
 				open = false;
 			}
 			if (key === 'e') {
-				if (data.session?.user) {
+				if (session?.user) {
 					signOut();
 				} else {
 					goto('/signin');

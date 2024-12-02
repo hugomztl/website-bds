@@ -16,7 +16,6 @@
 
 	let isMuted = true;
 	let videoElement: HTMLVideoElement | null = null;
-	let isGrabbing = false; // Variable pour l'état du curseur
 
 	let partenaires = [
 		{ nom: 'FFSU', logo: '/logos/ffsu.png' },
@@ -89,19 +88,20 @@
 			<Button
 				variant="ghost"
 				href="/register"
+				class="hover:bg-white/10 hover:backdrop-blur-md hover:text-white"
 			>
 				Rejoins le BDS
 				<ChevronRight/>
 		</Button>
 		</div>
 
-		<button on:click={() => (isMuted = !isMuted)} class="btn-icon absolute right-4 top-4 z-20">
+		<Button on:click={() => (isMuted = !isMuted)} class="hover:bg-white/10 hover:backdrop-blur-md absolute right-4 top-[10%] z-5" variant="ghost">
 			{#if isMuted}
 				<VolumeX size={24} color="red" />
 			{:else}
 				<Volume2 size={24} color="white" />
 			{/if}
-		</button>
+		</Button>
 	</section>
 
 	<section class="container w-full">

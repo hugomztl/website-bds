@@ -16,11 +16,9 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
-	let isAuthenticated = true;
+	let isAuthenticated = true; //FIXME: à supprimer quand la gestion de session sera ré-implémenté
 	let open = false;
 	let shortcut = 'Unknown';
-
-
 
 	onMount(() => {
         // Détecter l'OS
@@ -52,7 +50,7 @@
 
 <ModeWatcher />
 <nav
-	class="sticky top-0 z-50 backdrop-blur-md bg-white/70 dark:bg-gray-900/75 dark:border-gray-800 shadow-lg"
+	class="fixed w-full top-0 z-50 backdrop-blur-md bg-white/10 dark:bg-black/10 dark:border-gray-800 shadow-xl"
 >
 	<Command.Dialog bind:open>
 		<Command.Input placeholder="Rechercher un membre, un club..." />
@@ -93,12 +91,12 @@
 				<img src="logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
 			</a>
 			
-			<div class="hidden  items-center space-x-4 md:flex">
-				<Button href="/blog" variant="link">Blog</Button>
-				<Separator orientation="vertical" class="h-6" />
-				<Button href="/services" variant="link">Activités</Button>
-				<Separator orientation="vertical" class="h-6" />
-				<Button href="/contact" variant="link">Contact</Button>
+			<div class="hidden items-center space-x-4 md:flex">
+				<Button class="text-white" href="/blog" variant="link">Blog</Button>
+				<Separator orientation="vertical" class="h-6 bg-white" />
+				<Button class="text-white" href="/services" variant="link">Activités</Button>
+				<Separator orientation="vertical" class="h-6 bg-white" />
+				<Button class="text-white" href="/contact" variant="link">Contact</Button>
 			</div>
 		</div>
 
@@ -108,7 +106,7 @@
 				<Button
 					on:click={() => open = !open}
 					type="button"
-					class="focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64"
+					class="focus-visible:ring-ring dark:border-white dark:backdrop-blur-md dark:bg-transparent bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64"
 					data-button-root=""	
 					><span class="hidden lg:inline-flex"
 						>Recherche...</span
@@ -120,7 +118,7 @@
 				>
 			</div>
 
-			<Separator orientation="vertical" class="h-6" />
+			<Separator orientation="vertical" class="h-6 bg-white" />
 
 			<!-- TODO: afficher les données de l'utilisateur lorsqu'il est connecté (username + pp) -->
 			{#if isAuthenticated}
@@ -129,10 +127,10 @@
 					<Button
 					variant="link"
 					builders={[builder]}
-					class="flex items-center space-x-2 cursor-pointer">
+					class="flex items-center space-x-2 cursor-pointer text-white">
 						<Avatar.Root>
 							<Avatar.Image src="" alt="User Avatar" />
-							<Avatar.Fallback class="no-underline"><User/></Avatar.Fallback>
+							<Avatar.Fallback class="no-underline"><User class="text-black dark:text-white"/></Avatar.Fallback>
 						</Avatar.Root>
 						<span class="hidden font-medium md:block">Username</span>
 					</Button >
@@ -161,15 +159,15 @@
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
 			{:else}
-				<Button on:click={() => goto('/signin')} variant="default"
+				<Button on:click={() => goto('/signin')} variant="link" class="text-white"
 					>Se connecter</Button
 				>
 			{/if}
 
-			<Separator orientation="vertical" class="h-6" />
+			<Separator orientation="vertical" class="h-6 bg-white" />
 
 			<!-- Toggle Mode -->
-			<Button on:click={toggleMode} variant="ghost" size="icon">
+			<Button on:click={toggleMode} variant="ghost" size="icon" class="text-white hover:text-black dark:hover:bg-white">
 				<Sun class="h-5 w-5 dark:hidden" />
 				<Moon class="hidden h-5 w-5 dark:block" />
 			</Button>

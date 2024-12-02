@@ -139,101 +139,99 @@
 	<div class="container mx-auto flex h-16 items-center justify-between px-4">
 		<!-- Logo et navigation -->
 		<div class="flex items-center space-x-4">
-			<div class="flex items-center space-x-4">
-				<!-- FIXME: "mix-blend-difference" ne fonctionne pas pour inverser la couleur des texte dynamiquement -->
+			<!-- FIXME: "mix-blend-difference" ne fonctionne pas pour inverser la couleur des texte dynamiquement -->
 
-				<a href="/" class="flex items-center">
-					<img src="/logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
-				</a>
+			<a href="/" class="flex items-center">
+				<img src="/logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
+			</a>
 
-				<div class="hidden items-center space-x-4 md:flex">
-					<Button class="text-white" href="/blog" variant="link">Blog</Button>
-					<Separator orientation="vertical" class="h-6 bg-white" />
-					<Button class="text-white" href="/services" variant="link">Activités</Button>
-					<Separator orientation="vertical" class="h-6 bg-white" />
-					<Button class="text-white" href="/contact" variant="link">Contact</Button>
-				</div>
+			<div class="hidden items-center space-x-4 md:flex">
+				<Button class="text-white" href="/blog" variant="link">Blog</Button>
+				<Separator orientation="vertical" class="h-6 bg-white" />
+				<Button class="text-white" href="/services" variant="link">Activités</Button>
+				<Separator orientation="vertical" class="h-6 bg-white" />
+				<Button class="text-white" href="/contact" variant="link">Contact</Button>
 			</div>
+		</div>
 
-			<div class="flex items-center space-x-4">
-				<!--TODO: faire fonctionner la barre de recherche avec le nouveau composant shadcn-->
-				<div class="w-full flex-1 md:w-auto md:flex-none">
-					<Button
-						on:click={() => (open = !open)}
-						type="button"
-						class="focus-visible:ring-ring bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64 dark:border-white dark:bg-transparent dark:backdrop-blur-md"
-						data-button-root=""
-						><span class="hidden lg:inline-flex">Recherche...</span>
-						<span class="inline-flex lg:hidden">Rechercher...</span>
-						<kbd
-							class="bg-muted pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"
-							data-svelte-h="svelte-1cdrngm"><span class="text-xs">{shortcut}</span>K</kbd
-						></Button
-					>
-				</div>
-
-				<Separator orientation="vertical" class="h-6 bg-white" />
-
-				{#if session?.user}
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger asChild let:builder>
-							<Button
-								variant="link"
-								builders={[builder]}
-								class="flex cursor-pointer items-center space-x-2 text-white"
-							>
-								<Avatar.Root>
-									<!-- TODO: Avatar utilisaeur -->
-									<Avatar.Image src="" alt="User Avatar" />
-									<Avatar.Fallback class="no-underline"
-										><User class="text-black dark:text-white" /></Avatar.Fallback
-									>
-								</Avatar.Root>
-								<span class="hidden font-medium md:block">{session.user.name}</span>
-							</Button>
-						</DropdownMenu.Trigger>
-						<DropdownMenu.Content class="w-56">
-							<DropdownMenu.Item on:click={() => goto('/profile')}>
-								<User class="mr-2 h-4 w-4" />
-								<span>Mon profile</span>
-								<DropdownMenu.Shortcut>{shortcut}P</DropdownMenu.Shortcut>
-							</DropdownMenu.Item>
-							<DropdownMenu.Item on:click={() => goto('/license')}>
-								<CreditCard class="mr-2 h-4 w-4" />
-								<span>Ma licence</span>
-								<DropdownMenu.Shortcut>{shortcut}L</DropdownMenu.Shortcut>
-							</DropdownMenu.Item>
-							<DropdownMenu.Item on:click={() => goto('/settings')}>
-								<Settings class="mr-2 h-4 w-4" />
-								<span>Réglages</span>
-								<DropdownMenu.Shortcut>{shortcut}R</DropdownMenu.Shortcut>
-							</DropdownMenu.Item>
-							<DropdownMenu.Item on:click={() => signOut()}>
-								<LogOut class="mr-2 h-4 w-4" />
-								<span>Se déconnecter</span>
-								<DropdownMenu.Shortcut>{shortcut}E</DropdownMenu.Shortcut>
-							</DropdownMenu.Item>
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
-				{:else}
-					<Button on:click={() => goto('/signin')} variant="link" class="text-white"
-						>Se connecter</Button
-					>
-				{/if}
-
-				<Separator orientation="vertical" class="h-6 bg-white" />
-
-				<!-- Toggle Mode -->
+		<div class="flex items-center space-x-4">
+			<!--TODO: faire fonctionner la barre de recherche avec le nouveau composant shadcn-->
+			<div class="w-full flex-1 md:w-auto md:flex-none">
 				<Button
-					on:click={toggleMode}
-					variant="ghost"
-					size="icon"
-					class="text-white hover:text-black dark:hover:bg-white"
+					on:click={() => (open = !open)}
+					type="button"
+					class="focus-visible:ring-ring bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64 dark:border-white dark:bg-transparent dark:backdrop-blur-md"
+					data-button-root=""
+					><span class="hidden lg:inline-flex">Recherche...</span>
+					<span class="inline-flex lg:hidden">Rechercher...</span>
+					<kbd
+						class="bg-muted pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"
+						data-svelte-h="svelte-1cdrngm"><span class="text-xs">{shortcut}</span>K</kbd
+					></Button
 				>
-					<Sun class="h-5 w-5 dark:hidden" />
-					<Moon class="hidden h-5 w-5 dark:block" />
-				</Button>
 			</div>
+
+			<Separator orientation="vertical" class="h-6 bg-white" />
+
+			{#if session?.user}
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger asChild let:builder>
+						<Button
+							variant="link"
+							builders={[builder]}
+							class="flex cursor-pointer items-center space-x-2 text-white"
+						>
+							<Avatar.Root>
+								<!-- TODO: Avatar utilisaeur -->
+								<Avatar.Image src="" alt="User Avatar" />
+								<Avatar.Fallback class="no-underline"
+									><User class="text-black dark:text-white" /></Avatar.Fallback
+								>
+							</Avatar.Root>
+							<span class="hidden font-medium md:block">{session.user.name}</span>
+						</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-56">
+						<DropdownMenu.Item on:click={() => goto('/profile')}>
+							<User class="mr-2 h-4 w-4" />
+							<span>Mon profile</span>
+							<DropdownMenu.Shortcut>{shortcut}P</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+						<DropdownMenu.Item on:click={() => goto('/license')}>
+							<CreditCard class="mr-2 h-4 w-4" />
+							<span>Ma licence</span>
+							<DropdownMenu.Shortcut>{shortcut}L</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+						<DropdownMenu.Item on:click={() => goto('/settings')}>
+							<Settings class="mr-2 h-4 w-4" />
+							<span>Réglages</span>
+							<DropdownMenu.Shortcut>{shortcut}R</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+						<DropdownMenu.Item on:click={() => signOut()}>
+							<LogOut class="mr-2 h-4 w-4" />
+							<span>Se déconnecter</span>
+							<DropdownMenu.Shortcut>{shortcut}E</DropdownMenu.Shortcut>
+						</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
+			{:else}
+				<Button on:click={() => goto('/signin')} variant="link" class="text-white"
+					>Se connecter</Button
+				>
+			{/if}
+
+			<Separator orientation="vertical" class="h-6 bg-white" />
+
+			<!-- Toggle Mode -->
+			<Button
+				on:click={toggleMode}
+				variant="ghost"
+				size="icon"
+				class="text-white hover:text-black dark:hover:bg-white"
+			>
+				<Sun class="h-5 w-5 dark:hidden" />
+				<Moon class="hidden h-5 w-5 dark:block" />
+			</Button>
 		</div>
 	</div>
 </nav>

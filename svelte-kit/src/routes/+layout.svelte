@@ -146,11 +146,11 @@
 			</a>
 
 			<div class="hidden items-center space-x-4 md:flex">
-				<Button class="text-white" href="/blog" variant="link">Blog</Button>
+				<Button href="/blog" variant="link">Blog</Button>
 				<Separator orientation="vertical" class="h-6 bg-white" />
-				<Button class="text-white" href="/services" variant="link">Activités</Button>
+				<Button href="/services" variant="link">Activités</Button>
 				<Separator orientation="vertical" class="h-6 bg-white" />
-				<Button class="text-white" href="/contact" variant="link">Contact</Button>
+				<Button href="/contact" variant="link">Contact</Button>
 			</div>
 		</div>
 
@@ -179,7 +179,7 @@
 						<Button
 							variant="link"
 							builders={[builder]}
-							class="flex cursor-pointer items-center space-x-2 text-white"
+							class="flex cursor-pointer items-center space-x-2"
 						>
 							<Avatar.Root>
 								<!-- TODO: Avatar utilisaeur -->

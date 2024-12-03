@@ -8,7 +8,7 @@
 	import Sun from 'lucide-svelte/icons/sun';
 	import Moon from 'lucide-svelte/icons/moon';
 	import { toggleMode, ModeWatcher } from 'mode-watcher';
-	import { Calendar } from 'lucide-svelte';
+	import { ReceiptText, Calendar, Users } from 'lucide-svelte';
 	import CreditCard from 'lucide-svelte/icons/credit-card';
 	import Settings from 'lucide-svelte/icons/settings';
 	import User from 'lucide-svelte/icons/user';
@@ -17,11 +17,43 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { signOut } from '@auth/sveltekit/client';
+	import { Shadow } from 'svelte-loading-spinners';
+	import type { ClubType } from '$lib/models/Club';
+	import type { UserType } from '$lib/models/User';
 
 	$: session = $page.data.session;
 
-	let open = false;
+	let commandOpen = false;
 	let shortcut = 'Ctrl+';
+	let searchInput = '';
+
+	let searchLoading = false;
+	let clubs: ClubType[] = [];
+	let users: UserType[] = [];
+
+	let searchText = '';
+	let debouceTimer: NodeJS.Timeout;
+
+	async function search() {
+		const result = await fetch('/api/search?q=' + encodeURIComponent(searchText));
+
+		if (result.status !== 200) return;
+
+		const json = await result.json();
+
+		users = json.users;
+		clubs = json.clubs;
+		searchLoading = false;
+	}
+
+	function debouncedSearch() {
+		searchLoading = true;
+		users = [];
+		clubs = [];
+
+		clearTimeout(debouceTimer);
+		debouceTimer = setTimeout(search, 300);
+	}
 
 	onMount(() => {
 		// Détecter l'OS
@@ -43,22 +75,22 @@
 
 			if (key === 'k') {
 				e.preventDefault();
-				open = !open;
+				commandOpen = !commandOpen;
 			}
 			if (key === 'p') {
 				goto('/profile');
 				e.preventDefault();
-				open = false;
+				commandOpen = false;
 			}
 			if (key === 'l') {
 				goto('/license');
 				e.preventDefault();
-				open = false;
+				commandOpen = false;
 			}
 			if (key === 'r') {
 				goto('/settings');
 				e.preventDefault();
-				open = false;
+				commandOpen = false;
 			}
 			if (key === 'e') {
 				if (session?.user) {
@@ -68,7 +100,7 @@
 				}
 
 				e.preventDefault();
-				open = false;
+				commandOpen = false;
 			}
 		}
 
@@ -85,27 +117,38 @@
 <nav
 	class="sticky top-0 z-50 w-full bg-white/10 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-black/10"
 >
-	<Command.Dialog bind:open>
-		<Command.Input placeholder="Rechercher un membre, un club..." />
-		<Command.List>
+	<Command.Dialog bind:open={commandOpen}>
+		<Command.Input
+			placeholder="Rechercher un membre, un club …"
+			bind:value={searchInput}
+			on:input={debouncedSearch}
+		/>
+		{#if !searchLoading}
 			<Command.Empty>Aucun résultat.</Command.Empty>
+		{/if}
+		<Command.List>
 			<Command.Group heading="Suggestions">
-				<Command.Item
-					onSelect={() => {
-						goto('/profile');
-						open = false;
-					}}
-				>
+				<Command.Item>
 					<Calendar class="mr-2 h-4 w-4" />
 					<span>Évènements</span>
 				</Command.Item>
+				<Command.Item>
+					<ReceiptText class="mr-2 h-4 w-4" />
+					<span>Posts</span>
+				</Command.Item>
+				<Command.Item>
+					<Users class="mr-2 h-4 w-4" />
+					<span>Clubs</span>
+				</Command.Item>
 			</Command.Group>
+
 			<Command.Separator />
+
 			<Command.Group heading="Paramètres">
 				<Command.Item
 					onSelect={() => {
 						goto('/profile');
-						open = false;
+						commandOpen = false;
 					}}
 				>
 					<User class="mr-2 h-4 w-4" />
@@ -114,8 +157,8 @@
 				</Command.Item>
 				<Command.Item
 					onSelect={() => {
-						goto('/profile');
-						open = false;
+						goto('/license');
+						commandOpen = false;
 					}}
 				>
 					<CreditCard class="mr-2 h-4 w-4" />
@@ -124,8 +167,8 @@
 				</Command.Item>
 				<Command.Item
 					onSelect={() => {
-						goto('/profile');
-						open = false;
+						goto('/settings');
+						commandOpen = false;
 					}}
 				>
 					<Settings class="mr-2 h-4 w-4" />
@@ -133,6 +176,48 @@
 					<Command.Shortcut>{shortcut}R</Command.Shortcut>
 				</Command.Item>
 			</Command.Group>
+
+			{#if searchInput !== ''}
+				<Command.Separator />
+
+				<Command.Group alwaysRender={searchLoading} heading="Utilisateurs">
+					{#if searchLoading}
+						<Command.Loading>
+							<div class="my-5 flex justify-center">
+								<Shadow color="darkgray" size="1" unit="rem" />
+							</div>
+						</Command.Loading>
+					{/if}
+
+					{#each users as user}
+						<Command.Item>
+							<!-- TODO: Avatar utilisateur -->
+							<User class="mr-2 h-4 w-4" />
+							<span>{user.fullName}</span>
+						</Command.Item>
+					{/each}
+				</Command.Group>
+
+				<Command.Separator />
+
+				<Command.Group alwaysRender={searchLoading} heading="Clubs">
+					{#if searchLoading}
+						<Command.Loading>
+							<div class="my-5 flex justify-center">
+								<Shadow color="darkgray" size="1" unit="rem" />
+							</div>
+						</Command.Loading>
+					{/if}
+
+					{#each clubs as club}
+						<Command.Item>
+							<!-- TODO: Icône club -->
+							<Users class="mr-2 h-4 w-4" />
+							<span>{club.name}</span>
+						</Command.Item>
+					{/each}
+				</Command.Group>
+			{/if}
 		</Command.List>
 	</Command.Dialog>
 
@@ -155,15 +240,14 @@
 		</div>
 
 		<div class="flex items-center space-x-4">
-			<!--TODO: faire fonctionner la barre de recherche avec le nouveau composant shadcn-->
 			<div class="w-full flex-1 md:w-auto md:flex-none">
 				<Button
-					on:click={() => (open = !open)}
+					on:click={() => (commandOpen = !commandOpen)}
 					type="button"
 					class="focus-visible:ring-ring bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64 dark:border-white dark:bg-transparent dark:backdrop-blur-md"
 					data-button-root=""
-					><span class="hidden lg:inline-flex">Recherche...</span>
-					<span class="inline-flex lg:hidden">Rechercher...</span>
+					><span class="hidden lg:inline-flex">Recherche …</span>
+					<span class="inline-flex lg:hidden">Rechercher …</span>
 					<kbd
 						class="bg-muted pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"
 						data-svelte-h="svelte-1cdrngm"><span class="text-xs">{shortcut}</span>K</kbd

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { onMount, onDestroy } from 'svelte';
+	import { commandOpen } from './+layout.svelte';
 
 	let gameCanvas: HTMLCanvasElement | null = null;
 	let ctx: CanvasRenderingContext2D | null = null;
@@ -11,7 +12,7 @@
 	let isGameStarted = false;
 	let pipeWidth = 50;
 	let pipeGap = 150;
-	let pipes: { x: number, y: number }[] = [];
+	let pipes: { x: number; y: number }[] = [];
 	let birdRadius = 10;
 	let score = 0;
 	let jumpStrength = -4.5;
@@ -58,7 +59,7 @@
 	// Fonction pour mettre à jour le leaderboard à la fin de la partie
 	function updateLeaderboard() {
 		// Cherche si le joueur est déjà dans le leaderboard
-		let playerIndex = leaderboard.findIndex(player => player.username === 'You');
+		let playerIndex = leaderboard.findIndex((player) => player.username === 'You');
 
 		if (playerIndex === -1) {
 			// Si le joueur n'existe pas, ajoute-le au leaderboard
@@ -77,7 +78,7 @@
 		}
 
 		// Trouve la position actuelle du joueur
-		currentPosition = leaderboard.findIndex(player => player.username === 'You') + 1;
+		currentPosition = leaderboard.findIndex((player) => player.username === 'You') + 1;
 	}
 
 	// Fonction de mise à jour du jeu
@@ -164,6 +165,10 @@
 
 	// Fonction pour gérer les événements clavier
 	function handleKeydown(event: KeyboardEvent) {
+		if ($commandOpen) {
+			return;
+		}
+
 		if (event.code === 'Space') {
 			if (!isGameStarted) {
 				startGame();
@@ -195,24 +200,29 @@
 </script>
 
 <main>
-	<img src="/looser.gif" alt="Game Over" class="looser-gif" style:display={looserImageVisible ? 'block' : 'none'} style="width: 100vw; height: 100vh; opacity: 0.5;" />
+	<img
+		src="/looser.gif"
+		alt="Game Over"
+		class="looser-gif"
+		style:display={looserImageVisible ? 'block' : 'none'}
+		style="width: 100vw; height: 100vh; opacity: 0.5;"
+	/>
 	<h1>Error <span class="error-code">{$page.status}</span></h1>
 	<p>Error occured : <b>{$page.error?.message}</b></p>
 	<a class="home" href="/">Back to home</a>
 
 	<div style="text-align:center;">
-		<h2>or waste your time : </h2>
+		<h2>or waste your time :</h2>
 		<p>press space to start playing</p>
 
 		<!-- Affichage du gif de Game Over -->
-		
 
 		<canvas bind:this={gameCanvas} width="400" height="400"></canvas>
 	</div>
 
 	<div class="table-container">
 		<!-- Tableau pour le leaderboard -->
-		<table class="table table-hover">
+		<table class="table-hover table">
 			<thead>
 				<tr>
 					<th>Position</th>

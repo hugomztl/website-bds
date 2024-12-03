@@ -1,3 +1,9 @@
+<script lang="ts" context="module">
+	import { writable } from 'svelte/store';
+
+	export let commandOpen = writable(false);
+</script>
+
 <script lang="ts">
 	import '../app.postcss';
 	import * as Avatar from '$lib/components/ui/avatar';
@@ -23,7 +29,6 @@
 
 	$: session = $page.data.session;
 
-	let commandOpen = false;
 	let shortcut = 'Ctrl+';
 	let searchInput = '';
 
@@ -75,22 +80,22 @@
 
 			if (key === 'k') {
 				e.preventDefault();
-				commandOpen = !commandOpen;
+				$commandOpen = !$commandOpen;
 			}
 			if (key === 'p') {
 				goto('/profile');
 				e.preventDefault();
-				commandOpen = false;
+				$commandOpen = false;
 			}
 			if (key === 'l') {
 				goto('/license');
 				e.preventDefault();
-				commandOpen = false;
+				$commandOpen = false;
 			}
 			if (key === 'r') {
 				goto('/settings');
 				e.preventDefault();
-				commandOpen = false;
+				$commandOpen = false;
 			}
 			if (key === 'e') {
 				if (session?.user) {
@@ -100,7 +105,7 @@
 				}
 
 				e.preventDefault();
-				commandOpen = false;
+				$commandOpen = false;
 			}
 		}
 
@@ -117,7 +122,7 @@
 <nav
 	class="sticky top-0 z-50 w-full bg-white/10 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-black/10"
 >
-	<Command.Dialog bind:open={commandOpen}>
+	<Command.Dialog bind:open={$commandOpen}>
 		<Command.Input
 			placeholder="Rechercher un membre, un club …"
 			bind:value={searchInput}
@@ -148,7 +153,7 @@
 				<Command.Item
 					onSelect={() => {
 						goto('/profile');
-						commandOpen = false;
+						$commandOpen = false;
 					}}
 				>
 					<User class="mr-2 h-4 w-4" />
@@ -158,7 +163,7 @@
 				<Command.Item
 					onSelect={() => {
 						goto('/license');
-						commandOpen = false;
+						$commandOpen = false;
 					}}
 				>
 					<CreditCard class="mr-2 h-4 w-4" />
@@ -168,7 +173,7 @@
 				<Command.Item
 					onSelect={() => {
 						goto('/settings');
-						commandOpen = false;
+						$commandOpen = false;
 					}}
 				>
 					<Settings class="mr-2 h-4 w-4" />
@@ -242,7 +247,7 @@
 		<div class="flex items-center space-x-4">
 			<div class="w-full flex-1 md:w-auto md:flex-none">
 				<Button
-					on:click={() => (commandOpen = !commandOpen)}
+					on:click={() => ($commandOpen = !$commandOpen)}
 					type="button"
 					class="focus-visible:ring-ring bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64 dark:border-white dark:bg-transparent dark:backdrop-blur-md"
 					data-button-root=""

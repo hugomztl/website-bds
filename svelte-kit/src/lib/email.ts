@@ -4,18 +4,13 @@ export function isViacesiEmail(email: string) {
 
 export function formatName(email: string) {
 	const name = email.split('@')[0];
-	const dotIndex = name.indexOf('.');
-
-	if (dotIndex === -1) {
-		return '';
-	}
 
 	const formattedName = name
 		.split('.')
 		.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
 		.join(' ');
 
-	const formattedNameWithoutNumbers = formattedName.replace(/\d/g, '');
+	const formattedNameWithoutNumbers = formattedName.replace(/\d/g, '').trim();
 
 	return formattedNameWithoutNumbers;
 }

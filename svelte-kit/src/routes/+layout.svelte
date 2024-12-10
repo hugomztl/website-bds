@@ -93,11 +93,11 @@
 				e.preventDefault();
 				$commandOpen = false;
 			}
-			if (key === 'r') {
-				goto('/settings');
-				e.preventDefault();
-				$commandOpen = false;
-			}
+			// if (key === 'r') {
+			// 	goto('/settings');
+			// 	e.preventDefault();
+			// 	$commandOpen = false;
+			// }
 			if (key === 'e') {
 				if (session?.user) {
 					signOut();
@@ -187,7 +187,7 @@
 					<span>Ma licence</span>
 					<Command.Shortcut>{shortcut}L</Command.Shortcut>
 				</Command.Item>
-				<Command.Item
+				<!-- <Command.Item
 					onSelect={() => {
 						goto('/settings');
 						$commandOpen = false;
@@ -196,7 +196,7 @@
 					<Settings class="mr-2 h-4 w-4" />
 					<span>Réglages</span>
 					<Command.Shortcut>{shortcut}R</Command.Shortcut>
-				</Command.Item>
+				</Command.Item> -->
 			</Command.Group>
 
 			{#if searchInput !== ''}
@@ -318,11 +318,11 @@
 							<span>Ma licence</span>
 							<DropdownMenu.Shortcut>{shortcut}L</DropdownMenu.Shortcut>
 						</DropdownMenu.Item>
-						<DropdownMenu.Item on:click={() => goto('/settings')}>
+						<!-- <DropdownMenu.Item on:click={() => goto('/settings')}>
 							<Settings class="mr-2 h-4 w-4" />
 							<span>Réglages</span>
 							<DropdownMenu.Shortcut>{shortcut}R</DropdownMenu.Shortcut>
-						</DropdownMenu.Item>
+						</DropdownMenu.Item> -->
 						<DropdownMenu.Item on:click={() => signOut()}>
 							<LogOut class="mr-2 h-4 w-4" />
 							<span>Se déconnecter</span>

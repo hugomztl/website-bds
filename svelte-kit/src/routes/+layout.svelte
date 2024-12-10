@@ -101,7 +101,7 @@
 				if (session?.user) {
 					signOut();
 				} else {
-					goto('/signin');
+					goto('/auth');
 				}
 
 				e.preventDefault();
@@ -121,7 +121,7 @@
 <ModeWatcher />
 <!-- bg-white/70 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-black/10 -->
 <nav
-	class="fixed top-0 z-50 w-full shadow-xl bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur"
+	class="bg-background/95 supports-[backdrop-filter]:bg-background/60 fixed top-0 z-50 w-full shadow-xl backdrop-blur"
 >
 	<Command.Dialog bind:open={$commandOpen}>
 		<Command.Input
@@ -236,7 +236,7 @@
 				<img src="/logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
 			</a>
 
-			<div class="hidden items-center space-x-4 md:flex ">
+			<div class="hidden items-center space-x-4 md:flex">
 				<Button href="/blog" variant="link">Blog</Button>
 				<Separator orientation="vertical" class="h-6 bg-black" />
 				<Button href="/services" variant="link">Activités</Button>
@@ -305,7 +305,7 @@
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			{:else}
-				<Button on:click={() => goto('/signin')} variant="link"
+				<Button on:click={() => goto('/auth')} variant="link" class="text-white"
 					>Se connecter</Button
 				>
 			{/if}

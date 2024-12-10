@@ -1,14 +1,34 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { fail, isRedirect, redirect } from '@sveltejs/kit';
+import { signIn } from '../../auth';
 import type { Actions, PageServerLoad } from './$types';
-import { isViacesiEmail } from '$lib/email';
+import { CredentialsSignin } from '@auth/core/errors';
+import { formatName, isViacesiEmail } from '$lib/email';
 import { hashPassword } from '$lib/database';
 import User from '$lib/models/User';
-import { formatName } from '$lib/email';
 
 export const prerender = false;
-
 export const actions: Actions = {
-	default: async ({ request }) => {
+	signin: async (event) => {
+		try {
+			return await signIn(event);
+		} catch (error) {
+			if (error instanceof CredentialsSignin) {
+				return fail(400, {
+					error: 'Identifiant ou mot de passe invalide'
+				});
+			}
+
+			if (isRedirect(error)) {
+				throw error;
+			}
+
+			console.error('Une erreur inattendue est survenue: ' + JSON.stringify(error));
+			return fail(500, {
+				error: 'Une erreur inattendue est survenue'
+			});
+		}
+	},
+	register: async ({ request }) => {
 		const form = await request.formData();
 		const email = form.get('email');
 		const password = form.get('password');
@@ -44,7 +64,7 @@ export const actions: Actions = {
 		// Lance une erreur si le modèle ci-dessus est invalide
 		await user.save();
 
-		return redirect(303, `/signin?email=${encodeURIComponent(email)}`);
+		return redirect(303, `/auth?email=${encodeURIComponent(email)}`);
 	}
 };
 

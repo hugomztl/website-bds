@@ -81,7 +81,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	],
 	adapter: MongoDBAdapter(client),
 	pages: {
-		signIn: '/signin',
+		signIn: '/auth',
 		signOut: '/'
 	}
 });

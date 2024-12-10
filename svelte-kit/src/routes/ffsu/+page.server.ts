@@ -17,12 +17,12 @@ export const load = async ({ locals }) => {
 	const session = await locals.auth();
 
 	if (!session) {
-		return redirect(303, '/signin');
+		return redirect(303, '/auth');
 	}
 
 	const user = (await User.findById(session?.user?.id))?.toObject({ flattenObjectIds: true });
 	if (!user) {
-		return redirect(303, '/signin');
+		return redirect(303, '/auth');
 	}
 
 	const form = await superValidate(zod(zPendingLicense));
@@ -34,7 +34,7 @@ export const actions = {
 	default: async ({ request, locals }) => {
 		const user = (await locals.auth())?.user;
 		if (!user) {
-			return redirect(303, '/signin');
+			return redirect(303, '/auth');
 		}
 
 		const form = await superValidate(request, zod(zPendingLicense));

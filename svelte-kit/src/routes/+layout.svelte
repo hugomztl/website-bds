@@ -305,9 +305,7 @@
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			{:else}
-				<Button on:click={() => goto('/auth')} variant="link" class="text-white"
-					>Se connecter</Button
-				>
+				<Button href="/auth" variant="link" class="text-white">Se connecter</Button>
 			{/if}
 
 			<Separator orientation="vertical" class="h-6 bg-black" />

@@ -151,7 +151,7 @@
 					}}
 				>
 					<ReceiptText class="mr-2 h-4 w-4" />
-					<span>Posts</span>
+					<span>Blog</span>
 				</Command.Item>
 				<Command.Item
 					onSelect={() => {

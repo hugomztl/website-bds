@@ -22,6 +22,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { resolveRoute } from '$app/paths';
 	import { signOut } from '@auth/sveltekit/client';
 	import { Shadow } from 'svelte-loading-spinners';
 	import type { ClubType } from '$lib/models/Club';
@@ -134,15 +135,30 @@
 		{/if}
 		<Command.List>
 			<Command.Group heading="Suggestions">
-				<Command.Item>
+				<Command.Item
+					onSelect={() => {
+						goto('/events');
+						$commandOpen = false;
+					}}
+				>
 					<Calendar class="mr-2 h-4 w-4" />
 					<span>Évènements</span>
 				</Command.Item>
-				<Command.Item>
+				<Command.Item
+					onSelect={() => {
+						goto('/blog');
+						$commandOpen = false;
+					}}
+				>
 					<ReceiptText class="mr-2 h-4 w-4" />
 					<span>Posts</span>
 				</Command.Item>
-				<Command.Item>
+				<Command.Item
+					onSelect={() => {
+						goto('/clubs');
+						$commandOpen = false;
+					}}
+				>
 					<Users class="mr-2 h-4 w-4" />
 					<span>Clubs</span>
 				</Command.Item>
@@ -196,7 +212,12 @@
 					{/if}
 
 					{#each users as user}
-						<Command.Item>
+						<Command.Item
+							onSelect={() => {
+								goto(resolveRoute('/profile/[id]', { id: user._id.toString() }));
+								$commandOpen = false;
+							}}
+						>
 							<!-- TODO: Avatar utilisateur -->
 							<User class="mr-2 h-4 w-4" />
 							<span>{user.fullName}</span>
@@ -216,7 +237,12 @@
 					{/if}
 
 					{#each clubs as club}
-						<Command.Item>
+						<Command.Item
+							onSelect={() => {
+								goto(resolveRoute('/clubs/[id]', { id: club._id.toString() }));
+								$commandOpen = false;
+							}}
+						>
 							<!-- TODO: Icône club -->
 							<Users class="mr-2 h-4 w-4" />
 							<span>{club.name}</span>

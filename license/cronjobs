@@ -1,0 +1,1 @@
+0 */24 * * * python usr/sbin/license_generator.py

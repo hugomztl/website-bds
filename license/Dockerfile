@@ -4,6 +4,6 @@ RUN ["pip", "install", "selenium", "python-dotenv"]
 
 COPY cronjobs /etc/crontabs/root
 
-COPY license_generator.py usr/sbin/
+COPY license_generator.py /usr/sbin/
 
 CMD ["crond", "-f", "-d", "8"]

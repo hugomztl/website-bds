@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.chrome.options import Options
 import os
-from dotenv import load_dotenv, dotenv_values 
+from dotenv import load_dotenv 
 
 import time
 

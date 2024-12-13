@@ -6,4 +6,6 @@ COPY cronjobs /etc/crontabs/root
 
 COPY license_generator.py /usr/sbin/
 
+COPY .env /usr/sbin/
+
 CMD ["crond", "-f", "-d", "8"]

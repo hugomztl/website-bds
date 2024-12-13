@@ -80,16 +80,16 @@ class FormulaireLicence:
         form.find_element(By.XPATH, "//input[@name='PRESIDENTOK']").click()
 
 def main():
-	load_dotenv() 
+    load_dotenv() 
 
     # Configuration du navigateur
-	chrome_options = Options()
-	chrome_options.add_argument("--no-sandbox")
-	chrome_options.add_argument("--headless")
+    chrome_options = Options()
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(options=chrome_options)  # Assurez-vous d'avoir installé le pilote Chrome approprié
 
-	login = os.getenv("LOGIN")
-	password = os.getenv("PASSWORD")
+    login = os.getenv("LOGIN")
+    password = os.getenv("PASSWORD")
 
     # Création d'une instance de Connexion et connexion au site
     connexion = Connexion(driver, "http://sport-u-licences.com/", login, password)# trouver un moyen de récupérer et mettre a jour dynamiquement les identifiants FFSU via le panel admin du site

@@ -10,5 +10,10 @@ services:
       - ./db:/data/db
     networks:
       - db-network
+  license:
+    build:
+      context: license
+    networks:
+      - db-network
 networks:
   db-network:

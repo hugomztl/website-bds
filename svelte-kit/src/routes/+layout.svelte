@@ -119,8 +119,9 @@
 </script>
 
 <ModeWatcher />
+<!-- bg-white/70 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-black/10 -->
 <nav
-	class="sticky top-0 z-50 w-full bg-white/10 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-black/10"
+	class="fixed top-0 z-50 w-full shadow-xl bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur"
 >
 	<Command.Dialog bind:open={$commandOpen}>
 		<Command.Input
@@ -235,11 +236,11 @@
 				<img src="/logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
 			</a>
 
-			<div class="hidden items-center space-x-4 md:flex">
+			<div class="hidden items-center space-x-4 md:flex ">
 				<Button href="/blog" variant="link">Blog</Button>
-				<Separator orientation="vertical" class="h-6 bg-white" />
+				<Separator orientation="vertical" class="h-6 bg-black" />
 				<Button href="/services" variant="link">Activités</Button>
-				<Separator orientation="vertical" class="h-6 bg-white" />
+				<Separator orientation="vertical" class="h-6 bg-black" />
 				<Button href="/contact" variant="link">Contact</Button>
 			</div>
 		</div>
@@ -260,7 +261,7 @@
 				>
 			</div>
 
-			<Separator orientation="vertical" class="h-6 bg-white" />
+			<Separator orientation="vertical" class="h-6 bg-black" />
 
 			{#if session?.user}
 				<DropdownMenu.Root>
@@ -304,19 +305,19 @@
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			{:else}
-				<Button on:click={() => goto('/signin')} variant="link" class="text-white"
+				<Button on:click={() => goto('/signin')} variant="link"
 					>Se connecter</Button
 				>
 			{/if}
 
-			<Separator orientation="vertical" class="h-6 bg-white" />
+			<Separator orientation="vertical" class="h-6 bg-black" />
 
 			<!-- Toggle Mode -->
 			<Button
 				on:click={toggleMode}
 				variant="ghost"
 				size="icon"
-				class="text-white hover:text-black dark:hover:bg-white"
+				class="hover:text-black dark:hover:bg-white"
 			>
 				<Sun class="h-5 w-5 dark:hidden" />
 				<Moon class="hidden h-5 w-5 dark:block" />

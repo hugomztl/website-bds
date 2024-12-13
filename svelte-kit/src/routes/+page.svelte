@@ -12,6 +12,7 @@
 	import '@event-calendar/core/index.css';
 	import Autoplay from "embla-carousel-autoplay";
 	import '../app.postcss';
+	import { Badge } from "$lib/components/ui/badge";
 	import { onMount } from 'svelte';
 
 	let isMuted = true;
@@ -26,12 +27,28 @@
 	];
 
 	let actu = [
-		{ titre: 'Soirée BBQ', date:'26/11/2024', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-		{ titre: 'Club BFC (Brat Fight Club)', date:'26/11/2024', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-		{ titre: 'Randonnée Vosges', date:'26/11/2024', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-		{ titre: 'Nouveaux prix licences FFSU', date:'26/11/2024', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
-		{ titre: 'CESI, finito ou masterclass ?', date:'26/11/2024', desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' },
+		{ titre: 'Soirée BBQ', date: '26/11/2024', desc: 'Description de la soirée BBQ.', categorie: 'Événement' },
+		{ titre: 'Club BFC (Brat Fight Club)', date: '26/11/2024', desc: 'Description du club BFC.', categorie: 'Sport' },
+		{ titre: 'Randonnée Vosges', date: '26/11/2024', desc: 'Description de la randonnée.', categorie: 'Événement' },
+		{ titre: 'Nouveaux prix licences FFSU', date: '26/11/2024', desc: 'Informations sur les licences FFSU.', categorie: 'Licences' },
+		{ titre: 'CESI, finito ou masterclass ?', date: '26/11/2024', desc: 'Discussion sur le CESI.', categorie: 'Info' },
 	];
+
+	function getBadgeVariant(categorie: string): string {
+		switch (categorie) {
+			case 'Événement':
+			return 'default';
+			case 'Sport':
+			return 'secondary';
+			case 'Licences':
+			return 'outline';
+			case 'Info':
+			return 'destructive';
+			default:
+			return 'default';
+		}
+	}
+
 
  	const plugin = Autoplay({ delay: 2000, stopOnInteraction: true });
 
@@ -88,14 +105,14 @@
 			<Button
 				variant="ghost"
 				href="/register"
-				class="hover:bg-white/10 hover:backdrop-blur-md hover:text-white"
+				class="hover:shadow-xl hover:bg-background/95 hover:supports-[backdrop-filter]:bg-background/60 hover:backdrop-blur"
 			>
 				Rejoins le BDS
 				<ChevronRight/>
 		</Button>
 		</div>
 
-		<Button on:click={() => (isMuted = !isMuted)} class="hover:bg-white/10 hover:backdrop-blur-md absolute right-4 top-[10%] z-5" variant="ghost">
+		<Button on:click={() => (isMuted = !isMuted)} class="hover:shadow-xl hover:bg-background/95 hover:supports-[backdrop-filter]:bg-background/60 hover:backdrop-blur absolute right-4 top-[10%] z-5" variant="ghost">
 			{#if isMuted}
 				<VolumeX size={24} color="red" />
 			{:else}
@@ -122,7 +139,8 @@
 					<Card.Root class="w-full">
 						<Card.Header>
 							<Card.Title>{_.titre}</Card.Title>
-							<Card.Description>Ceci est l'actualité {i+1}</Card.Description>
+							<Card.Description><Badge variant={getBadgeVariant(_.categorie)}>{_.categorie}</Badge>
+							</Card.Description>
 							</Card.Header>
 							<Card.Content>
 							{_.desc}

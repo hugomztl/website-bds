@@ -238,9 +238,9 @@
 
 			<div class="hidden items-center space-x-4 md:flex ">
 				<Button href="/blog" variant="link">Blog</Button>
-				<Separator orientation="vertical" class="h-6 bg-black" />
+				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
 				<Button href="/services" variant="link">Activités</Button>
-				<Separator orientation="vertical" class="h-6 bg-black" />
+				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
 				<Button href="/contact" variant="link">Contact</Button>
 			</div>
 		</div>
@@ -261,7 +261,7 @@
 				>
 			</div>
 
-			<Separator orientation="vertical" class="h-6 bg-black" />
+			<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
 
 			{#if session?.user}
 				<DropdownMenu.Root>
@@ -310,7 +310,7 @@
 				>
 			{/if}
 
-			<Separator orientation="vertical" class="h-6 bg-black" />
+			<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
 
 			<!-- Toggle Mode -->
 			<Button

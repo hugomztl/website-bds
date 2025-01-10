@@ -7,13 +7,15 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.chrome.options import Options
 import os
 from dotenv import load_dotenv 
-
+import pymongo
+import logging
 import time
 
 class Connexion:
-    def __init__(self, driver, url, username, password):
+    def __init__(self, driver, url, target_url, username, password):
         self.driver = driver
         self.url = url
+        self.target_url = target_url
         self.username = username
         self.password = password
 
@@ -26,8 +28,9 @@ class Connexion:
         password_field.send_keys(self.password)
         submit_button = self.driver.find_element(By.XPATH, "//input[@type='SUBMIT' and @value='Valider']")
         submit_button.click()
-        wait.until(EC.url_changes(self.url))
-        print("1/4 - Connexion réussie")
+        wait.until(EC.url_changes(self.target_url))
+        logging.info(self.url)
+        logging.info("1/4 - Connexion réussie")
 
 class FormulaireLicence:
     def __init__(self, driver, nom, prenom, sexe, date_naissance, pays_naissance, dpt_naissance, ville_naissance, adresse, code_postal, ville, email, sport, assurance, cm_non_risque, cm_risque, date_cm):
@@ -72,27 +75,22 @@ class FormulaireLicence:
         Select(form.find_element(By.XPATH, "//select[@name='CMNONRISQUE1']")).select_by_value(self.cm_non_risque)
         form.find_element(By.XPATH, "//input[@name='CHECKBOX_FICHE_INDIV_1']").click()
         form.find_element(By.XPATH, "//input[@name='CHECKBOX_FICHE_INDIV_3']").click()
-        if form.find_element(By.XPATH, "//input[@name='CHECKBOX_FICHE_INDIV_3']").is_selected():
+        # if form.find_element(By.XPATH, "//input[@name='CHECKBOX_FICHE_INDIV_3']").is_selected():
+        if self.cm_risque != None:
             Select(form.find_element(By.XPATH, "//select[@name='CMRISQUE1']")).select_by_value(self.cm_risque)
         form.find_element(By.XPATH, "//input[@name='CERTIFICATOK']").click()
         self.driver.execute_script('document.getElementsByName("DATECM")[0].removeAttribute("readonly")')
         form.find_element(By.XPATH, "//input[@name='DATECM']").send_keys(self.date_cm)
         form.find_element(By.XPATH, "//input[@name='PRESIDENTOK']").click()
 
-def main():
-    load_dotenv() 
+	
 
-    # Configuration du navigateur
-    chrome_options = Options()
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--headless")
-    driver = webdriver.Chrome(options=chrome_options)  # Assurez-vous d'avoir installé le pilote Chrome approprié
-
+def generate_license(formulaire: FormulaireLicence, driver: webdriver.Chrome):
     login = os.getenv("LOGIN")
     password = os.getenv("PASSWORD")
 
     # Création d'une instance de Connexion et connexion au site
-    connexion = Connexion(driver, "http://sport-u-licences.com/", login, password)# trouver un moyen de récupérer et mettre a jour dynamiquement les identifiants FFSU via le panel admin du site
+    connexion = Connexion(driver, "http://sport-u-licences.com/", "http://sport-u-licences.com/fnsu_02.php", login, password)
     connexion.se_connecter()
 
     # Recherche du menu "LICENCES" et survol pour afficher le sous-menu
@@ -104,7 +102,7 @@ def main():
     gestion_licences = wait.until(EC.visibility_of_element_located((By.XPATH, "//ul[@id='ssmenu1']/li/a[@href='fnsu_10.php']")))
     gestion_licences.click()
 
-    print("2/4 - Navigation vers 'Gestion des licences' réussie")
+    logging.info("2/4 - Navigation vers 'Gestion des licences' réussie")
 
     # Attente que la page de gestion des licences soit chargée
     wait.until(EC.presence_of_element_located((By.XPATH, "//input[@type='IMAGE' and @alt='Ajouter']")))
@@ -113,37 +111,68 @@ def main():
     add_button = driver.find_element(By.XPATH, "//input[@type='IMAGE' and @alt='Ajouter']")
     add_button.click()
 
-    print("3/4 - Clic sur le bouton '+' réussi")
+    logging.info("3/4 - Clic sur le bouton '+' réussi")
 
     # Remplissage du formulaire avec des informations arbitraires
     form = driver.find_element(By.NAME, 'formu')
 
-    # Création d'une instance de FormulaireLicence avec des valeurs arbitraires
-    formulaire = FormulaireLicence(
-        driver,
-        nom='Dupont',
-        prenom='Jean',
-        sexe='M',
-        date_naissance='01011990',
-        pays_naissance='France',
-        dpt_naissance='75',
-        ville_naissance='Paris',
-        adresse='123 Rue de Paris',
-        code_postal='75001',
-        ville='Paris',
-        email='jean.dupont@example.com',
-        sport='Football',
-        assurance=True,
-        cm_non_risque='59',
-        cm_risque='10',
-        date_cm='01/01/2024'
-        #données de test, à voir comment récupérer les données réelles par une requête ou un webhook
-    )
-
     # Remplissage du formulaire
     formulaire.remplir_formulaire(form)
-    print("4/4 - Remplissage du formulaire réussi (mode démo, formulaire non soumis)")
-    time.sleep(20)
+    logging.info("4/4 - Remplissage du formulaire réussi (mode démo, formulaire non soumis)")
+
+def format_date_naissance(date_str):
+    date = time.strptime(date_str, "%Y-%m-%d")
+    return time.strftime("%d%m%Y", date)
+
+def format_date_cm(date_str):
+    date = time.strptime(date_str, "%Y-%m-%d")
+    return time.strftime("%d/%m/%Y", date)
+
+def main():
+    logging.getLogger().setLevel(logging.INFO)
+	# Configuration du navigateur
+    chrome_options = Options()
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--headless")
+    driver = webdriver.Chrome(options=chrome_options)  # Assurez-vous d'avoir installé le pilote Chrome approprié
+
+    load_dotenv()
+    logging.basicConfig(level=logging.INFO)
+
+    logging.info("Démarrage ...")
+    client = pymongo.MongoClient("localhost", 27017)
+    logging.info("Client mongo créé, chargement de la base de données ...")
+    db = client['website-bds']
+    logging.info("Base de données chargée, recherche des licenses payées ...")
+    for l in db.pendinglicenses.find({ "licensePaid": True }): # type: ignore
+        formulaire_license = FormulaireLicence(
+            driver,
+            nom=l["nom"],
+            prenom=l["prenom"],
+            sexe=l["sexe"],
+            date_naissance=format_date_naissance(l["datenaiss"]),
+            pays_naissance=l["pays_naissance"],
+            dpt_naissance=l["dpt_naissance"],
+            ville_naissance=l["ville_naissance"],
+            adresse=l["adresse1"],
+            code_postal=l["codepostal"],
+            ville=l["ville"],
+            email=l["email"],
+            sport=l["sport"],
+            assurance=True,
+            cm_non_risque=l["cmnonrisque1"],
+            cm_risque=l["cmrisque1"],
+            date_cm=format_date_cm(l["datenaiss"])
+        )
+
+        generate_license(formulaire_license, driver)
+
+        submit_button = driver.find_element(By.XPATH, "//input[@type='SUBMIT' and @value='Valider']")
+        logging.log(submit_button.text)
+        logging.log(driver.find_element(By.XPATH, "//form"))
+        
+        submit_button.click()
+        db.pendingLicenses.delete_one({ "_id": l._id })
 
 if __name__ == "__main__":
     main()

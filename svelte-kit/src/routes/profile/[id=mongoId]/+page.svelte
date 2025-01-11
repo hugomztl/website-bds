@@ -1,18 +1,38 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Badge } from "$lib/components/ui/badge";
+	import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
 	import * as Card from "$lib/components/ui/card";
 	import { Button } from "$lib/components/ui/button";
-	import { Shield, ShoppingCart, SquarePen } from 'lucide-svelte';
+	import { ChevronRight, Plus, ShieldCheck, ShoppingCart, SquarePen, Users, Crown, Ellipsis, LogOut, TriangleAlert, Info, Check, Cog} from 'lucide-svelte';
 	import * as Avatar from "$lib/components/ui/avatar";
 	import User from 'lucide-svelte/icons/user';
+	import * as Table from "$lib/components/ui/table";
+	import * as Popover from "$lib/components/ui/popover";
+	import * as Tooltip from "$lib/components/ui/tooltip";
+	import * as AlertDialog from "$lib/components/ui/alert-dialog";
+	import { Separator } from "$lib/components/ui/separator";
+	import { Skeleton } from "$lib/components/ui/skeleton";
 
 	export let data;
 	$: user = data.user;
 	$: sameUser = data.session?.user?.id === user._id.toString();
+	$: trySession = 1;
+
+	// TODO: remplacer la liste des sports par la liste des clubs auquel l'utilisateur est inscrit
+	//console.log(data.user);
+
+	// TODO: récupérer dynamiquement la liste des clubs de l'utilisateur (ajouter les champs manquant si necessaires comme joined, status, ffsu ou encore page)
+	const clubs = [
+		{ name: 'BFC', joined: '01/02/2024', status: 'Membre', ffsu: 'Oui', page: '/bfc' }, //id du club pour la page (/id) ?
+		{ name: 'Sport auto', joined: '26/01/2023', status: 'Président', ffsu: 'Non', page: '/aut' },
+		{ name: 'Escalade', joined: '04/01/2025', status: 'Membre', ffsu: 'Non', page: '/esc' },
+		{ name: 'Volley', joined: '01/01/2025', status: 'Membre', ffsu: 'Oui', page: '/vol' },
+		{ name: 'Handball', joined: '01/01/2025', status: 'Membre', ffsu: 'Oui', page: '/han' }
+	];
 </script>
 
-<main>
+<main class="scrollbar-hide">
 	<section class="container w-full mt-[5%]">
 		<Card.Root>
 			<Card.Header>
@@ -30,20 +50,20 @@
 					<div class="ml-4">
 						<h1 class="text-6xl">{user.fullName}</h1>
 						{#if user.admin}
-							<Badge class="bg-orange-500 mt-5">Admin<Shield class="w-4 ml-1"/></Badge>	
+							<Badge class="bg-blue-500 mt-5"><ShieldCheck class="mr-1 w-5"/>Admin</Badge>	
 						{/if}
 						
 					</div>
 					
 				</div>
-				<p>Inscrit le {user.dateInscription?.toLocaleDateString() ?? 'N/A'}</p>
 			</Card.Content>
-			<Card.Footer>
+			<Card.Footer class="justify-between">
+				<p>Inscrit le {user.dateInscription?.toLocaleDateString() ?? 'N/A'}</p>
 				{#if $page.data.session?.user?.isAdmin || user._id === $page.data.session?.user?.id}
 				<a href={`/profile/${encodeURIComponent(user._id ?? '')}/edit`} class="edit-profile-button">
-					<Button class="bg-blue-500">
+					<Button variant="ghost">
+						<SquarePen class="mr-1"/>
 						Modifier le profil
-						<SquarePen class="ml-2"/>
 					</Button>
 				</a>
 			{/if}
@@ -61,14 +81,13 @@
 			</Card.Header>
 			<Card.Content>
 				{user.license ? 'Licencié' : 'Non licencié'}
-				
 			</Card.Content>
 			<Card.Footer>
 				{#if !user.license && sameUser}
 				<a href="/ffsu">
 					<Button class="bg-green-500">
+						<ShoppingCart class="mr-1"/>
 						Acheter ma licence FFSU
-						<ShoppingCart class="ml-2"/>
 					</Button>
 				</a>
 				{/if}
@@ -128,9 +147,15 @@
 			  <Card.Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</Card.Description>
 			</Card.Header>
 			<Card.Content>
-			<p><b>Email:</b> {user.email}</p>
-			<p><b>Discord:</b> {user.discord ?? '🙅 Pas de discord'}</p>
-			<p><b>Promo:</b> {user.promo ?? '🙅 Pas de promo'}</p>
+			<p><b>Email :</b> {user.email}</p>
+			<Separator/>
+			{#if user.promo}
+				<p><b>Promotion :</b> {user.promo}</p>
+			{/if}
+			<Separator/>
+			{#if user.discord}
+				<p><b>Discord :</b> {user.discord}</p>
+			{/if}
 			</Card.Content>
 		  </Card.Root>
 
@@ -142,10 +167,115 @@
 			<Card.Title>Mes clubs</Card.Title>
 		</Card.Header>
 		<Card.Content>
-			
-			
+			<Table.Root>
+				<Table.Header>
+				  <Table.Row>
+					<Table.Head class="w-[20%]">Club</Table.Head>
+					<Table.Head class="w-[20%]">Rejoins le</Table.Head>
+					<Table.Head class="w-[20%]">Statut</Table.Head>
+					<Table.Head class="w-[20%]">Licence FFSU requise</Table.Head>
+					<Table.Head class="w-[20%]"></Table.Head>
+				  </Table.Row>
+				</Table.Header>
+				</Table.Root>
+			<ScrollArea class="h-44">
+				<Table.Root>
+					<Table.Body>
+						{#each clubs as club}
+							<Table.Row>
+								<Table.Cell class="font-medium w-[20%]">{club.name}</Table.Cell>
+								<Table.Cell class="w-[20%]">{club.joined}</Table.Cell>
+								<Table.Cell class="w-[20%]">
+									<div class="flex items-center">
+										{#if club.status === 'Président'}
+											<Crown class="mr-1"/>
+										{:else}
+											<Users class="mr-1"/>
+										{/if}
+										{club.status}
+									</div>
+								</Table.Cell>
+								<Table.Cell class="w-[20%]">
+									{#if club.ffsu === 'Oui' && !user.license && trySession === 0}
+										<Tooltip.Root>
+											<Tooltip.Trigger>
+												<Badge class="bg-red-500"><TriangleAlert class="mr-1 w-5"/>Oui</Badge>
+											</Tooltip.Trigger>
+											<Tooltip.Content>
+												<p>Vous avez épuisé vos séances d'essais pour ce club</p>
+											</Tooltip.Content>
+										</Tooltip.Root>
+									{:else if club.ffsu === 'Oui' && !user.license && trySession != 0}
+									<Tooltip.Root>
+										<Tooltip.Trigger>
+											<Badge class="bg-orange-500"><Info class="mr-1 w-5"/>Oui</Badge>
+										</Tooltip.Trigger>
+										<Tooltip.Content>
+											<p>Il vous reste {trySession} séance(s) d'essais pour ce club</p>
+										</Tooltip.Content>
+									</Tooltip.Root>
+									{:else}
+										<Badge class="bg-green-500"><Check class="mr-1 w-5"/>{club.ffsu}</Badge>
+									{/if}
+								</Table.Cell>
+								<Table.Cell class="text-right">
+									<Popover.Root portal={null}>
+										<Popover.Trigger><Ellipsis/></Popover.Trigger>
+										<Popover.Content class="flex w-auto space-x-2">
+											<Tooltip.Root>
+												<Tooltip.Trigger asChild let:builder>
+													<AlertDialog.Root>
+														<AlertDialog.Trigger>
+															<Button builders={[builder]} variant="destructive" tabindex="-1">
+																<LogOut/>
+															</Button>
+														</AlertDialog.Trigger>
+														<AlertDialog.Content>
+														  <AlertDialog.Header>
+															<AlertDialog.Title>Êtes-vous sûr ?</AlertDialog.Title>
+															<AlertDialog.Description>
+															  Vous vous apprêtez à quitter le club <b>{club.name}</b>. Pour rejoindre à nouveau ce club, vous devrez réeffectuer la demande sur la page du club.
+															</AlertDialog.Description>
+														  </AlertDialog.Header>
+														  <AlertDialog.Footer>
+															<AlertDialog.Cancel>Annuler</AlertDialog.Cancel>
+															<!-- TODO: gérer la fonctionnalité pour quitter un club -->
+															<AlertDialog.Action class="bg-red-500" on:click={()=>console.log(club.name+" : club quitté")}>Quitter</AlertDialog.Action>
+														  </AlertDialog.Footer>
+														</AlertDialog.Content>
+													  </AlertDialog.Root>
+													
+												</Tooltip.Trigger>
+												<Tooltip.Content>
+													<p>Quitter le club</p>
+												</Tooltip.Content>
+											</Tooltip.Root>
+
+											<Tooltip.Root>
+												<Tooltip.Trigger asChild let:builder>
+													<Button builders={[builder]} variant="outline" href={club.page} tabindex="-1">
+														<ChevronRight/>
+													</Button>
+												</Tooltip.Trigger>
+												<Tooltip.Content>
+													<p>Consulter la page du club</p>
+												</Tooltip.Content>
+											</Tooltip.Root>
+										</Popover.Content>
+									</Popover.Root>
+								</Table.Cell>
+							</Table.Row>
+						{/each}
+					</Table.Body>
+				  </Table.Root>
+			</ScrollArea>
 		</Card.Content>
-		
+		<Card.Footer class="flex justify-center">
+			<Button variant="ghost">
+				<Plus class="mr-1"/>
+				Rejoindre un nouveau club
+			</Button>
+		</Card.Footer>
 	</Card.Root>
 	
 	</section>

@@ -6,7 +6,7 @@
 	const { form, enhance, errors, constraints } = superForm(data.form);
 </script>
 
-<main>
+<main class="container mt-[5%] m-auto">
 	<h1>Créer un club</h1>
 
 	<form method="POST" use:enhance>

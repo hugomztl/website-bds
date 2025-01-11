@@ -18,7 +18,7 @@
 	import CreditCard from 'lucide-svelte/icons/credit-card';
 	import Settings from 'lucide-svelte/icons/settings';
 	import User from 'lucide-svelte/icons/user';
-	import { LogOut } from 'lucide-svelte';
+	import { LogOut, ShieldCheck } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -116,6 +116,7 @@
 			document.removeEventListener('keydown', handleKeydown);
 		};
 	});
+
 </script>
 
 <ModeWatcher />
@@ -230,8 +231,6 @@
 	<div class="container mx-auto flex h-16 items-center justify-between px-4">
 		<!-- Logo et navigation -->
 		<div class="flex items-center space-x-4">
-			<!-- FIXME: "mix-blend-difference" ne fonctionne pas pour inverser la couleur des texte dynamiquement -->
-
 			<a href="/" class="flex items-center">
 				<img src="/logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
 			</a>
@@ -242,6 +241,10 @@
 				<Button href="/services" variant="link">Activités</Button>
 				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
 				<Button href="/contact" variant="link">Contact</Button>
+				{#if session?.user && session.user.isAdmin}
+				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
+				<Button href="/dashboard" variant="link"><ShieldCheck class="mr-1 w-5"/>Administrateur</Button>
+				{/if}
 			</div>
 		</div>
 
@@ -325,4 +328,5 @@
 		</div>
 	</div>
 </nav>
+
 <slot />

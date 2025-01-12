@@ -4,7 +4,7 @@
 	import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
 	import * as Card from "$lib/components/ui/card";
 	import { Button } from "$lib/components/ui/button";
-	import { ChevronRight, Plus, ShieldCheck, ShoppingCart, SquarePen, Users, Crown, Ellipsis, LogOut, TriangleAlert, Info, Check, Cog} from 'lucide-svelte';
+	import { ChevronRight, Plus, ShieldCheck, ShoppingCart, SquarePen, Users, Crown, Ellipsis, LogOut, TriangleAlert, Info, Check, Cog, UserCheck} from 'lucide-svelte';
 	import * as Avatar from "$lib/components/ui/avatar";
 	import User from 'lucide-svelte/icons/user';
 	import * as Table from "$lib/components/ui/table";
@@ -13,6 +13,7 @@
 	import * as AlertDialog from "$lib/components/ui/alert-dialog";
 	import { Separator } from "$lib/components/ui/separator";
 	import * as Sheet from "$lib/components/ui/sheet";
+	import { Progress } from "$lib/components/ui/progress";
 	import { Input } from "$lib/components/ui/input/index.js";
 	import { Label } from "$lib/components/ui/label/index.js";
 
@@ -20,6 +21,7 @@
 	$: user = data.user;
 	$: sameUser = data.session?.user?.id === user._id.toString();
 	$: trySession = 1;
+	$: profilCompletion = 55; //TODO: calculer le pourcentage de complétion du profil dynamiquement en fonction des champs définis ou non dans la bdd
 
 	// TODO: remplacer la liste des sports par la liste des clubs auquel l'utilisateur est inscrit
 	//console.log(data.user);
@@ -67,9 +69,9 @@
 				</a>
 				<Sheet.Root>
 					<Sheet.Trigger asChild let:builder>
-					  <Button builders={[builder]} variant="outline">
+					  <Button builders={[builder]} variant="ghost">
 						<SquarePen class="mr-1"/>
-						Modifier le profil
+						Modifier
 						</Button>
 					</Sheet.Trigger>
 					<Sheet.Content side="right">
@@ -93,9 +95,28 @@
 		</Card.Root>
 	</section>
 	
-	<section class="container mt-[2%] flex justify-between">
+	<section class="container mt-[2%] flex justify-between space-x-5">
 
-		<Card.Root class="w-[49%]">
+		{#if profilCompletion != 100}
+		<Card.Root class="w-1/3">
+		
+			<Card.Header>
+			  <Card.Title>Complétez votre profil</Card.Title>
+			  <Card.Description>{profilCompletion > 75 ? "Vous y êtes presque !" : "Dites-nous en un peu plus sur vous"}</Card.Description>
+			</Card.Header>
+			<Card.Content>
+				<p class="text-6xl font-bold">{profilCompletion}<span class="text-3xl">%</span></p>
+				<Progress value={profilCompletion} class="mt-2"/>
+			</Card.Content>
+			<Card.Footer class="flex justify-center">
+				<Button>
+					<UserCheck class="mr-1"/>
+					Finaliser
+				</Button>
+			</Card.Footer>
+		</Card.Root>
+		{/if}
+		<Card.Root class="w-1/3">
 		
 			<Card.Header>
 			  <Card.Title>Status FFSU</Card.Title>
@@ -104,12 +125,12 @@
 			<Card.Content>
 				{user.license ? 'Licencié' : 'Non licencié'}
 			</Card.Content>
-			<Card.Footer>
+			<Card.Footer class="flex justify-center">
 				{#if !user.license && sameUser}
 				<a href="/ffsu">
-					<Button class="bg-green-500">
+					<Button class="bg-green-500 bottom-0">
 						<ShoppingCart class="mr-1"/>
-						Acheter ma licence FFSU
+						Acheter ma licence
 					</Button>
 				</a>
 				{/if}
@@ -163,7 +184,7 @@
 			</Card.Footer>
 		</Card.Root>
 
-		<Card.Root class="w-[49%]">
+		<Card.Root class="w-1/3">
 			<Card.Header>
 			  <Card.Title>Informations du profil</Card.Title>
 			  <Card.Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</Card.Description>
@@ -293,7 +314,7 @@
 			</ScrollArea>
 		</Card.Content>
 		<Card.Footer class="flex justify-center">
-			<Button variant="ghost">
+			<Button variant="ghost" href="/clubs">
 				<Plus class="mr-1"/>
 				Rejoindre un nouveau club
 			</Button>

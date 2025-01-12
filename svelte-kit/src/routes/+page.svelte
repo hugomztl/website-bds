@@ -14,6 +14,8 @@
 	import '../app.postcss';
 	import { Badge } from "$lib/components/ui/badge";
 	import { onMount } from 'svelte';
+	import { Separator } from "$lib/components/ui/separator";
+	import { buttonVariants } from "$lib/components/ui/button";
 
 	let isMuted = true;
 	let videoElement: HTMLVideoElement | null = null;
@@ -120,9 +122,9 @@
 			{/if}
 		</Button>
 	</section>
-
+	
 	<section class="container w-full">
-		<h2 class="my-[5%] text-center font-bold">ACTUALITÉS</h2>
+		<h2 class="mt-[5%] text-center font-bold text-4xl">ACTUALITÉS</h2>
 		<Carousel.Root 
 		orientation="horizontal"
 		plugins={[plugin]}
@@ -161,47 +163,47 @@
 
 	<section class="container mt-[5%] flex justify-between">
 
-		<Card.Root class="w-[49%]">
+		<Card.Root class="w-[35%]">
 		
 			<Card.Header>
 			  <Card.Title>Qu'est-ce qu'un BDS ?</Card.Title>
-			  <Card.Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</Card.Description>
 			</Card.Header>
+
 			<Card.Content>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
+				<Separator class="mb-5"/>
+				Le <b>BDS (Bureau des Sports)</b> est une association étudiante, généralement présente dans les écoles supérieures et universités, dont le rôle principal est d’organiser et de promouvoir les activités sportives pour les étudiants. Le BDS est souvent un des piliers de la vie associative étudiante, au même titre que d'autres bureaux comme le <b>BDE (Bureau des Étudiants)</b>.
 			</Card.Content>
 		</Card.Root>
-
-		<Card.Root class="w-[49%]">
+		
+		<Card.Root class="w-[60%]">
 			<Card.Header>
-			  <Card.Title>Notre mission</Card.Title>
-			  <Card.Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</Card.Description>
+			  <Card.Title>Nos missions</Card.Title>
 			</Card.Header>
-			<Card.Content>
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.
+			<Card.Content>	
+				<Separator class="mb-5" />
+				<ul class="list-disc ml-4">
+					<li><b>Organiser les événements sportifs :</b> tournois, compétitions inter-écoles, journées sportives.</li>
+					<li><b>Promouvoir la pratique sportive :</b> séances d'entraînement, découverte de nouvelles disciplines.</li>
+					<li><b>Encadrer les équipes sportives :</b> gestion des inscriptions, fourniture d'équipements.</li>
+					<li><b>Gérer les infrastructures :</b> réservation de terrains, salles, et matériel sportif.</li>
+					<li><b>Créer une cohésion étudiante :</b> activités sportives fédératrices, soirées à thème, week-ends sportifs.</li>
+					<li><b>Rechercher des financements :</b> partenariats, sponsors, cotisations pour soutenir les activités.</li>
+				</ul>				
 			</Card.Content>
-		  </Card.Root>
-
+		</Card.Root>
 	</section>
 
 	<section class="container w-full mt-[5%]">
-			<h2 class="mb-12 text-center font-bold">FAQ</h2>
+			<h2 class="mb-12 text-center font-bold text-4xl">FAQ</h2>
 			<Accordion.Root>
 				<Accordion.Item value="item-1">
 					<Accordion.Trigger>Comment rejoindre un club existant ?</Accordion.Trigger>
 					<Accordion.Content>
-					  Pour rejoindre un club, ouvrez la barre de recherche en appuyant sur 
+						Pour rejoindre un club, accédez à la <a href="/clubs" class="underline">liste des clubs</a> et choisissez le club qui vous intéresse pour accéder à sa page. Vous pourrez alors effectuer une demande d'adhésion. Alternativement, vous pouvez chercher un club précis en utilisant la barre de recherche en haut de la page ou en appuyant sur
 					  <kbd
 					  class="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100">
 					  <span class="text-xs">{shortcut}K</span>
 					  </kbd>
-					  et cherchez le nom du club que vous souhaitez rejoindre pour accéder à sa page. La liste des clubs est disponible plus haut ci-dessus.
 					</Accordion.Content>
 				  </Accordion.Item>
 				<Accordion.Item value="item-2">
@@ -219,7 +221,7 @@
 				  <Accordion.Item value="item-4">
 					<Accordion.Trigger>Puis-je pratiquer sans licence ?</Accordion.Trigger>
 					<Accordion.Content>
-					  Oui, si les installations utilisées par le club ne sont pas mises à disposition par la FFSU.
+					  Oui, si les installations utilisées par le club ne sont pas mises à disposition par la FFSU. Dans le cas contraire, une licence est obligatoire une fois vos séances d'essai épuisées.
 					</Accordion.Content>
 				  </Accordion.Item>
 				  <Accordion.Item value="item-5">

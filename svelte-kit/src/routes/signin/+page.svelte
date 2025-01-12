@@ -115,11 +115,13 @@
 	import { Label } from "$lib/components/ui/label/index.js";
 	import CircleAlert from "lucide-svelte/icons/circle-alert";
 	import * as Alert from "$lib/components/ui/alert/index.js";
-	import { AspectRatio } from "$lib/components/ui/aspect-ratio";
+	import * as Tooltip from "$lib/components/ui/tooltip";
 	import { page } from '$app/stores';
+	import { Checkbox } from "$lib/components/ui/checkbox";
 
 	let email = $page.form?.email || '';
 	let password = '';
+	let checked = false;
 </script>
 
 <div
@@ -165,32 +167,50 @@
 					<Card.Content>
 						<SignIn class="flex w-full flex-col items-left" provider="credentials">
 							<svelte:fragment slot="credentials">
-								<Label for="email" class="my-2">Email</Label>
+								<Label for="email" class="mb-2">Email</Label>
 								<Input
 									type="email"
 									name="email"
-									placeholder="Mail viacesi"
+									placeholder="Mail @viacesi"
 									bind:value={email}
 								/>
-								<Label for="password" class="my-2">Mot de passe</Label>
+								<Label for="password" class="mt-5 mb-2">Mot de passe</Label>
 								<Input
 									type="password"
 									name="password"
 									placeholder="Mot de passe"
 									bind:value={password}
 								/>
+
+								
+									<Tooltip.Root>
+										<Tooltip.Trigger>
+										<div class="flex items-center justify-center space-x-2 mt-4">
+											<!-- TODO: gérer le stockage du token dans la session en fonction de la checkbox -->
+											<Checkbox id="session" bind:checked aria-labelledby="session-label" />
+											<Label
+											id="session-label"
+											for="session"
+											class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+											>
+											Se souvenir de moi
+											</Label>
+										</div>
+										</Tooltip.Trigger>
+										<Tooltip.Content>
+										  <p>Vous connecte automatiquement lors de vos prochaines visites</p>
+										</Tooltip.Content>
+									</Tooltip.Root>
+									
+								  
 							</svelte:fragment>
-					
+							
+
 							<svelte:fragment slot="submitButton">
-								<Button type="submit" class="my-2">Connexion</Button>
+								<Button type="submit" class="mt-10">Connexion</Button>
 							</svelte:fragment>
 						</SignIn>
 					</Card.Content>
-					<Card.Footer>
-
-						
-
-					</Card.Footer>
 				  </Card.Root>
 				</Tabs.Content>
 				<Tabs.Content value="register">
@@ -229,7 +249,7 @@
 				</a>
 				et
 				<a href="/privacy" class="hover:text-primary underline underline-offset-4">
-					Prolitique de confidentialité
+					Politique de confidentialité
 				</a>
 				.
 			</p>

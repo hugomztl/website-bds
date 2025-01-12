@@ -122,7 +122,7 @@
 <ModeWatcher />
 <!-- bg-white/70 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-black/10 -->
 <nav
-	class="fixed top-0 z-50 w-full shadow-xl bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur"
+	class="fixed top-0 z-50 w-[100vw] shadow-xl bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur"
 >
 	<Command.Dialog bind:open={$commandOpen}>
 		<Command.Input

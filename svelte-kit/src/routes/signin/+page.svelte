@@ -134,7 +134,7 @@
 		/> -->
 
 		<img
-			src="/signin.png"
+			src="/signin.jpg"
 			alt="bds"
 			class="absolute inset-0 w-full h-full object-cover"
 		/>
@@ -142,6 +142,12 @@
 	</div>
 	<div class="lg:p-8">
 		<div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+
+			<img
+				src="logo-bds.png"
+				alt="bds"
+				class="w-24 h-24 mx-auto"
+			/>
 
 			<Tabs.Root value="signin" class="w-[400px]">
 				<Tabs.List class="grid w-full grid-cols-2">
@@ -182,17 +188,7 @@
 					</Card.Content>
 					<Card.Footer>
 
-						<p class="text-muted-foreground px-8 text-center text-sm">
-							En cliquant sur connexion, vous acceptez nos
-							<a href="/terms" class="hover:text-primary underline underline-offset-4">
-								Conditions d'utilisation
-							</a>
-							et
-							<a href="/privacy" class="hover:text-primary underline underline-offset-4">
-								Prolitique de confidentialité
-							</a>
-							.
-						</p>
+						
 
 					</Card.Footer>
 				  </Card.Root>
@@ -226,6 +222,17 @@
 
 			</Tabs.Root>
 
+			<p class="text-muted-foreground px-8 text-center text-sm">
+				En utilisant le site web du BDS, vous acceptez nos
+				<a href="/terms" class="hover:text-primary underline underline-offset-4">
+					Conditions d'utilisation
+				</a>
+				et
+				<a href="/privacy" class="hover:text-primary underline underline-offset-4">
+					Prolitique de confidentialité
+				</a>
+				.
+			</p>
 
 		</div>
 	</div>

@@ -121,6 +121,7 @@
 
 <ModeWatcher />
 <!-- bg-white/70 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-black/10 -->
+{#if $page.url.pathname != '/signin'}
 <nav
 	class="fixed top-0 z-50 w-[100vw] shadow-xl bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur"
 >
@@ -238,12 +239,12 @@
 			<div class="hidden items-center space-x-4 md:flex ">
 				<Button href="/blog" variant="link">Blog</Button>
 				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
-				<Button href="/services" variant="link">Activités</Button>
+				<Button href="/clubs" variant="link">Clubs</Button>
 				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
 				<Button href="/contact" variant="link">Contact</Button>
 				{#if session?.user && session.user.isAdmin}
 				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
-				<Button href="/dashboard" variant="link"><ShieldCheck class="mr-1 w-5"/>Administrateur</Button>
+				<Button href="/dashboard" variant="link"><ShieldCheck class="mr-1 w-5"/>Administrer</Button>
 				{/if}
 			</div>
 		</div>
@@ -328,5 +329,7 @@
 		</div>
 	</div>
 </nav>
-
 <slot />
+{:else}
+<slot />
+{/if}

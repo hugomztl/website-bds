@@ -12,7 +12,9 @@
 	import * as Tooltip from "$lib/components/ui/tooltip";
 	import * as AlertDialog from "$lib/components/ui/alert-dialog";
 	import { Separator } from "$lib/components/ui/separator";
-	import { Skeleton } from "$lib/components/ui/skeleton";
+	import * as Sheet from "$lib/components/ui/sheet";
+	import { Input } from "$lib/components/ui/input/index.js";
+	import { Label } from "$lib/components/ui/label/index.js";
 
 	export let data;
 	$: user = data.user;
@@ -60,12 +62,32 @@
 			<Card.Footer class="justify-between">
 				<p>Inscrit le {user.dateInscription?.toLocaleDateString() ?? 'N/A'}</p>
 				{#if $page.data.session?.user?.isAdmin || user._id === $page.data.session?.user?.id}
-				<a href={`/profile/${encodeURIComponent(user._id ?? '')}/edit`} class="edit-profile-button">
-					<Button variant="ghost">
+				<a href={`/profile/${encodeURIComponent(user._id ?? '')}/edit`} class="text-blue-500 underline">
+				page edit (debug)
+				</a>
+				<Sheet.Root>
+					<Sheet.Trigger asChild let:builder>
+					  <Button builders={[builder]} variant="outline">
 						<SquarePen class="mr-1"/>
 						Modifier le profil
-					</Button>
-				</a>
+						</Button>
+					</Sheet.Trigger>
+					<Sheet.Content side="right">
+					  <Sheet.Header>
+						<Sheet.Title>Modifier le profil</Sheet.Title>
+						<Sheet.Description>
+						  Changez les informations de votre profil ici. Cliquez sur "Sauvegarder" pour valider les modifications ou appuyez sur la croix pour annuler.
+						</Sheet.Description>
+					  </Sheet.Header>
+					  <!-- TODO: intégrer la gestion des modifications sans changer de page -->
+					  <iframe title="edit" src={`/profile/${encodeURIComponent(user._id ?? '')}/edit`}></iframe>
+					  <Sheet.Footer>
+						<Sheet.Close asChild let:builder>
+						  <Button builders={[builder]} type="submit">Sauvegarder</Button>
+						</Sheet.Close>
+					  </Sheet.Footer>
+					</Sheet.Content>
+				</Sheet.Root>
 			{/if}
 			</Card.Footer>
 		</Card.Root>
@@ -143,7 +165,7 @@
 
 		<Card.Root class="w-[49%]">
 			<Card.Header>
-			  <Card.Title>Informations du profile</Card.Title>
+			  <Card.Title>Informations du profil</Card.Title>
 			  <Card.Description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris.</Card.Description>
 			</Card.Header>
 			<Card.Content>

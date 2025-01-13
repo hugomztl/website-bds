@@ -221,8 +221,7 @@
 						{#each clubs as club}
 							<Table.Row>
 								<Table.Cell class="font-medium w-[20%]">{club.name}</Table.Cell>
-								<!-- TODO: Pas encore de date où on a rejoint -->
-								<Table.Cell class="w-[20%]">01/01/1970</Table.Cell>
+								<Table.Cell class="w-[20%]">{club.members.find(member => member._id.toString() === user._id)?.joinedAt ?? "Inconnu"}</Table.Cell>
 								<Table.Cell class="w-[20%]">
 									<div class="flex items-center">
 										{#if club.owner?._id?.toString() === user._id}

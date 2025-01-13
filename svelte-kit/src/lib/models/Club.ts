@@ -40,6 +40,10 @@ const ClubSchema = new Schema({
 				type: Schema.Types.ObjectId,
 				ref: 'User',
 				required: true
+			},
+			joinedAt: {
+				type: Date,
+				default: Date.now
 			}
 		}
 	],

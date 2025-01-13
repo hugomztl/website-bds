@@ -132,7 +132,7 @@
 				bind:value={$_form.dpt_naissance}
 				{...$constraints.dpt_naissance}
 			>
-				<option value="01">01 - Ain</option>
+				<option value="01">01 - Ain</option>	
 				<option value="02">02 - Aisne</option>
 				<option value="03">03 - Allier</option>
 				<option value="04">04 - Alpes de Haute Provence</option>

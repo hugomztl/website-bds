@@ -14,7 +14,7 @@
 	<p class="error">{$page.data.error}</p>
 {/if}
 
-<form method="POST" action="?/editProfile" use:enhance>
+<form method="POST" action="?/editProfile" use:enhance class="mt-[5%]">
 	<div>
 		<label for="fullName">Nom complet:</label>
 		<input type="text" id="fullName" name="fullName" bind:value={$form.fullName} required />

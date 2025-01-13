@@ -18,7 +18,7 @@
 	import CreditCard from 'lucide-svelte/icons/credit-card';
 	import Settings from 'lucide-svelte/icons/settings';
 	import User from 'lucide-svelte/icons/user';
-	import { LogOut } from 'lucide-svelte';
+	import { LogOut, ShieldCheck } from 'lucide-svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -102,7 +102,7 @@
 				if (session?.user) {
 					signOut();
 				} else {
-					goto('/auth');
+					goto('/signin');
 				}
 
 				e.preventDefault();
@@ -121,8 +121,9 @@
 
 <ModeWatcher />
 <!-- bg-white/70 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-black/10 -->
+{#if $page.url.pathname != '/signin'}
 <nav
-	class="bg-background/95 supports-[backdrop-filter]:bg-background/60 fixed top-0 z-50 w-full shadow-xl backdrop-blur"
+	class="fixed top-0 z-50 w-[100vw] shadow-xl bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur"
 >
 	<Command.Dialog bind:open={$commandOpen}>
 		<Command.Input
@@ -256,18 +257,20 @@
 	<div class="container mx-auto flex h-16 items-center justify-between px-4">
 		<!-- Logo et navigation -->
 		<div class="flex items-center space-x-4">
-			<!-- FIXME: "mix-blend-difference" ne fonctionne pas pour inverser la couleur des texte dynamiquement -->
-
 			<a href="/" class="flex items-center">
 				<img src="/logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
 			</a>
 
-			<div class="hidden items-center space-x-4 md:flex">
+			<div class="hidden items-center space-x-4 md:flex ">
 				<Button href="/blog" variant="link">Blog</Button>
-				<Separator orientation="vertical" class="h-6 bg-black" />
-				<Button href="/services" variant="link">Activités</Button>
-				<Separator orientation="vertical" class="h-6 bg-black" />
+				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
+				<Button href="/clubs" variant="link">Clubs</Button>
+				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
 				<Button href="/contact" variant="link">Contact</Button>
+				{#if session?.user && session.user.isAdmin}
+				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
+				<Button href="/dashboard" variant="link"><ShieldCheck class="mr-1 w-5"/>Administrer</Button>
+				{/if}
 			</div>
 		</div>
 
@@ -287,7 +290,7 @@
 				>
 			</div>
 
-			<Separator orientation="vertical" class="h-6 bg-black" />
+			<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
 
 			{#if session?.user}
 				<DropdownMenu.Root>
@@ -331,10 +334,12 @@
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			{:else}
-				<Button href="/auth" variant="link" class="text-white">Se connecter</Button>
+				<Button on:click={() => goto('/signin')} variant="link"
+					>Se connecter</Button
+				>
 			{/if}
 
-			<Separator orientation="vertical" class="h-6 bg-black" />
+			<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
 
 			<!-- Toggle Mode -->
 			<Button
@@ -350,3 +355,6 @@
 	</div>
 </nav>
 <slot />
+{:else}
+<slot />
+{/if}

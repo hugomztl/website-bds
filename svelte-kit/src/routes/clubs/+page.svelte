@@ -10,7 +10,7 @@
 	}
 </script>
 
-<main class="container m-auto">
+<main class="container mt-[5%] m-auto">
 	<h1>Clubs:</h1>
 
 	{#if data.session?.user}

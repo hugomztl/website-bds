@@ -13,7 +13,7 @@ export const load = async ({ params }) => {
 	const clubs = await Club.find({
 		$or: [
 			{ owner: maybeMongooseUser._id },
-			{ members: maybeMongooseUser._id }
+			{ 'members.user': maybeMongooseUser._id }
 		]
 	}).lean().exec();
 

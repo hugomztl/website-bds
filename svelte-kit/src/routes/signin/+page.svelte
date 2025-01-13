@@ -108,16 +108,16 @@
 </main> -->
 <script lang="ts">
 	import { SignIn } from '@auth/sveltekit/components';
-	import * as Tabs from "$lib/components/ui/tabs/index.js";
-	import * as Card from "$lib/components/ui/card/index.js";
-	import { Button } from "$lib/components/ui/button/index.js";
-	import { Input } from "$lib/components/ui/input/index.js";
-	import { Label } from "$lib/components/ui/label/index.js";
-	import CircleAlert from "lucide-svelte/icons/circle-alert";
-	import * as Alert from "$lib/components/ui/alert/index.js";
-	import * as Tooltip from "$lib/components/ui/tooltip";
+	import * as Tabs from '$lib/components/ui/tabs/index.js';
+	import * as Card from '$lib/components/ui/card/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { Input } from '$lib/components/ui/input/index.js';
+	import { Label } from '$lib/components/ui/label/index.js';
+	import CircleAlert from 'lucide-svelte/icons/circle-alert';
+	import * as Alert from '$lib/components/ui/alert/index.js';
+	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { page } from '$app/stores';
-	import { Checkbox } from "$lib/components/ui/checkbox";
+	import { Checkbox } from '$lib/components/ui/checkbox';
 
 	let email = $page.form?.email || '';
 	let password = '';
@@ -126,8 +126,8 @@
 
 <div
 	class="container relative hidden h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0"
-	>
-	<div class="relative hidden lg:flex bg-muted w-full h-full">
+>
+	<div class="bg-muted relative hidden h-full w-full lg:flex">
 		<!-- <div
 			class="absolute inset-0 bg-cover"
 			style="
@@ -135,58 +135,40 @@
 					url(/signin.jpg);"
 		/> -->
 
-		<img
-			src="/signin.jpg"
-			alt="bds"
-			class="absolute inset-0 w-full h-full object-cover"
-		/>
-
+		<img src="/signin.jpg" alt="bds" class="absolute inset-0 h-full w-full object-cover" />
 	</div>
 	<div class="lg:p-8">
 		<div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-
-			<img
-				src="logo-bds.png"
-				alt="bds"
-				class="w-24 h-24 mx-auto"
-			/>
+			<img src="logo-bds.png" alt="bds" class="mx-auto h-24 w-24" />
 
 			<Tabs.Root value="signin" class="w-[400px]">
 				<Tabs.List class="grid w-full grid-cols-2">
-				  <Tabs.Trigger value="signin">Se connecter</Tabs.Trigger>
-				  <Tabs.Trigger value="register">S'inscrire</Tabs.Trigger>
+					<Tabs.Trigger value="signin">Se connecter</Tabs.Trigger>
+					<Tabs.Trigger value="register">S'inscrire</Tabs.Trigger>
 				</Tabs.List>
 				<Tabs.Content value="signin">
-				  <Card.Root>
-					<Card.Header>
-					  <Card.Title>Se connecter</Card.Title>
-					  <Card.Description>
-						Connectez vous à votre compte BDS.
-					  </Card.Description>
-					</Card.Header>
-					<Card.Content>
-						<SignIn class="flex w-full flex-col items-left" provider="credentials">
-							<svelte:fragment slot="credentials">
-								<Label for="email" class="mb-2">Email</Label>
-								<Input
-									type="email"
-									name="email"
-									placeholder="Mail @viacesi"
-									bind:value={email}
-								/>
-								<Label for="password" class="mt-5 mb-2">Mot de passe</Label>
-								<Input
-									type="password"
-									name="password"
-									placeholder="Mot de passe"
-									bind:value={password}
-								/>
+					<Card.Root>
+						<Card.Header>
+							<Card.Title>Se connecter</Card.Title>
+							<Card.Description>Connectez vous à votre compte BDS.</Card.Description>
+						</Card.Header>
+						<Card.Content>
+							<SignIn class="items-left flex w-full flex-col" provider="credentials">
+								<svelte:fragment slot="credentials">
+									<Label for="email" class="mb-2">Email</Label>
+									<Input type="email" name="email" placeholder="Mail @viacesi" bind:value={email} />
+									<Label for="password" class="mb-2 mt-5">Mot de passe</Label>
+									<Input
+										type="password"
+										name="password"
+										placeholder="Mot de passe"
+										bind:value={password}
+									/>
 
-								
-									<Tooltip.Root>
+									<!-- TODO: gérer le stockage du token dans la session en fonction de la checkbox -->
+									<!-- <Tooltip.Root>
 										<Tooltip.Trigger>
 										<div class="flex items-center justify-center space-x-2 mt-4">
-											<!-- TODO: gérer le stockage du token dans la session en fonction de la checkbox -->
 											<Checkbox id="session" bind:checked aria-labelledby="session-label" />
 											<Label
 											id="session-label"
@@ -200,46 +182,38 @@
 										<Tooltip.Content>
 										  <p>Vous connecte automatiquement lors de vos prochaines visites</p>
 										</Tooltip.Content>
-									</Tooltip.Root>
-									
-								  
-							</svelte:fragment>
-							
+									</Tooltip.Root> -->
+								</svelte:fragment>
 
-							<svelte:fragment slot="submitButton">
-								<Button type="submit" class="mt-10">Connexion</Button>
-							</svelte:fragment>
-						</SignIn>
-					</Card.Content>
-				  </Card.Root>
+								<svelte:fragment slot="submitButton">
+									<Button type="submit" class="mt-10">Connexion</Button>
+								</svelte:fragment>
+							</SignIn>
+						</Card.Content>
+					</Card.Root>
 				</Tabs.Content>
 				<Tabs.Content value="register">
-				  <Card.Root>
-					<Card.Header>
-					  <Card.Title>S'inscrire</Card.Title>
-					  <Card.Description>
-						Créer mon compte BDS.
-					  </Card.Description>
-					</Card.Header>
-					<Card.Content>
-					  <!-- TODO: ici formulaire de register -->
-					</Card.Content>
-					<Card.Footer>
-					  <Button>Save password</Button>
-					</Card.Footer>
-				  </Card.Root>
+					<Card.Root>
+						<Card.Header>
+							<Card.Title>S'inscrire</Card.Title>
+							<Card.Description>Créer mon compte BDS.</Card.Description>
+						</Card.Header>
+						<Card.Content>
+							<!-- TODO: ici formulaire de register -->
+						</Card.Content>
+						<Card.Footer>
+							<Button>Save password</Button>
+						</Card.Footer>
+					</Card.Root>
 				</Tabs.Content>
 
 				{#if $page.form?.error}
-				<Alert.Root class="mt-[5%]" variant="destructive">
-					<CircleAlert class="h-4 w-4" />
-					<Alert.Title>Erreur</Alert.Title>
-					<Alert.Description
-					>{$page.form.error}</Alert.Description
-					>
+					<Alert.Root class="mt-[5%]" variant="destructive">
+						<CircleAlert class="h-4 w-4" />
+						<Alert.Title>Erreur</Alert.Title>
+						<Alert.Description>{$page.form.error}</Alert.Description>
 					</Alert.Root>
 				{/if}
-
 			</Tabs.Root>
 
 			<p class="text-muted-foreground px-8 text-center text-sm">
@@ -253,7 +227,6 @@
 				</a>
 				.
 			</p>
-
 		</div>
 	</div>
 </div>

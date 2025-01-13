@@ -16,6 +16,7 @@
 	import { Progress } from "$lib/components/ui/progress";
 	import { Input } from "$lib/components/ui/input/index.js";
 	import { Label } from "$lib/components/ui/label/index.js";
+	import { resolveRoute } from '$app/paths';
 
 	export let data;
 	$: user = data.user;
@@ -26,14 +27,7 @@
 	// TODO: remplacer la liste des sports par la liste des clubs auquel l'utilisateur est inscrit
 	//console.log(data.user);
 
-	// TODO: récupérer dynamiquement la liste des clubs de l'utilisateur (ajouter les champs manquant si necessaires comme joined, status, ffsu ou encore page)
-	const clubs = [
-		{ name: 'BFC', joined: '01/02/2024', status: 'Membre', ffsu: 'Oui', page: '/bfc' }, //id du club pour la page (/id) ?
-		{ name: 'Sport auto', joined: '26/01/2023', status: 'Président', ffsu: 'Non', page: '/aut' },
-		{ name: 'Escalade', joined: '04/01/2025', status: 'Membre', ffsu: 'Non', page: '/esc' },
-		{ name: 'Volley', joined: '01/01/2025', status: 'Membre', ffsu: 'Oui', page: '/vol' },
-		{ name: 'Handball', joined: '01/01/2025', status: 'Membre', ffsu: 'Oui', page: '/han' }
-	];
+	$: clubs = data.clubs;
 </script>
 
 <main class="scrollbar-hide">
@@ -214,7 +208,7 @@
 				<Table.Header>
 				  <Table.Row>
 					<Table.Head class="w-[20%]">Club</Table.Head>
-					<Table.Head class="w-[20%]">Rejoins le</Table.Head>
+					<Table.Head class="w-[20%]">Rejoint le</Table.Head>
 					<Table.Head class="w-[20%]">Statut</Table.Head>
 					<Table.Head class="w-[20%]">Licence FFSU requise</Table.Head>
 					<Table.Head class="w-[20%]"></Table.Head>
@@ -227,19 +221,21 @@
 						{#each clubs as club}
 							<Table.Row>
 								<Table.Cell class="font-medium w-[20%]">{club.name}</Table.Cell>
-								<Table.Cell class="w-[20%]">{club.joined}</Table.Cell>
+								<!-- TODO: Pas encore de date où on a rejoint -->
+								<Table.Cell class="w-[20%]">01/01/1970</Table.Cell>
 								<Table.Cell class="w-[20%]">
 									<div class="flex items-center">
-										{#if club.status === 'Président'}
+										{#if club.owner?._id?.toString() === user._id}
 											<Crown class="mr-1"/>
+											Président
 										{:else}
 											<Users class="mr-1"/>
+											Membre
 										{/if}
-										{club.status}
 									</div>
 								</Table.Cell>
 								<Table.Cell class="w-[20%]">
-									{#if club.ffsu === 'Oui' && !user.license && trySession === 0}
+									{#if club.requireLicense && !user.license && trySession === 0}
 										<Tooltip.Root>
 											<Tooltip.Trigger>
 												<Badge class="bg-red-500"><TriangleAlert class="mr-1 w-5"/>Oui</Badge>
@@ -248,7 +244,7 @@
 												<p>Vous avez épuisé vos séances d'essais pour ce club</p>
 											</Tooltip.Content>
 										</Tooltip.Root>
-									{:else if club.ffsu === 'Oui' && !user.license && trySession != 0}
+									{:else if club.requireLicense && !user.license && trySession != 0}
 									<Tooltip.Root>
 										<Tooltip.Trigger>
 											<Badge class="bg-orange-500"><Info class="mr-1 w-5"/>Oui</Badge>
@@ -258,7 +254,7 @@
 										</Tooltip.Content>
 									</Tooltip.Root>
 									{:else}
-										<Badge class="bg-green-500"><Check class="mr-1 w-5"/>{club.ffsu}</Badge>
+										<Badge class="bg-green-500"><Check class="mr-1 w-5"/>{club.requireLicense ? "Oui" : "Non"}</Badge>
 									{/if}
 								</Table.Cell>
 								<Table.Cell class="text-right">
@@ -269,7 +265,7 @@
 												<Tooltip.Trigger asChild let:builder>
 													<AlertDialog.Root>
 														<AlertDialog.Trigger>
-															<Button builders={[builder]} variant="destructive" tabindex="-1">
+															<Button builders={[builder]} variant="destructive" tabindex={-1}>
 																<LogOut/>
 															</Button>
 														</AlertDialog.Trigger>
@@ -296,7 +292,7 @@
 
 											<Tooltip.Root>
 												<Tooltip.Trigger asChild let:builder>
-													<Button builders={[builder]} variant="outline" href={club.page} tabindex="-1">
+													<Button builders={[builder]} variant="outline" href={resolveRoute("/clubs/[id]", {id: club._id.toString()})} tabindex={-1}>
 														<ChevronRight/>
 													</Button>
 												</Tooltip.Trigger>

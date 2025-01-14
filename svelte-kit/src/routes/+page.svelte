@@ -6,7 +6,7 @@
   	import * as Select from "$lib/components/ui/select/index.js";
   	import { Input } from "$lib/components/ui/input/index.js";
   	import { Label } from "$lib/components/ui/label/index.js";
-	import { Volume2, VolumeX, ChevronRight, Mail } from 'lucide-svelte';
+	import { Volume2, VolumeX, ChevronRight, Mail, Trophy, Link } from 'lucide-svelte';
 	import Marquee from './Marquee.svelte';
 	import '@event-calendar/core/index.css';
 	import Autoplay from "embla-carousel-autoplay";
@@ -245,18 +245,18 @@
 
 	<section class="container w-full mt-[5%]">
 
-		<h2 class="mb-12 text-center font-bold">NOS PARTENAIRES</h2>
-		<div class="overflow-hidden hover:scale-105 transition-transform">
+		<h2 class="mb-12 text-center font-bold text-4xl">NOS PARTENAIRES</h2>
+		<div class="overflow-hidden hover:scale-110 transition transform duration-300">
 			<Marquee {partenaires} scrollSpeedSec={partenaires.length * 2.5} />
 		</div>
 		
 	</section>
 
 	<section class="container w-full mt-[5%]">
-		<div class="text-center">
-			<Label class="font-bold text-2xl">BUREAU {new Date().getFullYear()-1} - {new Date().getFullYear()}</Label>	
+		<div class="text-center mb-[5%]">
+			<Label class="font-bold text-4xl">BUREAU {new Date().getFullYear()-1} - {new Date().getFullYear()}</Label>	
 		</div>
-		<div class="grid grid-cols-5 grid-rows-5 gap-4 mt-5">
+		<div class="grid grid-cols-5 grid-rows-3 gap-4">
 			<div class="col-start-3 row-start-1"
 				use:svelteTilt={{
 					reverse: false,
@@ -364,7 +364,7 @@
 					</Card.Header>
 					<Card.Content class="flex justify-center">
 						<Avatar.Root class="size-32">
-							<Avatar.Image src="" alt="EL" class="object-cover"/>
+							<Avatar.Image src="/bureau/secret-adj.png" alt="EL" class="object-cover"/>
 							<Avatar.Fallback>EL</Avatar.Fallback>
 						</Avatar.Root>
 					</Card.Content>
@@ -576,7 +576,12 @@
 					</Card.Footer>
 				</Card.Root>
 			</div>
-		</div>	
+		</div>
+		<div class="flex justify-center mt-5">
+			<Button class="hover:scale-110 transition transform duration-300">
+				<Link class="mr-1"/>Rejoindre le bureau
+			</Button>
+		</div>
 	</section>
 
 

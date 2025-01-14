@@ -6,8 +6,7 @@
   	import * as Select from "$lib/components/ui/select/index.js";
   	import { Input } from "$lib/components/ui/input/index.js";
   	import { Label } from "$lib/components/ui/label/index.js";
-	import * as Sheet from "$lib/components/ui/sheet/index.js";
-	import { Volume2, VolumeX, ChevronRight } from 'lucide-svelte';
+	import { Volume2, VolumeX, ChevronRight, Mail } from 'lucide-svelte';
 	import Marquee from './Marquee.svelte';
 	import '@event-calendar/core/index.css';
 	import Autoplay from "embla-carousel-autoplay";
@@ -15,7 +14,9 @@
 	import { Badge } from "$lib/components/ui/badge";
 	import { onMount } from 'svelte';
 	import { Separator } from "$lib/components/ui/separator";
-	import { buttonVariants } from "$lib/components/ui/button";
+	import * as Avatar from "$lib/components/ui/avatar";
+	import svelteTilt from 'vanilla-tilt-svelte';
+
 
 	let isMuted = true;
 	let videoElement: HTMLVideoElement | null = null;
@@ -35,6 +36,7 @@
 		{ titre: 'Nouveaux prix licences FFSU', date: '26/11/2024', desc: 'Informations sur les licences FFSU.', categorie: 'Licences' },
 		{ titre: 'CESI, finito ou masterclass ?', date: '26/11/2024', desc: 'Discussion sur le CESI.', categorie: 'Info' },
 	];
+
 
 	function getBadgeVariant(categorie: string): string {
 		switch (categorie) {
@@ -161,7 +163,7 @@
 			</Carousel.Root>
 	</section>
 
-	<section class="container mt-[5%] flex justify-between">
+	<section class="container mt-[5%] flex justify-between font-roboto">
 
 		<Card.Root class="w-[35%]">
 		
@@ -244,11 +246,339 @@
 	<section class="container w-full mt-[5%]">
 
 		<h2 class="mb-12 text-center font-bold">NOS PARTENAIRES</h2>
-		<div class="overflow-hidden">
+		<div class="overflow-hidden hover:scale-105 transition-transform">
 			<Marquee {partenaires} scrollSpeedSec={partenaires.length * 2.5} />
 		</div>
 		
 	</section>
+
+	<section class="container w-full mt-[5%]">
+		<div class="text-center">
+			<Label class="font-bold text-2xl">BUREAU {new Date().getFullYear()-1} - {new Date().getFullYear()}</Label>	
+		</div>
+		<div class="grid grid-cols-5 grid-rows-5 gap-4 mt-5">
+			<div class="col-start-3 row-start-1"
+				use:svelteTilt={{
+					reverse: false,
+					max: 20,
+					startX: 0,
+					startY: 0,
+					perspective: 1000,
+					scale: 1,
+					speed: 300,
+					transition: true,
+					axis: null,
+					reset: true,
+				}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Président</Card.Title>
+						<Card.Description>Louis DURENE</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/bureau/pres.jpg" alt="LD" class="object-cover"/>
+							<Avatar.Fallback>LD</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:louis.durene@viacesi.fr" variant="link"><Mail class="mr-1"/>louis.durene@viacesi.fr</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="col-start-2 row-start-1"
+			use:svelteTilt={{
+				reverse: false,
+			max: 20,
+			startX: 0,
+			startY: 0,
+			perspective: 1000,
+			scale: 1,
+			speed: 300,
+			transition: true,
+			axis: null,
+			reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Secrétaire</Card.Title>
+						<Card.Description>Hugo MAZZITELLI</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="https://github.com/shadcn.png" alt="LD" class="object-cover"/>
+							<Avatar.Fallback>HM</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:hugo.mazzitelli@viacesi.fr" variant="link"><Mail class="mr-1"/>hugo.mazzitelli@viacesi.fr</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="col-start-4"
+				use:svelteTilt={{
+					reverse: false,
+				max: 20,
+				startX: 0,
+				startY: 0,
+				perspective: 1000,
+				scale: 1,
+				speed: 300,
+				transition: true,
+				axis: null,
+				reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Trésorier</Card.Title>
+						<Card.Description>Haïk KHATCHATRIAN</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/bureau/treso.jpg" alt="HK" class="object-cover"/>
+							<Avatar.Fallback>HK</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:haik.khatchatrian@viacesi.fr" variant="link"><Mail class="mr-1"/>haik.khatchatrian@viacesi.fr</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="col-start-2 row-start-2"
+			use:svelteTilt={{
+				reverse: false,
+			max: 20,
+			startX: 0,
+			startY: 0,
+			perspective: 1000,
+			scale: 1,
+			speed: 300,
+			transition: true,
+			axis: null,
+			reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Secrétaire adjoint</Card.Title>
+						<Card.Description>Eliott LAWRYNOWICZ</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="" alt="EL" class="object-cover"/>
+							<Avatar.Fallback>EL</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:eliott.lawrynowicz@viacesi.fr" variant="link"><Mail class="mr-1"/>eliott.lawrynowicz@viacesi.fr</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="col-start-3 row-start-2"
+			use:svelteTilt={{
+				reverse: false,
+			max: 20,
+			startX: 0,
+			startY: 0,
+			perspective: 1000,
+			scale: 1,
+			speed: 300,
+			transition: true,
+			axis: null,
+			reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Vice-président</Card.Title>
+						<Card.Description>Augustin APTEL</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/bureau/vice-pres.png" alt="AA" class="object-cover"/>
+							<Avatar.Fallback>AA</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:augustin.aptel@viacesi.fr" variant="link"><Mail class="mr-1"/>augustin.aptel@viacesi.fr</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="col-start-4 row-start-2"
+			use:svelteTilt={{
+				reverse: false,
+			max: 20,
+			startX: 0,
+			startY: 0,
+			perspective: 1000,
+			scale: 1,
+			speed: 300,
+			transition: true,
+			axis: null,
+			reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Trésorier adjoint</Card.Title>
+						<Card.Description>Ilian CAHOUCH</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/bureau/treso-adj.jpg" alt="IC" class="object-cover"/>
+							<Avatar.Fallback>IC</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:ilian.cahouch@viacesi.fr" variant="link"><Mail class="mr-1"/>ilian.cahouch@viacesi.fr</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="row-start-3"
+			use:svelteTilt={{
+				reverse: false,
+			max: 20,
+			startX: 0,
+			startY: 0,
+			perspective: 1000,
+			scale: 1,
+			speed: 300,
+			transition: true,
+			axis: null,
+			reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Production audiovisuelle</Card.Title>
+						<Card.Description>Wassim BOUANANE</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/bureau/prod-vis.jpg" alt="WB" class="object-cover"/>
+							<Avatar.Fallback>WB</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:wassim.bouanane@viacesi.fr" variant="link"><Mail class="mr-1"/>wassim.bouanane@viacesi.fr</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="row-start-3"
+			use:svelteTilt={{
+				reverse: false,
+			max: 20,
+			startX: 0,
+			startY: 0,
+			perspective: 1000,
+			scale: 1,
+			speed: 300,
+			transition: true,
+			axis: null,
+			reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Resp. évènementiel</Card.Title>
+						<Card.Description>Quentin JOLLY</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/bureau/resp-event.jpg" alt="QJ" class="object-cover"/>
+							<Avatar.Fallback>QJ</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:quentin.jolly@viacesi.fr" variant="link"><Mail class="mr-1"/>quentin.jolly@viacesi.fr</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="row-start-3"
+			use:svelteTilt={{
+				reverse: false,
+			max: 20,
+			startX: 0,
+			startY: 0,
+			perspective: 1000,
+			scale: 1,
+			speed: 300,
+			transition: true,
+			axis: null,
+			reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Resp. clubs</Card.Title>
+						<Card.Description>Berat ATILGAN</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/bureau/resp-clubs.jpg" alt="BA" class="object-cover"/>
+							<Avatar.Fallback>BA</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:berat.atilgan@viacesi.fr" variant="link"><Mail class="mr-1"/>berat.atilgan@viacesi.fr</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="row-start-3"
+			use:svelteTilt={{
+				reverse: false,
+			max: 20,
+			startX: 0,
+			startY: 0,
+			perspective: 1000,
+			scale: 1,
+			speed: 300,
+			transition: true,
+			axis: null,
+			reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Resp. Merch</Card.Title>
+						<Card.Description>Carte Marie</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="" alt="BA" class="object-cover"/>
+							<Avatar.Fallback>BA</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:berat.atilgan@viacesi.fr" variant="link"><Mail class="mr-1"/>???</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="row-start-3"
+			use:svelteTilt={{
+				reverse: false,
+			max: 20,
+			startX: 0,
+			startY: 0,
+			perspective: 1000,
+			scale: 1,
+			speed: 300,
+			transition: true,
+			axis: null,
+			reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Resp. clubs adjoint</Card.Title>
+						<Card.Description>Carte Mael</Card.Description>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="" alt="BA" class="object-cover"/>
+							<Avatar.Fallback>BA</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center">
+						<Button href="mailto:berat.atilgan@viacesi.fr" variant="link"><Mail class="mr-1"/>???</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+		</div>	
+	</section>
+
 
 	<footer class="container w-full mt-[5%]">
 		<div class="container mx-auto px-4 text-center">
@@ -259,7 +589,9 @@
 	</footer>
 </main>
 
+
 <style lang="postcss">
+
 	/* Style complémentaire pour assurer le bon rendu de la vidéo */
 	video {
 		position: absolute;

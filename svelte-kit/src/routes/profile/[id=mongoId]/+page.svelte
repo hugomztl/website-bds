@@ -216,8 +216,8 @@
 				</Table.Header>
 				</Table.Root>
 			<ScrollArea class="h-44">
-				<Table.Root>
-					<Table.Body>
+				<Table.Root class="h-44">
+					<Table.Body  >
 						{#each clubs as club}
 							<Table.Row>
 								<Table.Cell class="font-medium w-[20%]">{club.name}</Table.Cell>

@@ -2,6 +2,11 @@
 	import { invalidate } from '$app/navigation';
 	import type { BlogPostType } from '$lib/models/BlogPost.js';
 	import Event from './Event.svelte';
+	import * as Tabs from "$lib/components/ui/tabs";
+	import { Plus} from 'lucide-svelte';
+	import { Button } from "$lib/components/ui/button";
+
+
 
 	export let data;
 
@@ -28,6 +33,23 @@
 	}
 </script>
 
+<Tabs.Root value="dashboard" class="w-[400px] mt-[5%]">
+	<Tabs.List>
+	  <Tabs.Trigger value="dashboard">Apperçu</Tabs.Trigger>
+	  <Tabs.Trigger value="eventManage">Évènements</Tabs.Trigger>
+	  <Tabs.Trigger value="userManage">Utilisateurs</Tabs.Trigger>
+	  <Tabs.Trigger value="clubManage">Clubs</Tabs.Trigger>
+	  <Tabs.Trigger value="blogManage">Blogs</Tabs.Trigger>
+	</Tabs.List>
+	<Tabs.Content value="dashboard">
+	  Statistiques ici
+	</Tabs.Content>
+	<Tabs.Content value="eventManage">Gestion des events ici</Tabs.Content>
+	<Tabs.Content value="userManage">Gestion des utilisateurs ici</Tabs.Content>
+	<Tabs.Content value="clubManage">Gestion des clubs ici</Tabs.Content>
+	<Tabs.Content value="blogManage">Gestion des blogs ici</Tabs.Content>
+</Tabs.Root>
+
 <h1 class="h1">Tableau de bord</h1>
 
 <div class="mgap-4 grid grid-cols-1 grid-rows-1 md:grid-cols-2">
@@ -36,9 +58,9 @@
 	>
 		<h2 class="h2">Évènements</h2>
 
-		<a href="/dashboard/events/create" class="btn variant-filled-primary">
-			Créer un nouvel évènement
-		</a>
+		<Button href="/dashboard/events/create" variant="ghost">
+			<Plus class="mr-1" />Nouvel évènement
+		</Button>
 
 		<ul class="list">
 			{#each events as event}

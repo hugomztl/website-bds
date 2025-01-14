@@ -42,13 +42,14 @@ export const actions = {
 			return fail(400, { form });
 		}
 
-		const { name, description, logo } = form.data;
+		const { name, description, logo, requireLicense } = form.data;
 		let club: InstanceType<typeof Club> | InstanceType<typeof PendingClub>; // Assigning type to club
 		if (session.user.isAdmin) {
 			club = new Club({
 				name,
 				description,
 				logo,
+				requireLicense,
 				owner: form.data.owner
 			});
 		} else {
@@ -56,6 +57,7 @@ export const actions = {
 				name,
 				description,
 				logo,
+				requireLicense,
 				owner: session.user.id
 			});
 		}

@@ -14,7 +14,7 @@
 	const canJoinClub = data?.session?.user?.isAdmin || (licenseOk && data.session);
 </script>
 
-<main id="app">
+<main id="app" class="mt-[5%]">
 	<h1>{data.club.name}</h1>
 	<p>{data.club.description}</p>
 

@@ -20,7 +20,7 @@
 </script>
 
 <!-- TODO: Ajouter un popup pour afficher le résultat de la modification d'un club -->
-<main id="app">
+<main id="app" class="mt-[5%]">
 	<div style="display: flex; justify-content: space-between; align-items: center; gap: 2rem;">
 		<h1>Gérer le club</h1>
 		{#if data.session?.user?.isAdmin}

@@ -317,7 +317,4 @@
 	</Card.Root>
 	
 	</section>
-	
-
-	
 </main>

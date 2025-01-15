@@ -3,6 +3,13 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
+	ssr: {
+        noExternal: [
+			'tsparticles',
+      		'@tsparticles/engine',
+      		'@tsparticles/svelte',
+		], // add all tsparticles libraries here, they're not made for SSR, they're client only
+    },
 	server: {
 		host: true,
 		port: 3000,

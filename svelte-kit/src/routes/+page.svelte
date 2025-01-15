@@ -6,7 +6,7 @@
   	import * as Select from "$lib/components/ui/select/index.js";
   	import { Input } from "$lib/components/ui/input/index.js";
   	import { Label } from "$lib/components/ui/label/index.js";
-	import { Volume2, VolumeX, ChevronRight, Mail, Trophy, Link } from 'lucide-svelte';
+	import { Volume2, VolumeX, ChevronRight, Mail, Trophy, Link, Linkedin } from 'lucide-svelte';
 	import Marquee from './Marquee.svelte';
 	import '@event-calendar/core/index.css';
 	import Autoplay from "embla-carousel-autoplay";
@@ -109,8 +109,8 @@
 			<Button
 				variant="ghost"
 				href="/register"
-				class="hover:shadow-xl hover:bg-background/95 hover:supports-[backdrop-filter]:bg-background/60 hover:backdrop-blur"
-			>
+				class="hover:shadow-xl hover:bg-background/95 hover:supports-[backdrop-filter]:bg-background/60 hover:backdrop-blur animate-bounce hover:animate-none"
+			>	
 				Rejoins le BDS
 				<ChevronRight/>
 		</Button>
@@ -126,7 +126,7 @@
 	</section>
 	
 	<section class="container w-full">
-		<h2 class="mt-[5%] text-center font-bold text-4xl">ACTUALITÉS</h2>
+		<p class="mt-[5%] text-center font-bold text-4xl">Actualités</p>
 		<Carousel.Root 
 		orientation="horizontal"
 		plugins={[plugin]}
@@ -165,7 +165,7 @@
 
 	<section class="container mt-[5%] flex justify-between font-roboto">
 
-		<Card.Root class="w-[35%]">
+		<Card.Root class="w-[35%] hover:-translate-y-5 hover:shadow-xl transition-transform border-none shadow-none">
 		
 			<Card.Header>
 			  <Card.Title>Qu'est-ce qu'un BDS ?</Card.Title>
@@ -177,7 +177,7 @@
 			</Card.Content>
 		</Card.Root>
 		
-		<Card.Root class="w-[60%]">
+		<Card.Root class="w-[60%] hover:-translate-y-5 hover:shadow-xl transition-transform border-none shadow-none">
 			<Card.Header>
 			  <Card.Title>Nos missions</Card.Title>
 			</Card.Header>
@@ -194,6 +194,131 @@
 			</Card.Content>
 		</Card.Root>
 	</section>
+
+	<section class="mt-[5%] font-roboto bg-black">
+
+		<p class="mb-[3%] pt-[2%] text-center font-bold text-4xl text-white">Fondateurs</p>
+
+		<div class="grid grid-cols-6 grid-rows-1 gap-6 pb-[5%]">
+			<div class="col-start-2"
+			use:svelteTilt={{
+				reverse: false,
+				max: 20,
+				startX: 0,
+				startY: 0,
+				perspective: 1000,
+				scale: 1,
+				speed: 300,
+				transition: true,
+				axis: null,
+				reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Téo BERTON</Card.Title>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/founder/berton.jpg" alt="TB" class="object-cover"/>
+							<Avatar.Fallback>TB</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center flex-col">
+						<Button href="mailto:teo.berton@viacesi.fr" variant="link"><Mail class="mr-1"/>teo.berton@viacesi.fr</Button>
+						<Button href="https://www.linkedin.com/in/bertonteo/" variant="link"><Linkedin class="mr-1"/>linkedin.com/in/bertonteo</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="col-start-3"
+			use:svelteTilt={{
+				reverse: false,
+				max: 20,
+				startX: 0,
+				startY: 0,
+				perspective: 1000,
+				scale: 1,
+				speed: 300,
+				transition: true,
+				axis: null,
+				reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Hugo MAZZITELLI</Card.Title>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/bureau/mazz.jpeg" alt="HM" class="object-cover"/>
+							<Avatar.Fallback>HM</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center flex-col">
+						<Button href="mailto:hugo.mazzitelli@viacesi.fr" variant="link"><Mail class="mr-1"/>hugo.mazzitelli@viacesi.fr</Button>
+						<Button href="https://www.linkedin.com/in/hugomztl/" variant="link"><Linkedin class="mr-1"/>linkedin.com/in/hugomztl</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="col-start-4"
+			use:svelteTilt={{
+				reverse: false,
+				max: 20,
+				startX: 0,
+				startY: 0,
+				perspective: 1000,
+				scale: 1,
+				speed: 300,
+				transition: true,
+				axis: null,
+				reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Haïk KHATCHATRIAN</Card.Title>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/founder/hk.jpg" alt="HK" class="object-cover"/>
+							<Avatar.Fallback>HK</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center flex-col">
+						<Button href="mailto:haik.khatchatrian@viacesi.fr" variant="link"><Mail class="mr-1"/>haik.khatchatrian@viacesi.fr</Button>
+						<Button href="https://www.linkedin.com/in/haik-khatchatrian/" variant="link"><Linkedin class="mr-1"/>linkedin.com/in/haik-khatchatrian</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+			<div class="col-start-5"
+			use:svelteTilt={{
+				reverse: false,
+				max: 20,
+				startX: 0,
+				startY: 0,
+				perspective: 1000,
+				scale: 1,
+				speed: 300,
+				transition: true,
+				axis: null,
+				reset: true,
+			}}>
+				<Card.Root class="hover:shadow-xl transition-shadow">
+					<Card.Header class="items-center">
+						<Card.Title>Théo CHANGARNIER</Card.Title>
+					</Card.Header>
+					<Card.Content class="flex justify-center">
+						<Avatar.Root class="size-32">
+							<Avatar.Image src="/bureau/chang.jpeg" alt="TC" class="object-cover"/>
+							<Avatar.Fallback>TC</Avatar.Fallback>
+						</Avatar.Root>
+					</Card.Content>
+					<Card.Footer class="justify-center flex-col">
+						<Button href="mailto:theo.changarnier@viacesi.fr" variant="link"><Mail class="mr-1"/>theo.changarnier@viacesi.fr</Button>
+						<Button href="https://www.linkedin.com/in/theo-changarnier/" variant="link"><Linkedin class="mr-1"/>linkedin.com/in/theo-changarnier</Button>
+					</Card.Footer>
+				</Card.Root>
+			</div>
+		</div>
+		<p class="text-white text-center mx-[16%] pb-[2%]">En 2022, après deux années de cycle préparatoire au CESI Nancy, nous étions quatre amis partageant une passion commune pour le sport. En discutant de notre expérience sur le campus, nous avons réalisé qu’il manquait un véritable espace dédié à la vie sportive et qu’aucun Bureau des Sports n’existait pour fédérer les étudiants. Cette prise de conscience nous a poussés à agir : ensemble, nous avons décidé de créer le BDS. Notre objectif était simple mais ambitieux : rassembler les étudiants autour de leurs passions sportives, animer la vie du campus et renforcer les liens entre les différentes promotions.<br/><br/>Aujourd’hui, nous sommes fiers de voir notre initiative prendre vie et contribuer à créer une communauté étudiante plus dynamique et soudée.</p>
+    </section>
 
 	<section class="container w-full mt-[5%]">
 			<h2 class="mb-12 text-center font-bold text-4xl">FAQ</h2>
@@ -245,8 +370,8 @@
 
 	<section class="container w-full mt-[5%]">
 
-		<h2 class="mb-12 text-center font-bold text-4xl">NOS PARTENAIRES</h2>
-		<div class="overflow-hidden hover:scale-110 transition transform duration-300">
+		<h2 class="mb-12 text-center font-bold text-4xl">Nos partenaires</h2>
+		<div class="overflow-hidden hover:scale-110 transition-transform">
 			<Marquee {partenaires} scrollSpeedSec={partenaires.length * 2.5} />
 		</div>
 		
@@ -254,7 +379,7 @@
 
 	<section class="container w-full mt-[5%]">
 		<div class="text-center mb-[5%]">
-			<Label class="font-bold text-4xl">BUREAU {new Date().getFullYear()-1} - {new Date().getFullYear()}</Label>	
+			<Label class="font-bold text-4xl">Bureau {new Date().getFullYear()-1} - {new Date().getFullYear()}</Label>	
 		</div>
 		<div class="grid grid-cols-5 grid-rows-3 gap-4">
 			<div class="col-start-3 row-start-1"

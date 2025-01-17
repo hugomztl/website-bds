@@ -56,7 +56,7 @@ const config: Config = {
 			},
 			fontFamily: {
 				sans: ["Roboto", ...fontFamily.sans],
-			}
+			},
 		}
 	},
 };

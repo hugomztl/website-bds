@@ -6,7 +6,7 @@
   	import * as Select from "$lib/components/ui/select/index.js";
   	import { Input } from "$lib/components/ui/input/index.js";
   	import { Label } from "$lib/components/ui/label/index.js";
-	import { Volume2, VolumeX, ChevronRight, Mail, Trophy, Link, Linkedin } from 'lucide-svelte';
+	import { Volume2, VolumeX, ChevronRight, Mail, Trophy, Link, Linkedin, Github } from 'lucide-svelte';
 	import Marquee from './Marquee.svelte';
 	import '@event-calendar/core/index.css';
 	import Autoplay from "embla-carousel-autoplay";
@@ -18,7 +18,10 @@
 	import svelteTilt from 'vanilla-tilt-svelte';
 	import BureauCard from "$lib/components/bureauCard.svelte";
 	import * as Resizable from "$lib/components/ui/resizable";
-
+	import { Header } from "$lib/components/ui/alert-dialog";
+	import { Description } from "$lib/components/ui/alert";
+	import FounderCard from "$lib/components/founderCard.svelte";
+	import Faq from "$lib/components/faq.svelte";
 
 	let isMuted = true;
 	let videoElement: HTMLVideoElement | null = null;
@@ -175,7 +178,9 @@
 
 			<Card.Content>
 				<Separator class="mb-5"/>
+				<Card.Description>
 				Le <b>BDS (Bureau des Sports)</b> est une association étudiante, généralement présente dans les écoles supérieures et universités, dont le rôle principal est d’organiser et de promouvoir les activités sportives pour les étudiants. Le BDS est souvent un des piliers de la vie associative étudiante, au même titre que d'autres bureaux comme le <b>BDE (Bureau des Étudiants)</b>.
+				</Card.Description>
 			</Card.Content>
 		</Card.Root>
 		
@@ -185,6 +190,7 @@
 			</Card.Header>
 			<Card.Content>	
 				<Separator class="mb-5" />
+				<Card.Description>
 				<ul class="list-disc ml-4">
 					<li><b>Organiser les événements sportifs :</b> tournois, compétitions inter-écoles, journées sportives.</li>
 					<li><b>Promouvoir la pratique sportive :</b> séances d'entraînement, découverte de nouvelles disciplines.</li>
@@ -192,134 +198,28 @@
 					<li><b>Gérer les infrastructures :</b> réservation de terrains, salles, et matériel sportif.</li>
 					<li><b>Créer une cohésion étudiante :</b> activités sportives fédératrices, soirées à thème, week-ends sportifs.</li>
 					<li><b>Rechercher des financements :</b> partenariats, sponsors, cotisations pour soutenir les activités.</li>
-				</ul>				
+				</ul>	
+				</Card.Description>			
 			</Card.Content>
 		</Card.Root>
 	</section>
 
-	<section class="mt-[5%] font-roboto bg-gradient-to-tr from-zinc-900 via-indigo-600 to-zinc-900">
-
-		<p class="mb-[2%] pt-[2%] text-center font-bold text-4xl text-white">Fondateurs</p>
-
-		<div class="grid grid-cols-6 grid-rows-1 gap-6 pb-[2%]">
-			<div class="col-start-2"
-			use:svelteTilt={{
-				reverse: false,
-				max: 20,
-				startX: 0,
-				startY: 0,
-				perspective: 1000,
-				scale: 1,
-				speed: 300,
-				transition: true,
-				axis: null,
-				reset: true,
-			}}>
-				<Card.Root class="hover:shadow-xl transition-shadow">
-					<Card.Header class="items-center">
-						<Card.Title>Téo BERTON</Card.Title>
-					</Card.Header>
-					<Card.Content class="flex justify-center">
-						<Avatar.Root class="size-32">
-							<Avatar.Image src="/founder/berton.jpg" alt="TB" class="object-cover"/>
-							<Avatar.Fallback>TB</Avatar.Fallback>
-						</Avatar.Root>
-					</Card.Content>
-					<Card.Footer class="justify-center flex-col">
-						<Button href="mailto:teo.berton@viacesi.fr" variant="link"><Mail class="mr-1"/>teo.berton@viacesi.fr</Button>
-						<Button href="https://www.linkedin.com/in/bertonteo/" variant="link"><Linkedin class="mr-1"/>linkedin.com/in/bertonteo</Button>
-					</Card.Footer>
-				</Card.Root>
-			</div>
-			<div class="col-start-3"
-			use:svelteTilt={{
-				reverse: false,
-				max: 20,
-				startX: 0,
-				startY: 0,
-				perspective: 1000,
-				scale: 1,
-				speed: 300,
-				transition: true,
-				axis: null,
-				reset: true,
-			}}>
-				<Card.Root class="hover:shadow-xl transition-shadow">
-					<Card.Header class="items-center">
-						<Card.Title>Hugo MAZZITELLI</Card.Title>
-					</Card.Header>
-					<Card.Content class="flex justify-center">
-						<Avatar.Root class="size-32">
-							<Avatar.Image src="/founder/mazz.webp" alt="HM" class="object-cover"/>
-							<Avatar.Fallback>HM</Avatar.Fallback>
-						</Avatar.Root>
-					</Card.Content>
-					<Card.Footer class="justify-center flex-col">
-						<Button href="mailto:hugo.mazzitelli@viacesi.fr" variant="link"><Mail class="mr-1"/>hugo.mazzitelli@viacesi.fr</Button>
-						<Button href="https://www.linkedin.com/in/hugomztl/" variant="link"><Linkedin class="mr-1"/>linkedin.com/in/hugomztl</Button>
-					</Card.Footer>
-				</Card.Root>
-			</div>
-			<div class="col-start-4"
-			use:svelteTilt={{
-				reverse: false,
-				max: 20,
-				startX: 0,
-				startY: 0,
-				perspective: 1000,
-				scale: 1,
-				speed: 300,
-				transition: true,
-				axis: null,
-				reset: true,
-			}}>
-				<Card.Root class="hover:shadow-xl transition-shadow">
-					<Card.Header class="items-center">
-						<Card.Title>Haïk KHATCHATRIAN</Card.Title>
-					</Card.Header>
-					<Card.Content class="flex justify-center">
-						<Avatar.Root class="size-32">
-							<Avatar.Image src="/founder/hk.webp" alt="HK" class="object-cover"/>
-							<Avatar.Fallback>HK</Avatar.Fallback>
-						</Avatar.Root>
-					</Card.Content>
-					<Card.Footer class="justify-center flex-col">
-						<Button href="mailto:haik.khatchatrian@viacesi.fr" variant="link"><Mail class="mr-1"/>haik.khatchatrian@viacesi.fr</Button>
-						<Button href="https://www.linkedin.com/in/haik-khatchatrian/" variant="link"><Linkedin class="mr-1"/>linkedin.com/in/haik-khatchatrian</Button>
-					</Card.Footer>
-				</Card.Root>
-			</div>
-			<div class="col-start-5"
-			use:svelteTilt={{
-				reverse: false,
-				max: 20,
-				startX: 0,
-				startY: 0,
-				perspective: 1000,
-				scale: 1,
-				speed: 300,
-				transition: true,
-				axis: null,
-				reset: true,
-			}}>
-				<Card.Root class="hover:shadow-xl transition-shadow">
-					<Card.Header class="items-center">
-						<Card.Title>Théo CHANGARNIER</Card.Title>
-					</Card.Header>
-					<Card.Content class="flex justify-center">
-						<Avatar.Root class="size-32">
-							<Avatar.Image src="/founder/chang.webp" alt="TC" class="object-cover"/>
-							<Avatar.Fallback>TC</Avatar.Fallback>
-						</Avatar.Root>
-					</Card.Content>
-					<Card.Footer class="justify-center flex-col">
-						<Button href="mailto:theo.changarnier@viacesi.fr" variant="link"><Mail class="mr-1"/>theo.changarnier@viacesi.fr</Button>
-						<Button href="https://www.linkedin.com/in/theo-changarnier/" variant="link"><Linkedin class="mr-1"/>linkedin.com/in/theo-changarnier</Button>
-					</Card.Footer>
-				</Card.Root>
-			</div>
-		</div>
-		<p class="text-white text-center mx-[16%] pb-[2%]">En 2022, après deux années de cycle préparatoire au CESI Nancy, nous étions quatre amis partageant une passion commune pour le sport. En discutant de notre expérience sur le campus, nous avons réalisé qu’il manquait un véritable espace dédié à la vie sportive et qu’aucun Bureau des Sports n’existait pour fédérer les étudiants. Cette prise de conscience nous a poussés à agir : ensemble, nous avons décidé de créer le BDS. Notre objectif était simple mais ambitieux : rassembler les étudiants autour de leurs passions sportives, animer la vie du campus et renforcer les liens entre les différentes promotions.<br/><br/>Aujourd’hui, nous sommes fiers de voir notre initiative prendre vie et contribuer à créer une communauté étudiante plus dynamique et soudée.</p>
+	<section class="mt-[5%] font-roboto bg-black">
+		<Card.Root class=" container border-none shadow-none bg-transparent">
+			<Card.Header>
+				<Card.Title class="text-center font-bold text-4xl text-white my-4">Fondateurs</Card.Title>
+			</Card.Header>
+			<Card.Content class="flex justify-between space-x-4">
+				<FounderCard nom="berton" prenom="téo" linkedin="bertonteo" imgUrl="berton.jpg" classList="w-[25%]"/>
+				<FounderCard nom="mazzitelli" prenom="hugo" linkedin="hugomztl" imgUrl="mazz.webp" classList="w-[25%]"/>
+				<FounderCard nom="khatchatrian" prenom="haïk" linkedin="haik-khatchatrian" imgUrl="hk.webp" classList="w-[25%]"/>
+				<FounderCard nom="changarnier" prenom="théo" linkedin="theo-changarnier" imgUrl="chang.webp" classList="w-[25%]"/>
+			</Card.Content>
+			<Card.Footer>
+				<Card.Description class="text-center my-4">En 2022, après deux années de cycle préparatoire au CESI Nancy, nous étions quatre amis partageant une passion commune pour le sport. En discutant de notre expérience sur le campus, nous avons réalisé qu’il manquait un véritable espace dédié à la vie sportive et qu’aucun Bureau des Sports n’existait pour fédérer les étudiants. Cette prise de conscience nous a poussés à agir : ensemble, nous avons décidé de créer le BDS. Notre objectif était simple mais ambitieux : rassembler les étudiants autour de leurs passions sportives, animer la vie du campus et renforcer les liens entre les différentes promotions.<br/><br/>Aujourd’hui, nous sommes fiers de voir notre initiative prendre vie et contribuer à créer une communauté étudiante plus dynamique et soudée.
+				</Card.Description>
+			</Card.Footer>
+		</Card.Root>
     </section>
 
 	<section class="container w-full mt-[5%] font-roboto">
@@ -359,7 +259,7 @@
 			</div>
 		</div>
 		<Separator class="justify-center w-[70%] mx-auto"/>
-		<div class="grid grid-cols-6 grid-rows-1 gap-6 mx-[10%]">
+		<div class="grid grid-cols-5 grid-rows-1 gap-6 mx-[10%]">
 			<div class="col-start-2 row-start-3">
 				<BureauCard nom="BOUANANE" prenom="Wassim" fonction="Production audiovisuelle" imageUrl="prod-vis.jpg"/>
 			</div>
@@ -368,9 +268,6 @@
 			</div>
 			<div class="col-start-4 row-start-3">
 				<BureauCard nom="ATILGAN" prenom="Berat" fonction="Responsable clubs" imageUrl="resp-clubs.jpg"/>
-			</div>
-			<div class="col-start-5 row-start-3">
-				<BureauCard nom="BONETTI" prenom="Valentin" fonction="Responsable IT" imageUrl="resp-it.jpg"/>
 			</div>
 		</div>
 		<Separator class="justify-center w-[70%] mx-auto"/>
@@ -402,48 +299,62 @@
 
 	<section class="container w-full mt-[5%] font-roboto">
 		<h2 class="mb-12 text-center font-bold text-4xl">FAQ</h2>
-		<Accordion.Root>
-			<Accordion.Item value="item-1">
-				<Accordion.Trigger>Comment rejoindre un club existant ?</Accordion.Trigger>
-				<Accordion.Content>
-					Pour rejoindre un club, accédez à la <a href="/clubs" class="underline">liste des clubs</a> et choisissez le club qui vous intéresse pour accéder à sa page. Vous pourrez alors effectuer une demande d'adhésion. Alternativement, vous pouvez chercher un club précis en utilisant la barre de recherche en haut de la page ou en appuyant sur
-				  <kbd
-				  class="bg-muted text-muted-foreground pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100">
-				  <span class="text-xs">{shortcut}K</span>
-				  </kbd>
-				</Accordion.Content>
-			  </Accordion.Item>
-			<Accordion.Item value="item-2">
-				<Accordion.Trigger>Comment créer un club ?</Accordion.Trigger>
-				<Accordion.Content>
-				  Pour créer un club, il vous suffit de remplir le formulaire de demande de création de club. Un administrateur se chargera de répondre à la demande dans les 48H.
-				</Accordion.Content>
-			  </Accordion.Item>
-			  <Accordion.Item value="item-3">
-				<Accordion.Trigger>Comment obtenir ma licence FFSU ?</Accordion.Trigger>
-				<Accordion.Content>
-				  Yes. It adheres to the WAI-ARIA design pattern.
-				</Accordion.Content>
-			  </Accordion.Item>
-			  <Accordion.Item value="item-4">
-				<Accordion.Trigger>Puis-je pratiquer sans licence ?</Accordion.Trigger>
-				<Accordion.Content>
-				  Oui, si les installations utilisées par le club ne sont pas mises à disposition par la FFSU. Dans le cas contraire, une licence est obligatoire une fois vos séances d'essai épuisées.
-				</Accordion.Content>
-			  </Accordion.Item>
-			  <Accordion.Item value="item-5">
-				<Accordion.Trigger>Is it accessible?</Accordion.Trigger>
-				<Accordion.Content>
-				  Yes. It adheres to the WAI-ARIA design pattern.
-				</Accordion.Content>
-			  </Accordion.Item>
-			  <Accordion.Item value="item-6">
-				<Accordion.Trigger>Is it accessible?</Accordion.Trigger>
-				<Accordion.Content>
-				  Yes. It adheres to the WAI-ARIA design pattern.
-				</Accordion.Content>
-			  </Accordion.Item>
-		  </Accordion.Root>
+		<Faq shortcut={shortcut}/>
+	</section>
+
+	<section class="bg-black w-full mt-[5%] py-[2%] font-roboto">
+		<Card.Root class="container bg-transparent">
+			<Card.Header>
+				<Card.Title class="text-white">Équipe IT</Card.Title>
+				<Card.Description>Découvrez l'équipe qui se cache derrière ce site web !</Card.Description>
+			</Card.Header>
+			<Card.Content class="flex items-center">
+						
+
+					<Avatar.Root class="w-[25%] h-auto max-w-44">
+						<Avatar.Image src="/bureau/resp-it.jpg" alt="VB" class="object-cover"/>
+						<Avatar.Fallback>VB</Avatar.Fallback>
+					</Avatar.Root>
+					<div>
+						<strong class="ml-4 text-white">Valentin BONETTI</strong>
+						<br/>
+						<span class="ml-4 text-white">Développeur full-stack</span>
+						<Separator class="ml-4 my-2 w-[90%]"/>
+						<Button href="mailto:valentin.bonetti@viacesi.fr" variant="link" class="text-white hover:scale-110 transition-transform"><Mail class="mr-1"/>valentin.bonetti@viacesi.fr</Button>
+						<br/>
+						<Button href="https://www.linkedin.com/in/valentin-bonetti/" variant="link" class="text-white hover:scale-110 transition-transform"><Linkedin class="mr-1"/>linkedin.com/in/valentin-bonetti</Button>
+						<br/>
+						<Button href="https://github.com/ElMoustacho" variant="link" class="text-white hover:scale-110 transition-transform"><Github class="mr-1"/>github.com/ElMoustacho</Button>
+					</div>
+
+						<Separator orientation="vertical" class="h-[100%]"/>
+					
+					<div>
+						<strong class="ml-4 text-white">Hugo MAZZITELLI</strong>
+						<br/>
+						<span class="ml-4 text-white">Développeur front-end</span>
+						<Separator class="ml-4 my-2 w-[90%]"/>
+						<Button href="mailto:valentin.bonetti@viacesi.fr" variant="link" class="text-white hover:scale-110 transition-transform"><Mail class="mr-1"/>valentin.bonetti@viacesi.fr</Button>
+						<br/>
+						<Button href="https://www.linkedin.com/in/valentin-bonetti/" variant="link" class="text-white hover:scale-110 transition-transform"><Linkedin class="mr-1"/>linkedin.com/in/valentin-bonetti</Button>
+						<br/>
+						<Button href="https://github.com/ElMoustacho" variant="link" class="text-white hover:scale-110 transition-transform"><Github class="mr-1"/>github.com/ElMoustacho</Button>
+					</div>
+
+					<div>
+						<strong class="ml-4 text-white">Haïk KHATCHATRIAN</strong>
+						<br/>
+						<span class="ml-4 text-white">Développeur back-end</span>
+						<Separator class="ml-4 my-2 w-[90%]"/>
+						<Button href="mailto:valentin.bonetti@viacesi.fr" variant="link" class="text-white hover:scale-110 transition-transform"><Mail class="mr-1"/>valentin.bonetti@viacesi.fr</Button>
+						<br/>
+						<Button href="https://www.linkedin.com/in/valentin-bonetti/" variant="link" class="text-white hover:scale-110 transition-transform"><Linkedin class="mr-1"/>linkedin.com/in/valentin-bonetti</Button>
+						<br/>
+						<Button href="https://github.com/ElMoustacho" variant="link" class="text-white hover:scale-110 transition-transform"><Github class="mr-1"/>github.com/ElMoustacho</Button>
+					</div>	
+			</Card.Content>
+			<Card.Footer></Card.Footer>
+		</Card.Root>
 	</section>
 
 	<footer class="container w-full mt-[5%] font-roboto">

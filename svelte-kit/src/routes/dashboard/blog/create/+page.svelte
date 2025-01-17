@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 </script>
 
-<div class="container mx-auto">
+<div class="container mx-auto mt-[5%]">
 	<form method="POST" action="/dashboard/blog/?/createPost" use:enhance>
 		<h2 class="h2">Créer un nouveau post</h2>
 		<div>

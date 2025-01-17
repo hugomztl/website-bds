@@ -3,7 +3,7 @@ import type { EventType } from '$lib/models/Event';
 
 export async function load({ fetch }) {
 	try {
-		const posts = await BlogPost.find().sort({ createdAt: -1 });
+		const posts = await BlogPost.find().sort({ createdAt: -1 }).limit(5);
 		const events: EventType[] = await (
 			await fetch(
 				'/api/event?' +

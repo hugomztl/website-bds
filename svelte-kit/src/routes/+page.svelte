@@ -22,6 +22,7 @@
 	import { Description } from "$lib/components/ui/alert";
 	import FounderCard from "$lib/components/founderCard.svelte";
 	import Faq from "$lib/components/faq.svelte";
+	export let data;
 
 	let isMuted = true;
 	let videoElement: HTMLVideoElement | null = null;
@@ -34,6 +35,8 @@
 		// Ajoutez d'autres partenaires selon vos besoins
 	];
 
+	console.log(data.posts);
+	
 	let actu = [
 		{ titre: 'Soirée BBQ', date: '26/11/2024', desc: 'Description de la soirée BBQ.', categorie: 'Événement' },
 		{ titre: 'Club BFC (Brat Fight Club)', date: '26/11/2024', desc: 'Description du club BFC.', categorie: 'Sport' },
@@ -41,7 +44,6 @@
 		{ titre: 'Nouveaux prix licences FFSU', date: '26/11/2024', desc: 'Informations sur les licences FFSU.', categorie: 'Licences' },
 		{ titre: 'CESI, finito ou masterclass ?', date: '26/11/2024', desc: 'Discussion sur le CESI.', categorie: 'Info' },
 	];
-
 
 	function getBadgeVariant(categorie: string): string {
 		switch (categorie) {
@@ -142,21 +144,21 @@
 			<Carousel.Content
 			class={`w-full select-none active:cursor-grabbing hover:cursor-grab`}
 			>
-				{#each actu as _, i (i)}
+				{#each data.posts as _, i (i)}
 				<Carousel.Item class="pt-[1.5%]">
 					<div class="p-1">
 					<Card.Root class="w-full">
 						<Card.Header>
-							<Card.Title>{_.titre}</Card.Title>
-							<Card.Description><Badge variant={getBadgeVariant(_.categorie)}>{_.categorie}</Badge>
-							</Card.Description>
+							<Card.Title>{_.title}</Card.Title>
+							<!-- <Card.Description><Badge variant={getBadgeVariant(_.categorie)}>{_.categorie}</Badge> -->
+							<!-- </Card.Description> -->
 							</Card.Header>
 							<Card.Content>
-							{_.desc}
+							{_.content}
 							</Card.Content>
 							<Card.Footer class="flex justify-between">
-							<date>{_.date}</date>
-							<Button>En savoir plus <ChevronRight/></Button>
+							<span>{_.createdAt} par {_.createdBy}</span>
+							<Button href="/blog/{_._id}">En savoir plus <ChevronRight/></Button>
 							</Card.Footer>
 					</Card.Root>
 					</div>

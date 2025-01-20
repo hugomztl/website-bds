@@ -3,6 +3,19 @@
 	import { CircleAlert } from 'lucide-svelte';
 	import type { SuperForm } from 'sveltekit-superforms';
 	import type { zPendingLicense } from '$lib/models/PendingLicense';
+	import { Label } from "$lib/components/ui/label";
+	import { Input } from "$lib/components/ui/input";
+	import * as RadioGroup from "$lib/components/ui/radio-group";
+	import * as Popover from "$lib/components/ui/popover";
+	import { Calendar } from "$lib/components/ui/calendar";
+	import { Button } from "$lib/components/ui/button";
+	import { CalendarSearch, ChevronsUpDown, Check } from 'lucide-svelte';
+	import { getLocalTimeZone, parseDate, DateFormatter } from "@internationalized/date";
+	import * as Command from '$lib/components/ui/command/index.js';
+	import countriesData from '$lib/data/countries.json';
+	import { onMount } from 'svelte';
+	import { tick } from 'svelte';
+
 
 	export let user: {
 		email: string;
@@ -13,25 +26,54 @@
 	const { form: _form, enhance, submitting, errors, constraints } = form;
 
 	let conditionsAcceptees = false;
+
+	// Formatter pour afficher la date en format long
+	const df = new DateFormatter("fr-FR", {
+		dateStyle: "long"
+	});
+
+	// Fonction pour mettre à jour la date dans le formulaire
+	function updateDate(date) {
+		_form.datenaiss = date ? date.toString() : "";
+	}
+
+	// Transformation des données en une liste d'objets
+	const countries = Object.entries(countriesData).map(([code, name]) => ({
+		value: code,
+		label: name,
+  	}));
+
+	let open = false;
+  	let selectedCountry = '';
+
+	// Fonction pour fermer le popover et remettre le focus sur le bouton déclencheur
+	function closeAndFocusTrigger(triggerId: string) {
+    open = false;
+    tick().then(() => {
+      document.getElementById(triggerId)?.focus();
+    });
+  	}
+
 </script>
 
 <main class="">
 	<h1>Formulaire de Paiement</h1>
+	<!-- TODO: checker si tous les nouveaux inputs fonctionnent bien avec l'ancien backend -->
 	<form method="POST" use:enhance class="grid grid-cols-4 md:grid-cols-4 gap-4">
-		<label>
-			Email*:
+		<div class="flex w-full max-w-sm flex-col gap-1.5">
+			<Label for="email-2">Email*</Label>
 			{#if $errors.email}
 				<span class="error">{$errors.email}</span>
 			{/if}
-			<input class="input" type="email" name="email" value={user.email} readonly required />
-		</label>
+			<Input class="input" type="email" name="email" id="email-2" value={user.email} disabled required />
+		</div>
 
-		<label>
-			Nom de famille*:
+		<div class="flex w-full max-w-sm flex-col gap-1.5">
+			<Label for="email-2">Nom de famille*</Label>
 			{#if $errors.nom}
 				<span class="error">{$errors.nom}</span>
 			{/if}
-			<input
+			<Input
 				class="input"
 				type="text"
 				name="nom"
@@ -40,14 +82,14 @@
 				bind:value={$_form.nom}
 				{...$constraints.nom}
 			/>
-		</label>
+		</div>
 
-		<label>
-			Nom de naissance:
+		<div class="flex w-full max-w-sm flex-col gap-1.5">
+			<Label for="email-2">Nom de naissance</Label>
 			{#if $errors.nom_naissance}
 				<span class="error">{$errors.nom_naissance}</span>
 			{/if}
-			<input
+			<Input
 				class="input"
 				type="text"
 				name="nom_naissance"
@@ -55,14 +97,14 @@
 				bind:value={$_form.nom_naissance}
 				{...$constraints.nom_naissance}
 			/>
-		</label>
+		</div>
 
-		<label>
-			Prénom*:
+		<div class="flex w-full max-w-sm flex-col gap-1.5">
+			<Label for="email-2">Prénom*</Label>
 			{#if $errors.prenom}
 				<span class="error">{$errors.prenom}</span>
 			{/if}
-			<input
+			<Input
 				class="input"
 				type="text"
 				name="prenom"
@@ -70,55 +112,98 @@
 				bind:value={$_form.prenom}
 				{...$constraints.prenom}
 			/>
-		</label>
+		</div>
 
-		<label>
-			Sexe*:
+		<div class="flex w-full max-w-sm flex-col gap-1.5">
+			<Label for="sexe">Sexe*</Label>
 			{#if $errors.sexe}
-				<span class="error">{$errors.sexe}</span>
+			<span class="error">{$errors.sexe}</span>
 			{/if}
-			<div>
-				<label>
-					<input type="radio" name="sexe" value="M" required bind:group={$_form.sexe} />
-					Masculin
-				</label>
-				<label>
-					<input type="radio" name="sexe" value="F" required bind:group={$_form.sexe} />
-					Féminin
-				</label>
-			</div>
-		</label>
-
-		<label>
-			Date de naissance*:
-			{#if $errors.datenaiss}
+			<RadioGroup.Root bind:value={$_form.sexe} name="sexe" required>
+				<div class="flex items-center space-x-2">
+					<RadioGroup.Item value="M" id="masculin" />
+					<Label for="masculin">Masculin</Label>
+				</div>
+				<div class="flex items-center space-x-2">
+					<RadioGroup.Item value="F" id="feminin" />
+					<Label for="feminin">Féminin</Label>
+				</div>
+			</RadioGroup.Root>
+		</div>
+		
+		<!-- FIXME: j'arrive pas a faire fonctionner le composant calendar 🦧​​ (https://www.shadcn-svelte.com/docs/components/calendar) -->
+		<div class="flex w-full max-w-sm flex-col gap-1.5">
+			<Label for="datenaiss">Date de naissance*</Label>
+				{#if $errors.datenaiss}
 				<span class="error">{$errors.datenaiss}</span>
-			{/if}
-			<input
-				class="input"
-				type="date"
-				name="datenaiss"
-				aria-invalid={$errors.datenaiss ? 'true' : undefined}
-				bind:value={$_form.datenaiss}
-				{...$constraints.datenaiss}
-			/>
-		</label>
-
-		<label>
-			Pays de naissance*:
+				{/if}
+			<Popover.Root>
+				<Popover.Trigger asChild>
+					<Button
+					variant="outline"
+					class="w-full justify-start text-left font-normal"
+					>
+					<CalendarSearch class="mr-2 h-4 w-4" />
+					{$_form.datenaiss
+						? df.format(new Date($_form.datenaiss))
+						: "Sélectionnez une date"}
+					</Button>
+				</Popover.Trigger>
+				<Popover.Content class="w-auto p-0" align="start">
+					<Calendar
+					mode="single"
+					selected={$_form.datenaiss ? parseDate($_form.datenaiss) : undefined}
+					onSelect={(date) => updateDate(date)}
+					initialFocus
+					/>
+				</Popover.Content>
+			</Popover.Root>
+		</div>
+			
+		<div class="flex w-full max-w-sm flex-col gap-1.5">
+			<Label for="pays_naissance">Pays de naissance*</Label>
 			{#if $errors.pays_naissance}
-				<span class="error">{$errors.pays_naissance}</span>
+			  <span class="text-red-500 text-sm">{$errors.pays_naissance}</span>
 			{/if}
-			<input
-				class="input"
-				type="text"
-				name="pays_naissance"
-				required
-				aria-invalid={$errors.pays_naissance ? 'true' : undefined}
-				bind:value={$_form.pays_naissance}
-				{...$constraints.pays_naissance}
-			/>
-		</label>
+			<Popover.Root bind:open let:ids>
+			  <Popover.Trigger asChild let:builder>
+				<Button
+				  builders={[builder]}
+				  variant="outline"
+				  role="combobox"
+				  aria-expanded={open}
+				  class="w-full justify-between"
+				  id={ids.trigger}
+				>
+				  {selectedCountry || 'Sélectionnez un pays...'}
+				  <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+				</Button>
+			  </Popover.Trigger>
+			  <Popover.Content class="p-0">
+				<Command.Root>
+				  <Command.Input placeholder="Rechercher un pays..." class="h-9" />
+				  <Command.Empty>Aucun pays trouvé.</Command.Empty>
+				  <Command.Group>
+					{#each countries as country}
+					  <Command.Item
+						value={country.label}
+						onSelect={(currentValue) => {
+						  selectedCountry = countries.find(c => c.label === currentValue)?.label || '';
+						  $_form.pays_naissance = selectedCountry;
+						  closeAndFocusTrigger(ids.trigger);
+						}}
+					  >
+						<span class="flex items-center mr-2 h-4 w-4 {selectedCountry === country.label ? '' : 'text-transparent'}">
+							<Check class="self-center" />
+						</span>
+						{country.label}
+					  </Command.Item>
+					{/each}
+				  </Command.Group>
+				</Command.Root>
+			  </Popover.Content>
+			</Popover.Root>
+		</div>
 
 		<label>
 			Département de naissance*:

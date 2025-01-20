@@ -18,7 +18,7 @@
       <div class="flex flex-wrap justify-between items-center mb-8">
         <div class="mb-6 md:mb-0 flex flex-col space-x-2">
           
-          <div class="flex text-xl font-bold uppercase"><img src="logo-bds.png" alt="BDS" class="w-8 h-8">BDS Cesi Nancy</div>
+          <div class="flex text-xl font-bold uppercase"><img src="/logo-bds.png" alt="BDS" class="w-8 h-8">BDS Cesi Nancy</div>
           <Separator class="my-2"/>
           <Card.Description>19 Av. de la Forêt de Haye Bâtiment Orion,<br/>54500 Vandœuvre-lès-Nancy, France</Card.Description>
           <div class="w-[100%] h-auto mt-2"><iframe title="BDS CESI Nancy" width="100%" height="100%" frameborder="0" scrolling="yes" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=19%20Av.%20de%20la%20For%C3%AAt%20de%20Haye%20B%C3%A2timent%20Orion,%2054500%20Vand%C5%93uvre-l%C3%A8s-Nancy+(BDS%20CESI%20Nancy)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.gps.ie/">gps tracker sport</a></iframe></div>

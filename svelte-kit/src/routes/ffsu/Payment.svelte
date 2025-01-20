@@ -19,7 +19,10 @@
 
 	export let user: {
 		email: string;
+		fullName: string;
 	};
+
+	const [prenom, nom] = user.fullName.split(' ');
 
 	export let form: SuperForm<z.infer<typeof zPendingLicense>>;
 
@@ -77,10 +80,11 @@
 				class="input"
 				type="text"
 				name="nom"
+				value={nom}
 				required
 				aria-invalid={$errors.nom ? 'true' : undefined}
-				bind:value={$_form.nom}
 				{...$constraints.nom}
+				disabled
 			/>
 		</div>
 
@@ -108,9 +112,10 @@
 				class="input"
 				type="text"
 				name="prenom"
+				value={prenom}
 				aria-invalid={$errors.prenom ? 'true' : undefined}
-				bind:value={$_form.prenom}
 				{...$constraints.prenom}
+				disabled
 			/>
 		</div>
 

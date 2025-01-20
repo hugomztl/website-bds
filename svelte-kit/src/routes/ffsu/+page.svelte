@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
 	import Payment from './Payment.svelte';
+	import Footer from '$lib/components/footer.svelte';
 
 	export let data;
 
@@ -17,9 +18,14 @@
 	<h2 class="h2">Vous êtes licensié!</h2>
 	<a class="anchor" href="/">Retourner à l'accueil</a>
 {:else}
-	<h2 class="h2">Acheter sa license FFSU</h2>
+	<section class="container mt-[5%]">
+		<h2 class="h2">Acheter sa license FFSU</h2>
+	</section>
 
 	<br />
+	<section class="container mb-[5%]">
+		<Payment {user} form={_superForm} />
+	</section>
 
-	<Payment {user} form={_superForm} />
+	<Footer />
 {/if}

@@ -1,5 +1,5 @@
 <div class="container">
-	<h3 class="text-center text-4xl font-semibold tracking-tight">
+	<h3 class="mt-[5%] text-center text-4xl font-semibold tracking-tight">
 		Instructions pour imprimer sa license:
 	</h3>
 

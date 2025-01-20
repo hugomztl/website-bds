@@ -17,6 +17,7 @@
 	import { Input } from "$lib/components/ui/input/index.js";
 	import { Label } from "$lib/components/ui/label/index.js";
 	import { resolveRoute } from '$app/paths';
+	import Footer from '$lib/components/footer.svelte';
 
 	export let data;
 	$: user = data.user;
@@ -32,7 +33,7 @@
 
 <main class="scrollbar-hide">
 	<section class="container w-full mt-[5%]">
-		<Card.Root>
+		<Card.Root class="border-none shadow-none">
 			<Card.Header>
 		
 			</Card.Header>
@@ -55,6 +56,7 @@
 					
 				</div>
 			</Card.Content>
+			<Separator class="my-2"/>
 			<Card.Footer class="justify-between">
 				<p>Inscrit le {user.dateInscription?.toLocaleDateString() ?? 'N/A'}</p>
 				{#if $page.data.session?.user?.isAdmin || user._id === $page.data.session?.user?.id}
@@ -318,3 +320,5 @@
 	
 	</section>
 </main>
+
+<Footer/>

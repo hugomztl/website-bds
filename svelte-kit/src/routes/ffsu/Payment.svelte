@@ -15,7 +15,7 @@
 	let conditionsAcceptees = false;
 </script>
 
-<main class="bg-surface-100-800-token">
+<main class="">
 	<h1>Formulaire de Paiement</h1>
 	<form method="POST" use:enhance class="grid grid-cols-4 md:grid-cols-4 gap-4">
 		<label>

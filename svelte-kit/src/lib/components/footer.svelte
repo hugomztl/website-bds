@@ -52,7 +52,7 @@
       </div>
       <Separator class="w-full"/>
       <div class="flex pt-4 justify-between">
-        <p>© {new Date().getFullYear()} BDS Cesi Nancy Tous droits.</p>
+        <p>© {new Date().getFullYear()} Bureau Des Sports (BDS) - CESI Nancy. Tous droits reservés.</p>
         <div class="flex justify-center space-x-4">
           <Button href={instagramLink} class="text-white" variant="ghost"><Instagram/></Button>
           <Button href={discordLink} class="text-white" variant="ghost"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">

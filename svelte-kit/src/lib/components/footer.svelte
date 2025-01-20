@@ -28,8 +28,8 @@
           <div>
             <h2 class="text-sm font-bold mb-4 uppercase ml-4">Resources</h2>
             <ul>
-              <li><Button href="#" variant="link" class="text-white">Flowbite</Button></li>
-              <li><Button href="#" variant="link" class="text-white">Tailwind CSS</Button></li>
+              <li><Button href="mailto:contact@bds-cesi-nancy.fr" variant="link" class="text-white">contact@bds-cesi-nancy.fr</Button></li>
+              <li><Button href="https://nancy.cesi.fr/campus/vie-campus/" variant="link" class="text-white">Vie de campus</Button></li>
             </ul>
           </div>
           <div>

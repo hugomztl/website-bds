@@ -5,6 +5,9 @@
 	import * as Tabs from "$lib/components/ui/tabs";
 	import { Plus} from 'lucide-svelte';
 	import { Button } from "$lib/components/ui/button";
+	import { sports } from '$lib/enums';
+	import * as Select from "$lib/components/ui/select";
+	import Footer from '$lib/components/footer.svelte';
 
 
 
@@ -13,6 +16,9 @@
 	$: posts = data.posts;
 	$: events = data.events.filter((event) => event.startDate >= new Date());
 	$: pastEvents = data.events.filter((event) => event.startDate < new Date());
+	// pour le système de filtre plus tard
+	$: freeEvents = events.filter((event) => event.price === 0);
+	$: sportsEvents = events.filter((event) => event.tag === "sport");
 
 	function formatDate(d: Date) {
 		const h = String(d.getHours()).padStart(2, '0'),
@@ -33,7 +39,7 @@
 	}
 </script>
 
-<div class="container mt-[5%]">
+<div class="container mt-[5%] mb-[5%]">
 	<Tabs.Root value="dashboard">
 		<Tabs.List>
 		  <Tabs.Trigger value="dashboard">Apperçu</Tabs.Trigger>
@@ -46,15 +52,26 @@
 		  Statistiques ici
 		</Tabs.Content>
 		<Tabs.Content value="eventManage">
-				<div
-					class="rounded-container-token bg-surface-400-500-token text-on-surface-token relative col-span-1 row-span-1 m-4 p-4 shadow-md"
-				>
-					<h2 class="h2">Évènements</h2>
-			
-					<Button href="/dashboard/events/create" variant="ghost">
-						<Plus class="mr-1" />Nouvel évènement
-					</Button>
-			
+
+					<div class="flex justify-center items-center mb-5 space-x-5">
+						<Button href="/dashboard/events/create" variant="outline">
+							<Plus class="mr-1" />Nouvel évènement
+						</Button>
+						<!-- TODO: pour futur version, mettre en place des filtres -->
+						<Select.Root> 
+							<Select.Trigger class="w-[180px]">
+							  <Select.Value placeholder="Filtrer" />
+							</Select.Trigger>
+							<Select.Content>
+							  <Select.Item value="sport">Tag : Sport</Select.Item>
+							  <Select.Item value="free">Gratuit</Select.Item>
+							  <Select.Item value="ended">Passés</Select.Item>
+							</Select.Content>
+						  </Select.Root>
+					</div>
+					
+					<h2 class="h2 my-5">Évènements en cours</h2>
+
 					<ul class="list">
 						{#each events as event}
 							<Event {event}/>
@@ -62,7 +79,7 @@
 							Aucun évènement!{/each}
 					</ul>
 			
-					<h2 class="h2">Évènements passés</h2>
+					<h2 class="h2 my-5">Évènements passés</h2>
 			
 					<ul class="list">
 						{#each pastEvents as event}
@@ -70,7 +87,7 @@
 						{:else}
 							Aucun évènement passé!{/each}
 					</ul>
-				</div>
+
 		</Tabs.Content>
 		<Tabs.Content value="userManage">Gestion des utilisateurs ici</Tabs.Content>
 		<Tabs.Content value="clubManage">Gestion des clubs ici</Tabs.Content>
@@ -112,3 +129,5 @@
 		</Tabs.Content>
 	</Tabs.Root>	
 </div>
+
+<Footer />

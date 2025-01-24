@@ -8,6 +8,7 @@
 	import { sports } from '$lib/enums';
 	import * as Select from "$lib/components/ui/select";
 	import Footer from '$lib/components/footer.svelte';
+	import Chart from '$lib/components/Chart.svelte';
 
 
 
@@ -37,6 +38,59 @@
 			invalidate('dashboard:all');
 		});
 	}
+
+	// Données fictives pour les graphiques TODO: récupérer les données depuis la base de données pour faire des stats (https://github.com/SauravKanchan/svelte-chartjs)
+	const barChartData = {
+    labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'],
+    datasets: [
+      {
+        label: 'Licenciés 2025',
+        backgroundColor: '#3182ce',
+        borderColor: '#3182ce',
+        data: [5, 12, 21, 14, 15, 6, 9],
+      },
+    ],
+  };
+
+  const lineChartData = {
+    labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'],
+    datasets: [
+      {
+        label: 'Revenus 2025',
+        backgroundColor: '#f56565',
+        borderColor: '#f56565',
+        data: [30, 78, 56, 34, 100, 45, 13],
+        fill: false,
+      },
+    ],
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+      },
+    },
+    scales: {
+      x: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Mois',
+        },
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Valeurs',
+        },
+      },
+    },
+  };
+
 </script>
 
 <div class="container mt-[5%] mb-[5%]">
@@ -49,7 +103,14 @@
 		  <Tabs.Trigger value="blogManage">Blogs</Tabs.Trigger>
 		</Tabs.List>
 		<Tabs.Content value="dashboard">
-		  Statistiques ici
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+				<div class="h-96">
+				  <Chart type="bar" data={barChartData} options={chartOptions} />
+				</div>
+				<div class="h-96">
+				  <Chart type="line" data={lineChartData} options={chartOptions} />
+				</div>
+			</div>
 		</Tabs.Content>
 		<Tabs.Content value="eventManage">
 

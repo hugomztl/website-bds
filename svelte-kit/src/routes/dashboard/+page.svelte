@@ -9,12 +9,12 @@
 	import * as Select from "$lib/components/ui/select";
 	import Footer from '$lib/components/footer.svelte';
 	import Chart from '$lib/components/Chart.svelte';
-
-
+	import BlogPost from '$lib/components/BlogPost.svelte';
 
 	export let data;
 
 	$: posts = data.posts;
+
 	$: events = data.events.filter((event) => event.startDate >= new Date());
 	$: pastEvents = data.events.filter((event) => event.startDate < new Date());
 	// pour le système de filtre plus tard
@@ -26,17 +26,6 @@
 			m = String(d.getMinutes()).padStart(2, '0'),
 			s = String(d.getSeconds()).padStart(2, '0');
 		return `${d.getDate()}/${d.getMonth()}/${d.getFullYear()} à ${h}:${m}:${s}`;
-	}
-
-	function deletePost(post: Pick<BlogPostType, 'title' | '_id'>) {
-		if (!confirm(`Voulez-vous supprimer le post: ${post.title}`)) return;
-
-		const data = new FormData();
-		data.set('postId', post._id.toString());
-
-		fetch('/dashboard/blog?/deletePost', { body: data, method: 'POST' }).then(() => {
-			invalidate('dashboard:all');
-		});
 	}
 
 	// Données fictives pour les graphiques TODO: récupérer les données depuis la base de données pour faire des stats (https://github.com/SauravKanchan/svelte-chartjs)
@@ -213,39 +202,19 @@
 		<Tabs.Content value="userManage">Gestion des utilisateurs ici</Tabs.Content>
 		<Tabs.Content value="clubManage">Gestion des clubs ici</Tabs.Content>
 		<Tabs.Content value="blogManage">
-			<div
-			class="rounded-container-token bg-surface-400-500-token text-on-surface-token relative col-span-1 row-span-1 m-4 p-4 shadow-md"
-		>
-			<h2 class="h2 mb-4">Blog</h2>
+			
 	
-			<a href="/dashboard/blog/create" class="btn variant-filled-primary">Rédiger un nouveau post</a>
+			<div class="flex justify-center items-center mb-5 space-x-5">
+				<Button href="/dashboard/blog/create" variant="outline">
+					<Plus class="mr-1" />Nouveau post
+				</Button>
+			</div>
 	
 			<div class="grid grid-cols-1 gap-2 lg:grid-cols-2">
-				{#each posts as blogPost}
-					<div>
-						<div
-							class="rounded-container-token bg-surface-600-300-token flex max-h-48 flex-col overflow-clip text-ellipsis !rounded-b-none p-2 shadow-sm"
-						>
-							<h3>{blogPost.title}</h3>
-							<p>Publié le {formatDate(blogPost.createdAt)}</p>
-							<p>
-								Par <a
-									class="anchor text-primary-400-500-token"
-									href="/profile/{blogPost.createdBy._id}">{blogPost.createdBy.fullName}</a
-								>
-							</p>
-							<p class="blog-content overflow-y-auto overflow-x-hidden pr-4 text-justify">
-								{blogPost.content}
-							</p>
-						</div>
-						<div class="rounded-container-token btn-group variant-filled flex w-full !rounded-t-none">
-							<a href="dashboard/blog/{blogPost._id}" class="btn flex-grow">Modifier</a>
-							<button class="btn flex-grow" on:click={() => deletePost(blogPost)}>Supprimer</button>
-						</div>
-					</div>
+				{#each posts as post}
+					<BlogPost {post} />
 				{/each}
 			</div>
-		</div>
 	
 		</Tabs.Content>
 	</Tabs.Root>	

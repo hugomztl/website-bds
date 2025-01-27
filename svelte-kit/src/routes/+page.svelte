@@ -105,7 +105,7 @@
 		class="absolute inset-0 h-full w-full object-cover" 
 		bind:muted={isMuted}
 		bind:this={videoElement}>
-			<source src="motivation.mp4" type="video/mp4" />
+			<source src="Motivation-1.webm" type="video/webm" />
 			<track kind="captions" src="" srclang="fr" label="Français" />
 			Votre navigateur ne supporte pas la vidéo HTML5.
 		</video>

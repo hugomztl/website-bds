@@ -57,9 +57,41 @@
     datasets: [
       {
         label: 'Revenus 2025',
+        backgroundColor: "#00FF00",
+        borderColor: "#00FF00",
+        data:  [5, 8, 7, 13, 10, 27, 40],
+        fill: false,
+      },
+    ],
+  };
+
+  const pieChartData = {
+    labels: ['A5', 'A4', 'A3', 'CPI A2', 'CPI A1', 'Autre'],
+    datasets: [
+      {
+        label: 'Répartition des adhérants selons les promos',
+        data: [20, 4, 15, 10, 25, 17],
+		backgroundColor: [
+        '#F7464A',
+        '#46BFBD',
+        '#FDB45C',
+        '#949FB1',
+        '#4D5360',
+        '#AC64AD',
+      	],
+        fill: false,
+      },
+    ],
+  };
+
+  const radarChartData = {
+    labels: ['BFC', 'Football', 'Volley', 'Ping Pong', 'Escalade', 'Basket', 'Handball'],
+    datasets: [
+      {
+        label: 'Répartition des adhérants selons les clubs',
         backgroundColor: '#f56565',
         borderColor: '#f56565',
-        data: [30, 78, 56, 34, 100, 45, 13],
+        data: [20, 33, 15, 5, 7, 10, 9],
         fill: false,
       },
     ],
@@ -110,11 +142,29 @@
 				<div class="h-96">
 				  <Chart type="line" data={lineChartData} options={chartOptions} />
 				</div>
-				<div class="h-96">
-					<Chart type="pie" data={lineChartData} options={chartOptions} />
+				<div class="flex justify-center h-96">
+					<Chart type="pie" data={pieChartData} options={{plugins: {
+						legend: {
+						  position: 'bottom',
+						},
+					  }}} />
 				</div>
-				<div class="h-96">
-					<Chart type="radar" data={lineChartData} options={chartOptions} />
+				<div class="flex justify-center h-96">
+					<Chart type="radar" data={radarChartData} options={{plugins: {
+						legend: {
+						  position: 'bottom',
+						},
+					  },
+					  scales: {
+						r: {
+							max: 40,
+							min: 0,
+							ticks: {
+								stepSize: 5
+							}
+						}
+					} 
+					  }} />
 				</div>
 			</div>
 			<div class="flex justify-center items-center mt-10">

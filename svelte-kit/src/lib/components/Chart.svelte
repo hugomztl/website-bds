@@ -6,7 +6,7 @@
     // Enregistrement des composants nécessaires de Chart.js
     ChartJS.register(Title, Tooltip, Legend, BarElement, LineElement, CategoryScale, LinearScale, PointElement, ArcElement, RadialLinearScale);
   
-    export let type: 'bar' | 'line';
+    export let type: 'bar' | 'line' | 'pie' | 'radar';
     export let data: any;
     export let options: any;
 </script>

@@ -3,7 +3,7 @@
 	import type { BlogPostType } from '$lib/models/BlogPost.js';
 	import Event from './Event.svelte';
 	import * as Tabs from "$lib/components/ui/tabs";
-	import { Plus} from 'lucide-svelte';
+	import { Plus, FileChartColumn } from 'lucide-svelte';
 	import { Button } from "$lib/components/ui/button";
 	import { sports } from '$lib/enums';
 	import * as Select from "$lib/components/ui/select";
@@ -103,13 +103,23 @@
 		  <Tabs.Trigger value="blogManage">Blogs</Tabs.Trigger>
 		</Tabs.List>
 		<Tabs.Content value="dashboard">
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
 				<div class="h-96">
 				  <Chart type="bar" data={barChartData} options={chartOptions} />
 				</div>
 				<div class="h-96">
 				  <Chart type="line" data={lineChartData} options={chartOptions} />
 				</div>
+				<div class="h-96">
+					<Chart type="pie" data={lineChartData} options={chartOptions} />
+				</div>
+				<div class="h-96">
+					<Chart type="radar" data={lineChartData} options={chartOptions} />
+				</div>
+			</div>
+			<div class="flex justify-center items-center mt-10">
+				<!-- pour la prochaine version TODO: script qui génère un rapport excel -->
+				<Button href="/error" variant="outline"><FileChartColumn class="mr-1"/>Générer un rapport</Button>
 			</div>
 		</Tabs.Content>
 		<Tabs.Content value="eventManage">

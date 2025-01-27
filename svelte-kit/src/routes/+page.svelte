@@ -213,7 +213,7 @@
 				<Card.Title class="text-center font-bold text-4xl text-white my-4">Fondateurs</Card.Title>
 			</Card.Header>
 			<Card.Content class="flex justify-between space-x-4">
-				<FounderCard nom="berton" prenom="téo" linkedin="bertonteo" imgUrl="berton.jpg" classList="w-[25%]"/>
+				<FounderCard nom="berton" prenom="téo" linkedin="bertonteo" imgUrl="berton.webp" classList="w-[25%]"/>
 				<FounderCard nom="mazzitelli" prenom="hugo" linkedin="hugomztl" imgUrl="mazz.webp" classList="w-[25%]"/>
 				<FounderCard nom="khatchatrian" prenom="haïk" linkedin="haik-khatchatrian" imgUrl="hk.webp" classList="w-[25%]"/>
 				<FounderCard nom="changarnier" prenom="théo" linkedin="theo-changarnier" imgUrl="chang.webp" classList="w-[25%]"/>

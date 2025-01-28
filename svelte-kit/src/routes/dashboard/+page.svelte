@@ -10,6 +10,8 @@
 	import Footer from '$lib/components/footer.svelte';
 	import Chart from '$lib/components/Chart.svelte';
 	import BlogPost from '$lib/components/BlogPost.svelte';
+	import * as Card from "$lib/components/ui/card/index.js";
+
 
 	export let data;
 
@@ -124,21 +126,33 @@
 		  <Tabs.Trigger value="blogManage">Blogs</Tabs.Trigger>
 		</Tabs.List>
 		<Tabs.Content value="dashboard">
+			<div class="flex justify-between items-center mt-10">
+				<span class="uppercase font-Roboto font-bold">Dashboard</span>
+				<!-- pour la prochaine version TODO: script qui génère un rapport excel -->
+				<Button href="/error" variant="secondary"><FileChartColumn class="mr-1"/>Générer un rapport</Button>
+			</div>
 			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-				<div class="h-96">
-				  <Chart type="bar" data={barChartData} options={chartOptions} />
-				</div>
-				<div class="h-96">
-				  <Chart type="line" data={lineChartData} options={chartOptions} />
-				</div>
-				<div class="flex justify-center h-96">
+				<Card.Root class="h-96">
+					<Card.Content class="h-full">
+						<Chart type="bar" data={barChartData} options={chartOptions} />
+					</Card.Content>
+				</Card.Root>
+				<Card.Root class="h-96">
+					<Card.Content class="h-full">
+				  		<Chart type="line" data={lineChartData} options={chartOptions} />
+					</Card.Content>
+				</Card.Root>
+				<Card.Root class="flex justify-center h-96">
+					<Card.Content class="h-full"> 
 					<Chart type="pie" data={pieChartData} options={{plugins: {
 						legend: {
 						  position: 'bottom',
 						},
 					  }}} />
-				</div>
-				<div class="flex justify-center h-96">
+					</Card.Content>
+				</Card.Root>
+				<Card.Root class="flex justify-center h-96">
+					<Card.Content class="h-full">
 					<Chart type="radar" data={radarChartData} options={{plugins: {
 						legend: {
 						  position: 'bottom',
@@ -154,15 +168,11 @@
 						}
 					} 
 					  }} />
-				</div>
-			</div>
-			<div class="flex justify-center items-center mt-10">
-				<!-- pour la prochaine version TODO: script qui génère un rapport excel -->
-				<Button href="/error" variant="outline"><FileChartColumn class="mr-1"/>Générer un rapport</Button>
+					</Card.Content>
+				</Card.Root>
 			</div>
 		</Tabs.Content>
 		<Tabs.Content value="eventManage">
-
 					<div class="flex justify-center items-center mb-5 space-x-5">
 						<Button href="/dashboard/events/create" variant="outline">
 							<Plus class="mr-1" />Nouvel évènement

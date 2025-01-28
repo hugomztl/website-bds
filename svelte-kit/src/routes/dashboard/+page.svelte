@@ -3,7 +3,7 @@
 	import type { BlogPostType } from '$lib/models/BlogPost.js';
 	import Event from './Event.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { Plus, FileChartColumn } from 'lucide-svelte';
+	import { Plus, FileChartColumn, Frown } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { sports } from '$lib/enums';
 	import * as Select from '$lib/components/ui/select';
@@ -11,6 +11,7 @@
 	import Chart from '$lib/components/Chart.svelte';
 	import BlogPost from '$lib/components/BlogPost.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
+	import PendingClubs from '$lib/components/pendingClubs.svelte';
 
 	export let data;
 
@@ -216,7 +217,60 @@
 			</ul>
 		</Tabs.Content>
 		<Tabs.Content value="userManage">Gestion des utilisateurs ici</Tabs.Content>
-		<Tabs.Content value="clubManage">Gestion des clubs ici</Tabs.Content>
+		<Tabs.Content value="clubManage">
+			<div class="my-5 flex items-center justify-between">
+				<span class="font-Roboto font-bold uppercase"
+					>{data.pendingClubs.length} club(s) en attente</span
+				>
+				<!-- pour la prochaine version TODO: script qui génère un rapport excel -->
+				<Button href="/clubs/create" variant="secondary">
+					<Plus class="mr-1" />Nouveau club
+				</Button>
+			</div>
+			{#if data.pendingClubs && data.pendingClubs.length > 0}
+				<PendingClubs {data} />
+			{:else}
+				<div class="flex items-center justify-center">
+					<div class="flex-col items-center justify-center text-center">
+						<Frown class="text-muted-foreground mx-auto mb-5 h-auto w-[10vw]" />
+						<span class="font-Roboto text-muted-foreground font-bold uppercase"
+							>Aucun club en attente pour le moment</span
+						>
+					</div>
+				</div>
+			{/if}
+			{#each data.clubs as club}
+				<a href={`/clubs/${club._id}`}>
+					<div class="club">
+						<div class="club-header">
+							<a href={`/clubs/${club._id}/manage`}>
+								<svg
+									class="pen-icon"
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 24 24"
+									width="24"
+									height="24"
+								>
+									<path fill="none" d="M0 0h24v24H0z" />
+									<path
+										d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+									/>
+								</svg>
+							</a>
+						</div>
+						<h2>{club.name}</h2>
+						<p>{club.description}</p>
+						{#if club.owner}
+							<p>Président: {club.owner.fullName}</p>
+						{:else}
+							<p>Actuellement sans président</p>
+						{/if}
+					</div>
+				</a>
+			{:else}
+				<h2>Aucun club pour le moment</h2>
+			{/each}
+		</Tabs.Content>
 		<Tabs.Content value="blogManage">
 			<div class="mb-5 flex items-center justify-center space-x-5">
 				<Button href="/dashboard/blog/create" variant="outline">

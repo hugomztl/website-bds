@@ -10,54 +10,8 @@
 	}
 </script>
 
-<main class="container mt-[5%] m-auto">
-	<h1>Clubs:</h1>
-
-	{#if data.session?.user}
-		<a href="/clubs/create">Créer un club</a>
-	{/if}
-
-	{#if data.session?.user?.isAdmin}
-		<h2>Clubs en attente</h2>
-
-		{#if data.pendingClubs && data.pendingClubs.length > 0}
-			<Accordion>
-				<AccordionItem>
-					<svelte:fragment slot="lead"><Clock /></svelte:fragment>
-					<svelte:fragment slot="summary">
-						[{data.pendingClubs.length}] club(s) en attente
-					</svelte:fragment>
-					<svelte:fragment slot="content">
-						{#each data.pendingClubs as club}
-							<div class="container">
-								<p><b>{club.name}</b></p>
-								<p>{club.description}</p>
-
-								<div class="btn-group">
-									<form method="POST" action="?/acceptClub" use:enhance>
-										<input type="hidden" name="id" value={club._id} />
-										<button class="btn variant-filled-success">
-											<Check />
-											Accepter
-										</button>
-									</form>
-									<form method="POST" action="?/rejectClub" use:enhance>
-										<input type="hidden" name="id" value={club._id} />
-										<button class="btn variant-outline-error text-error-600">
-											<X />
-											Refuser
-										</button>
-									</form>
-								</div>
-							</div>
-						{/each}
-					</svelte:fragment>
-				</AccordionItem>
-			</Accordion>
-		{:else}
-			<p class="text-gray-500">Aucun club en attente pour le moment</p>
-		{/if}
-	{:else if data.pendingClubs && data.pendingClubs.length > 0}
+<main class="container m-auto mt-[5%]">
+	{#if data.pendingClubs && data.pendingClubs.length > 0}
 		<h2>Mes clubs en attente</h2>
 
 		<Accordion>

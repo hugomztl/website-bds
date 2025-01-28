@@ -126,12 +126,12 @@
 		  <Tabs.Trigger value="blogManage">Blogs</Tabs.Trigger>
 		</Tabs.List>
 		<Tabs.Content value="dashboard">
-			<div class="flex justify-between items-center mt-10">
+			<div class="flex justify-between items-center my-5">
 				<span class="uppercase font-Roboto font-bold">Dashboard</span>
 				<!-- pour la prochaine version TODO: script qui génère un rapport excel -->
 				<Button href="/error" variant="secondary"><FileChartColumn class="mr-1"/>Générer un rapport</Button>
 			</div>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 				<Card.Root class="h-96">
 					<Card.Content class="h-full">
 						<Chart type="bar" data={barChartData} options={chartOptions} />
@@ -173,24 +173,28 @@
 			</div>
 		</Tabs.Content>
 		<Tabs.Content value="eventManage">
-					<div class="flex justify-center items-center mb-5 space-x-5">
-						<Button href="/dashboard/events/create" variant="outline">
-							<Plus class="mr-1" />Nouvel évènement
-						</Button>
-						<!-- TODO: pour futur version, mettre en place des filtres -->
-						<Select.Root> 
-							<Select.Trigger class="w-[180px]">
-							  <Select.Value placeholder="Filtrer" />
-							</Select.Trigger>
-							<Select.Content>
-							  <Select.Item value="sport">Tag : Sport</Select.Item>
-							  <Select.Item value="free">Gratuit</Select.Item>
-							  <Select.Item value="ended">Passés</Select.Item>
-							</Select.Content>
-						  </Select.Root>
-					</div>
 					
-					<h2 class="h2 my-5">Évènements en cours</h2>
+					<div class="flex justify-between items-center my-5">
+						<span class="uppercase font-Roboto font-bold">Évènements en cours</span>
+
+						<div class="flex space-x-5">
+							<!-- TODO: pour futur version, mettre en place des filtres -->
+							<Select.Root> 
+								<Select.Trigger class="w-[180px]">
+								<Select.Value placeholder="Filtrer" />
+								</Select.Trigger>
+								<Select.Content>
+								<Select.Item value="sport">Tag : Sport</Select.Item>
+								<Select.Item value="free">Gratuit</Select.Item>
+								<Select.Item value="ended">Passés</Select.Item>
+								</Select.Content>
+							</Select.Root>
+							<!-- pour la prochaine version TODO: script qui génère un rapport excel -->
+							<Button href="/dashboard/events/create" variant="secondary">
+								<Plus class="mr-1" />Nouvel évènement
+							</Button>
+						</div>
+					</div>
 
 					<ul class="list">
 						{#each events as event}

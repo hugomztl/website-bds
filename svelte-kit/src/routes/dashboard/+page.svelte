@@ -230,18 +230,8 @@
 			</ul>
 		</Tabs.Content>
 		<Tabs.Content value="userManage">
-			<div class="my-5 flex items-center justify-between">
-				<span class="font-Roboto font-bold uppercase">{data.users.length} utilisateurs</span>
-				<!-- FIXME: a voir si on garde le champ recherche ici car le composant ci dessous (DataTable) propose cette fonctionnalité -->
-				<div class="relative w-full max-w-56">
-					<UserSearch
-						class="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-500"
-					/>
-					<Input type="text" placeholder="Rechercher un utilisateur" class="pl-10" />
-				</div>
-			</div>
 			<!-- TODO: améliorer le composant DataTable avec les fonctionnalités (voir /components/datatable/DataTable.svelte) -->
-			<DataTable data={data.users} />
+			<DataTable data={data.users} userCount={data.users.length} />
 		</Tabs.Content>
 		<Tabs.Content value="clubManage">
 			<div class="my-5 flex items-center justify-between">

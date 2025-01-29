@@ -11,18 +11,23 @@
 
 <script lang="ts">
 	import { createTable, Render, Subscribe } from 'svelte-headless-table';
-	import { addPagination, addSortBy } from 'svelte-headless-table/plugins';
+	import { addPagination, addSortBy, addTableFilter } from 'svelte-headless-table/plugins';
 	import { readable } from 'svelte/store';
 	import * as Table from '$lib/components/ui/table';
+	import { Input } from '$lib/components/ui/input';
 	import { Button } from '$lib/components/ui/button';
-	import { ArrowUpDown, ChevronLeft, ChevronRight } from 'lucide-svelte/icons';
-	import type { User } from '$lib/models/User'; //FIXME: jsp pk il met une erreur ici quand j'importe le type
+	import { ArrowUpDown, ChevronLeft, ChevronRight, UserSearch } from 'lucide-svelte/icons';
+	import type { UserType } from '$lib/models/User';
 
-	export let data: User[];
+	export let data: UserType[];
+	export let userCount: number;
 
 	const table = createTable(readable(data), {
 		page: addPagination(),
-		sort: addSortBy()
+		sort: addSortBy(),
+		filter: addTableFilter({
+			fn: ({ filterValue, value }) => value.toLowerCase().includes(filterValue.toLowerCase())
+		})
 	});
 
 	const columns = table.createColumns([
@@ -67,7 +72,21 @@
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates } =
 		table.createViewModel(columns);
 	const { hasNextPage, hasPreviousPage, pageIndex } = pluginStates.page;
+	const { filterValue } = pluginStates.filter;
 </script>
+
+<div class="my-5 flex items-center justify-between">
+	<span class="font-Roboto font-bold uppercase">{userCount} utilisateurs</span>
+	<div class="relative w-full max-w-56">
+		<UserSearch class="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-500" />
+		<Input
+			type="text"
+			placeholder="Rechercher un utilisateur"
+			class="pl-10"
+			bind:value={$filterValue}
+		/>
+	</div>
+</div>
 
 <div>
 	<div class="rounded-md border">

@@ -1,6 +1,7 @@
 import Event from '$lib/models/Event';
 import BlogPost from '$lib/models/BlogPost';
 import Club from '$lib/models/Club';
+import User from '$lib/models/User';
 import PendingClub from '$lib/models/PendingClub';
 import { type UserType } from '$lib/models/User';
 import { recursiveStringifyId } from '$lib/database';
@@ -23,6 +24,10 @@ export const load = async ({ parent, depends }) => {
 		clubs.map((club) => club.toObject({ flattenObjectIds: true }))
 	);
 
+	const users = await User.find().then((users) => 
+		users.map((user) => user.toObject({ flattenObjectIds: true }))
+	);
+
 	return {
 		events,
 		posts,
@@ -31,6 +36,7 @@ export const load = async ({ parent, depends }) => {
 			.populate<{ owner: UserType }>('owner')
 			.lean()
 			.exec()
-			.then((clubs) => clubs.map(recursiveStringifyId))
+			.then((clubs) => clubs.map(recursiveStringifyId)),
+		users
 	};
 };

@@ -3,7 +3,14 @@
 	import type { BlogPostType } from '$lib/models/BlogPost.js';
 	import Event from './Event.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { Plus, FileChartColumn, Frown, SquareDashedMousePointer, CircleOff } from 'lucide-svelte';
+	import {
+		Plus,
+		FileChartColumn,
+		Frown,
+		SquareDashedMousePointer,
+		CircleOff,
+		UserSearch
+	} from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { sports } from '$lib/enums';
 	import * as Select from '$lib/components/ui/select';
@@ -14,6 +21,8 @@
 	import PendingClubs from '$lib/components/pendingClubs.svelte';
 	import ClubCard from '$lib/components/ClubCard.svelte';
 	import { Separator } from '$lib/components/ui/separator';
+	import { Input } from '$lib/components/ui/input';
+	import DataTable from '$lib/components/datatable/DataTable.svelte';
 
 	export let data;
 
@@ -127,7 +136,7 @@
 					><FileChartColumn class="mr-1" />Générer un rapport</Button
 				>
 			</div>
-			<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+			<div class="grid grid-cols-1 gap-5 md:grid-cols-2">
 				<Card.Root class="h-96">
 					<Card.Content class="h-full">
 						<Chart type="bar" data={barChartData} options={chartOptions} />
@@ -181,7 +190,7 @@
 		</Tabs.Content>
 		<Tabs.Content value="eventManage">
 			<div class="my-5 flex items-center justify-between">
-				<span class="font-Roboto font-bold uppercase">Évènements en cours</span>
+				<span class="font-Roboto font-bold uppercase">{events.length} Évènement(s) en cours</span>
 
 				<div class="flex space-x-5">
 					<!-- TODO: pour futur version, mettre en place des filtres -->
@@ -195,7 +204,7 @@
 							<Select.Item value="ended">Passés</Select.Item>
 						</Select.Content>
 					</Select.Root>
-					<!-- pour la prochaine version TODO: script qui génère un rapport excel -->
+
 					<Button href="/dashboard/events/create" variant="secondary">
 						<Plus class="mr-1" />Nouvel évènement
 					</Button>
@@ -209,7 +218,9 @@
 					Aucun évènement!{/each}
 			</ul>
 
-			<h2 class="h2 my-5">Évènements passés</h2>
+			<div class="my-5">
+				<span class="font-Roboto font-bold uppercase">{pastEvents.length} Évènement(s) passés</span>
+			</div>
 
 			<ul class="list">
 				{#each pastEvents as event}
@@ -218,11 +229,23 @@
 					Aucun évènement passé!{/each}
 			</ul>
 		</Tabs.Content>
-		<Tabs.Content value="userManage">Gestion des utilisateurs ici</Tabs.Content>
+		<Tabs.Content value="userManage">
+			<div class="my-5 flex items-center justify-between">
+				<span class="font-Roboto font-bold uppercase">{data.users.length} utilisateurs</span>
+				<!-- FIXME: a voir si on garde le champ recherche ici car le composant ci dessous (DataTable) propose cette fonctionnalité -->
+				<div class="relative w-full max-w-56">
+					<UserSearch
+						class="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-500"
+					/>
+					<Input type="text" placeholder="Rechercher un utilisateur" class="pl-10" />
+				</div>
+			</div>
+			<!-- TODO: améliorer le composant DataTable avec les fonctionnalités (voir /components/datatable/DataTable.svelte) -->
+			<DataTable data={data.users} />
+		</Tabs.Content>
 		<Tabs.Content value="clubManage">
 			<div class="my-5 flex items-center justify-between">
 				<span class="font-Roboto font-bold uppercase">{data.pendingClubs.length} en attente</span>
-				<!-- pour la prochaine version TODO: script qui génère un rapport excel -->
 				<Button href="/clubs/create" variant="secondary">
 					<Plus class="mr-1" />Nouveau club
 				</Button>
@@ -230,6 +253,7 @@
 			{#if data.pendingClubs && data.pendingClubs.length > 0}
 				<PendingClubs {data} />
 			{:else}
+				<Separator class="my-5" />
 				<div class="flex items-center justify-center">
 					<div class="flex-col items-center justify-center text-center">
 						<CircleOff class="text-muted-foreground mx-auto mb-5 h-auto w-[10vw]" />
@@ -238,8 +262,8 @@
 						>
 					</div>
 				</div>
+				<Separator class="my-5" />
 			{/if}
-			<Separator class="my-5" />
 			<div class="my-5 flex items-center justify-between">
 				<span class="font-Roboto font-bold uppercase">{data.clubs.length} club(s)</span>
 			</div>
@@ -250,6 +274,7 @@
 					</a>
 				</div>
 			{:else}
+				<Separator class="my-5" />
 				<div class="flex items-center justify-center">
 					<div class="flex-col items-center justify-center text-center">
 						<Frown class="text-muted-foreground mx-auto mb-5 h-auto w-[10vw]" />
@@ -258,6 +283,7 @@
 						>
 					</div>
 				</div>
+				<Separator class="my-5" />
 			{/each}
 		</Tabs.Content>
 		<Tabs.Content value="blogManage">

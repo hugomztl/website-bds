@@ -1,9 +1,13 @@
 import BlogPost from '$lib/models/BlogPost';
+import type { UserType } from '$lib/models/User';
 import type { EventType } from '$lib/models/Event';
 
 export async function load({ fetch }) {
 	try {
-		const posts = await BlogPost.find().sort({ createdAt: -1 }).limit(5);
+		const posts = await BlogPost.find()
+		.populate<{ createdBy: UserType }>('createdBy')
+		.sort({ createdAt: -1 }).limit(5);
+
 		const events: EventType[] = await (
 			await fetch(
 				'/api/event?' +

@@ -195,7 +195,13 @@
 									{_.content}
 								</Card.Content>
 								<Card.Footer class="flex justify-between">
-									<span>{_.createdAt} par {_.createdBy}</span>
+									<span
+										>Posté le {new Date(_.createdAt).toLocaleDateString('fr-FR')} par <Button
+											class="px-0"
+											variant="link"
+											href="/profile/{_.createdBy._id}">{_.createdBy.fullName}</Button
+										></span
+									>
 									<Button href="/blog/{_._id}">En savoir plus <ChevronRight /></Button>
 								</Card.Footer>
 							</Card.Root>

@@ -48,8 +48,8 @@
 			cell: ({ row }) => new Date(row.original.dateInscription).toLocaleDateString('fr-FR') //FIXME: je crois que c'est pas la bonne façon de faire
 		}),
 		table.column({
-			accessor: ({ id }) => id, //FIXME: j'arrive pas a recup l'id mongodb de l'utilisateur (undefined dans le rendu)
-			header: ''
+			accessor: '_id',
+			header: 'Identifiant'
 		})
 	]);
 

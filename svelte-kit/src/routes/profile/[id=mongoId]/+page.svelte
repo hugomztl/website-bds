@@ -17,7 +17,6 @@
 		TriangleAlert,
 		Info,
 		Check,
-		Cog,
 		UserCheck
 	} from 'lucide-svelte';
 	import * as Avatar from '$lib/components/ui/avatar';
@@ -29,11 +28,12 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import * as Sheet from '$lib/components/ui/sheet';
 	import { Progress } from '$lib/components/ui/progress';
-	import { Input } from '$lib/components/ui/input/index.js';
-	import { Label } from '$lib/components/ui/label/index.js';
 	import { resolveRoute } from '$app/paths';
 	import Footer from '$lib/components/footer.svelte';
 	import { invalidateAll } from '$app/navigation';
+	import { superForm } from 'sveltekit-superforms';
+	import { promos, sports } from '$lib/enums';
+	import { toast } from 'svelte-sonner';
 
 	export let data;
 	$: user = data.user;
@@ -45,6 +45,17 @@
 	//console.log(data.user);
 
 	$: clubs = data.clubs;
+
+	let sheetOpen = false;
+
+	const _superForm = superForm(data.form);
+	const { form, enhance } = _superForm;
+
+	function formSubmit() {
+		// Ferme la fenêtre d'édition lors de l'enregistrement
+		sheetOpen = false;
+		toast.success('Profil mis à jour!');
+	}
 </script>
 
 <main class="scrollbar-hide">
@@ -78,7 +89,7 @@
 					>
 						page edit (debug)
 					</a>
-					<Sheet.Root>
+					<Sheet.Root bind:open={sheetOpen}>
 						<Sheet.Trigger asChild let:builder>
 							<Button builders={[builder]} variant="ghost">
 								<SquarePen class="mr-1" />
@@ -93,14 +104,57 @@
 									valider les modifications ou appuyez sur la croix pour annuler.
 								</Sheet.Description>
 							</Sheet.Header>
-							<!-- TODO: intégrer la gestion des modifications sans changer de page -->
-							<iframe title="edit" src={`/profile/${encodeURIComponent(user._id ?? '')}/edit`}
-							></iframe>
-							<Sheet.Footer>
-								<Sheet.Close asChild let:builder>
-									<Button builders={[builder]} type="submit">Sauvegarder</Button>
-								</Sheet.Close>
-							</Sheet.Footer>
+							<form
+								method="POST"
+								action="?/editProfile"
+								use:enhance
+								class="mt-[5%]"
+								on:submit={formSubmit}
+							>
+								<div>
+									<label for="fullName">Nom complet:</label>
+									<input
+										type="text"
+										id="fullName"
+										name="fullName"
+										bind:value={$form.fullName}
+										required
+									/>
+								</div>
+
+								<div>
+									<label for="promo">Promo:</label>
+									<select id="promo" name="promo" bind:value={$form.promo}>
+										<option value="">Sélectionner une promo</option>
+										{#each promos as promo}
+											<option value={promo}>{promo}</option>
+										{/each}
+									</select>
+								</div>
+
+								<div>
+									<p>Sports:</p>
+									{#each sports as sport}
+										<label>
+											<input
+												type="checkbox"
+												name="sports"
+												value={sport}
+												bind:group={$form.sports}
+												checked={$form.sports?.includes(sport)}
+											/>
+											{sport}
+										</label>
+									{/each}
+								</div>
+
+								<div>
+									<label for="discord">Discord:</label>
+									<input type="text" id="discord" name="discord" bind:value={$form.discord} />
+								</div>
+
+								<Button type="submit">Enregistrer les modifications</Button>
+							</form>
 						</Sheet.Content>
 					</Sheet.Root>
 				{/if}

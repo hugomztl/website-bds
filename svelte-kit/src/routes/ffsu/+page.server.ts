@@ -25,6 +25,10 @@ export const load = async ({ locals }) => {
 		return redirect(303, '/auth');
 	}
 
+	if (user.license) {
+		return redirect(303, '/license');
+	}
+
 	const form = await superValidate(zod(zPendingLicense));
 
 	return { user, form };

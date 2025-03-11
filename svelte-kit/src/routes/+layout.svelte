@@ -89,7 +89,7 @@
 				$commandOpen = false;
 			}
 			if (key === 'l') {
-				goto('/license');
+				goto('/ffsu');
 				e.preventDefault();
 				$commandOpen = false;
 			}
@@ -122,73 +122,73 @@
 <ModeWatcher />
 <!-- bg-white/70 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-black/10 -->
 {#if $page.url.pathname != '/signin'}
-<nav
-	class="fixed top-0 z-50 w-[100vw] shadow-xl bg-background/95 supports-[backdrop-filter]:bg-background/60 backdrop-blur"
->
-	<Command.Dialog bind:open={$commandOpen}>
-		<Command.Input
-			placeholder="Rechercher un membre, un club …"
-			bind:value={searchInput}
-			on:input={debouncedSearch}
-		/>
-		{#if !searchLoading}
-			<Command.Empty>Aucun résultat.</Command.Empty>
-		{/if}
-		<Command.List>
-			<Command.Group heading="Suggestions">
-				<Command.Item
-					onSelect={() => {
-						goto('/events');
-						$commandOpen = false;
-					}}
-				>
-					<Calendar class="mr-2 h-4 w-4" />
-					<span>Évènements</span>
-				</Command.Item>
-				<Command.Item
-					onSelect={() => {
-						goto('/blog');
-						$commandOpen = false;
-					}}
-				>
-					<ReceiptText class="mr-2 h-4 w-4" />
-					<span>Blog</span>
-				</Command.Item>
-				<Command.Item
-					onSelect={() => {
-						goto('/clubs');
-						$commandOpen = false;
-					}}
-				>
-					<Users class="mr-2 h-4 w-4" />
-					<span>Clubs</span>
-				</Command.Item>
-			</Command.Group>
+	<nav
+		class="bg-background/95 supports-[backdrop-filter]:bg-background/60 fixed top-0 z-50 w-[100vw] shadow-xl backdrop-blur"
+	>
+		<Command.Dialog bind:open={$commandOpen}>
+			<Command.Input
+				placeholder="Rechercher un membre, un club …"
+				bind:value={searchInput}
+				on:input={debouncedSearch}
+			/>
+			{#if !searchLoading}
+				<Command.Empty>Aucun résultat.</Command.Empty>
+			{/if}
+			<Command.List>
+				<Command.Group heading="Suggestions">
+					<Command.Item
+						onSelect={() => {
+							goto('/events');
+							$commandOpen = false;
+						}}
+					>
+						<Calendar class="mr-2 h-4 w-4" />
+						<span>Évènements</span>
+					</Command.Item>
+					<Command.Item
+						onSelect={() => {
+							goto('/blog');
+							$commandOpen = false;
+						}}
+					>
+						<ReceiptText class="mr-2 h-4 w-4" />
+						<span>Blog</span>
+					</Command.Item>
+					<Command.Item
+						onSelect={() => {
+							goto('/clubs');
+							$commandOpen = false;
+						}}
+					>
+						<Users class="mr-2 h-4 w-4" />
+						<span>Clubs</span>
+					</Command.Item>
+				</Command.Group>
 
-			<Command.Separator />
+				<Command.Separator />
 
-			<Command.Group heading="Paramètres">
-				<Command.Item
-					onSelect={() => {
-						goto('/profile');
-						$commandOpen = false;
-					}}
-				>
-					<User class="mr-2 h-4 w-4" />
-					<span>Mon profile</span>
-					<Command.Shortcut>{shortcut}P</Command.Shortcut>
-				</Command.Item>
-				<Command.Item
-					onSelect={() => {
-						goto('/license');
-						$commandOpen = false;
-					}}
-				>
-					<CreditCard class="mr-2 h-4 w-4" />
-					<span>Ma licence</span>
-					<Command.Shortcut>{shortcut}L</Command.Shortcut>
-				</Command.Item>
-				<!-- <Command.Item
+				<Command.Group heading="Paramètres">
+					<Command.Item
+						onSelect={() => {
+							goto('/profile');
+							$commandOpen = false;
+						}}
+					>
+						<User class="mr-2 h-4 w-4" />
+						<span>Mon profile</span>
+						<Command.Shortcut>{shortcut}P</Command.Shortcut>
+					</Command.Item>
+					<Command.Item
+						onSelect={() => {
+							goto('/ffsu');
+							$commandOpen = false;
+						}}
+					>
+						<CreditCard class="mr-2 h-4 w-4" />
+						<span>Ma licence</span>
+						<Command.Shortcut>{shortcut}L</Command.Shortcut>
+					</Command.Item>
+					<!-- <Command.Item
 					onSelect={() => {
 						goto('/settings');
 						$commandOpen = false;
@@ -198,163 +198,163 @@
 					<span>Réglages</span>
 					<Command.Shortcut>{shortcut}R</Command.Shortcut>
 				</Command.Item> -->
-			</Command.Group>
-
-			{#if searchInput !== ''}
-				<Command.Separator />
-
-				<Command.Group alwaysRender={searchLoading} heading="Utilisateurs">
-					{#if searchLoading}
-						<Command.Loading>
-							<div class="my-5 flex justify-center">
-								<Shadow color="darkgray" size="1" unit="rem" />
-							</div>
-						</Command.Loading>
-					{/if}
-
-					{#each users as user}
-						<Command.Item
-							onSelect={() => {
-								goto(resolveRoute('/profile/[id]', { id: user._id.toString() }));
-								$commandOpen = false;
-							}}
-						>
-							<!-- TODO: Avatar utilisateur -->
-							<User class="mr-2 h-4 w-4" />
-							<span>{user.fullName}</span>
-						</Command.Item>
-					{/each}
 				</Command.Group>
 
-				<Command.Separator />
+				{#if searchInput !== ''}
+					<Command.Separator />
 
-				<Command.Group alwaysRender={searchLoading} heading="Clubs">
-					{#if searchLoading}
-						<Command.Loading>
-							<div class="my-5 flex justify-center">
-								<Shadow color="darkgray" size="1" unit="rem" />
-							</div>
-						</Command.Loading>
-					{/if}
+					<Command.Group alwaysRender={searchLoading} heading="Utilisateurs">
+						{#if searchLoading}
+							<Command.Loading>
+								<div class="my-5 flex justify-center">
+									<Shadow color="darkgray" size="1" unit="rem" />
+								</div>
+							</Command.Loading>
+						{/if}
 
-					{#each clubs as club}
-						<Command.Item
-							onSelect={() => {
-								goto(resolveRoute('/clubs/[id]', { id: club._id.toString() }));
-								$commandOpen = false;
-							}}
-						>
-							<!-- TODO: Icône club -->
-							<Users class="mr-2 h-4 w-4" />
-							<span>{club.name}</span>
-						</Command.Item>
-					{/each}
-				</Command.Group>
-			{/if}
-		</Command.List>
-	</Command.Dialog>
+						{#each users as user}
+							<Command.Item
+								onSelect={() => {
+									goto(resolveRoute('/profile/[id]', { id: user._id.toString() }));
+									$commandOpen = false;
+								}}
+							>
+								<!-- TODO: Avatar utilisateur -->
+								<User class="mr-2 h-4 w-4" />
+								<span>{user.fullName}</span>
+							</Command.Item>
+						{/each}
+					</Command.Group>
 
-	<div class="container mx-auto flex h-16 items-center justify-between px-4">
-		<!-- Logo et navigation -->
-		<div class="flex items-center space-x-4">
-			<a href="/" class="flex items-center">
-				<img src="/logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
-			</a>
+					<Command.Separator />
 
-			<div class="hidden items-center space-x-4 md:flex ">
-				<Button href="/blog" variant="link">Blog</Button>
-				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
-				<Button href="/clubs" variant="link">Clubs</Button>
-				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
-				<Button href="/contact" variant="link">Contact</Button>
-				{#if session?.user && session.user.isAdmin}
-				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
-				<Button href="/dashboard" variant="link"><ShieldCheck class="mr-1 w-5"/>Administrer</Button>
+					<Command.Group alwaysRender={searchLoading} heading="Clubs">
+						{#if searchLoading}
+							<Command.Loading>
+								<div class="my-5 flex justify-center">
+									<Shadow color="darkgray" size="1" unit="rem" />
+								</div>
+							</Command.Loading>
+						{/if}
+
+						{#each clubs as club}
+							<Command.Item
+								onSelect={() => {
+									goto(resolveRoute('/clubs/[id]', { id: club._id.toString() }));
+									$commandOpen = false;
+								}}
+							>
+								<!-- TODO: Icône club -->
+								<Users class="mr-2 h-4 w-4" />
+								<span>{club.name}</span>
+							</Command.Item>
+						{/each}
+					</Command.Group>
 				{/if}
-			</div>
-		</div>
+			</Command.List>
+		</Command.Dialog>
 
-		<div class="flex items-center space-x-4">
-			<div class="w-full flex-1 md:w-auto md:flex-none">
-				<Button
-					on:click={() => ($commandOpen = !$commandOpen)}
-					type="button"
-					class="focus-visible:ring-ring bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64 dark:border-white dark:bg-transparent dark:backdrop-blur-md"
-					data-button-root=""
-					><span class="hidden lg:inline-flex">Recherche …</span>
-					<span class="inline-flex lg:hidden">Rechercher …</span>
-					<kbd
-						class="bg-muted pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"
-						data-svelte-h="svelte-1cdrngm"><span class="text-xs">{shortcut}</span>K</kbd
-					></Button
-				>
-			</div>
+		<div class="container mx-auto flex h-16 items-center justify-between px-4">
+			<!-- Logo et navigation -->
+			<div class="flex items-center space-x-4">
+				<a href="/" class="flex items-center">
+					<img src="/logo-bds.png" alt="logo BDS" class="h-16 w-auto" />
+				</a>
 
-			<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
-
-			{#if session?.user}
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger asChild let:builder>
-						<Button
-							variant="link"
-							builders={[builder]}
-							class="flex cursor-pointer items-center space-x-2"
+				<div class="hidden items-center space-x-4 md:flex">
+					<Button href="/blog" variant="link">Blog</Button>
+					<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
+					<Button href="/clubs" variant="link">Clubs</Button>
+					<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
+					<Button href="/contact" variant="link">Contact</Button>
+					{#if session?.user && session.user.isAdmin}
+						<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
+						<Button href="/dashboard" variant="link"
+							><ShieldCheck class="mr-1 w-5" />Administrer</Button
 						>
-							<Avatar.Root>
-								<!-- TODO: Avatar utilisaeur -->
-								<Avatar.Image src="" alt="User Avatar" />
-								<Avatar.Fallback class="no-underline"
-									><User class="text-black dark:text-white" /></Avatar.Fallback
-								>
-							</Avatar.Root>
-							<span class="hidden font-medium md:block">{session.user.name}</span>
-						</Button>
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content class="w-56">
-						<DropdownMenu.Item on:click={() => goto('/profile')}>
-							<User class="mr-2 h-4 w-4" />
-							<span>Mon profile</span>
-							<DropdownMenu.Shortcut>{shortcut}P</DropdownMenu.Shortcut>
-						</DropdownMenu.Item>
-						<DropdownMenu.Item on:click={() => goto('/license')}>
-							<CreditCard class="mr-2 h-4 w-4" />
-							<span>Ma licence</span>
-							<DropdownMenu.Shortcut>{shortcut}L</DropdownMenu.Shortcut>
-						</DropdownMenu.Item>
-						<!-- <DropdownMenu.Item on:click={() => goto('/settings')}>
+					{/if}
+				</div>
+			</div>
+
+			<div class="flex items-center space-x-4">
+				<div class="w-full flex-1 md:w-auto md:flex-none">
+					<Button
+						on:click={() => ($commandOpen = !$commandOpen)}
+						type="button"
+						class="focus-visible:ring-ring bg-background hover:bg-accent hover:text-accent-foreground text-muted-foreground relative inline-flex h-9 w-full items-center justify-start whitespace-nowrap rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-64 dark:border-white dark:bg-transparent dark:backdrop-blur-md"
+						data-button-root=""
+						><span class="hidden lg:inline-flex">Recherche …</span>
+						<span class="inline-flex lg:hidden">Rechercher …</span>
+						<kbd
+							class="bg-muted pointer-events-none absolute right-1.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex"
+							data-svelte-h="svelte-1cdrngm"><span class="text-xs">{shortcut}</span>K</kbd
+						></Button
+					>
+				</div>
+
+				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
+
+				{#if session?.user}
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger asChild let:builder>
+							<Button
+								variant="link"
+								builders={[builder]}
+								class="flex cursor-pointer items-center space-x-2"
+							>
+								<Avatar.Root>
+									<!-- TODO: Avatar utilisaeur -->
+									<Avatar.Image src="" alt="User Avatar" />
+									<Avatar.Fallback class="no-underline"
+										><User class="text-black dark:text-white" /></Avatar.Fallback
+									>
+								</Avatar.Root>
+								<span class="hidden font-medium md:block">{session.user.name}</span>
+							</Button>
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content class="w-56">
+							<DropdownMenu.Item on:click={() => goto('/profile')}>
+								<User class="mr-2 h-4 w-4" />
+								<span>Mon profile</span>
+								<DropdownMenu.Shortcut>{shortcut}P</DropdownMenu.Shortcut>
+							</DropdownMenu.Item>
+							<DropdownMenu.Item on:click={() => goto('/ffsu')}>
+								<CreditCard class="mr-2 h-4 w-4" />
+								<span>Ma licence</span>
+								<DropdownMenu.Shortcut>{shortcut}L</DropdownMenu.Shortcut>
+							</DropdownMenu.Item>
+							<!-- <DropdownMenu.Item on:click={() => goto('/settings')}>
 							<Settings class="mr-2 h-4 w-4" />
 							<span>Réglages</span>
 							<DropdownMenu.Shortcut>{shortcut}R</DropdownMenu.Shortcut>
 						</DropdownMenu.Item> -->
-						<DropdownMenu.Item on:click={() => signOut()}>
-							<LogOut class="mr-2 h-4 w-4" />
-							<span>Se déconnecter</span>
-							<DropdownMenu.Shortcut>{shortcut}E</DropdownMenu.Shortcut>
-						</DropdownMenu.Item>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
-			{:else}
-				<Button on:click={() => goto('/signin')} variant="link"
-					>Se connecter</Button
+							<DropdownMenu.Item on:click={() => signOut()}>
+								<LogOut class="mr-2 h-4 w-4" />
+								<span>Se déconnecter</span>
+								<DropdownMenu.Shortcut>{shortcut}E</DropdownMenu.Shortcut>
+							</DropdownMenu.Item>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+				{:else}
+					<Button on:click={() => goto('/signin')} variant="link">Se connecter</Button>
+				{/if}
+
+				<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
+
+				<!-- Toggle Mode -->
+				<Button
+					on:click={toggleMode}
+					variant="ghost"
+					size="icon"
+					class="hover:text-black dark:hover:bg-white"
 				>
-			{/if}
-
-			<Separator orientation="vertical" class="h-6 bg-black dark:bg-white" />
-
-			<!-- Toggle Mode -->
-			<Button
-				on:click={toggleMode}
-				variant="ghost"
-				size="icon"
-				class="hover:text-black dark:hover:bg-white"
-			>
-				<Sun class="h-5 w-5 dark:hidden" />
-				<Moon class="hidden h-5 w-5 dark:block" />
-			</Button>
+					<Sun class="h-5 w-5 dark:hidden" />
+					<Moon class="hidden h-5 w-5 dark:block" />
+				</Button>
+			</div>
 		</div>
-	</div>
-</nav>
-<slot />
+	</nav>
+	<slot />
 {:else}
-<slot />
+	<slot />
 {/if}

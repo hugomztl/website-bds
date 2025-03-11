@@ -16,7 +16,7 @@ declare module '@auth/core/jwt' {
 }
 
 declare module '@auth/sveltekit' {
-	interface Session {}
+	interface Session { }
 
 	interface User {
 		isAdmin: boolean;
@@ -81,7 +81,7 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	],
 	adapter: MongoDBAdapter(client),
 	pages: {
-		signIn: '/auth',
+		signIn: '/signin',
 		signOut: '/'
 	}
 });

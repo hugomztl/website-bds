@@ -115,13 +115,29 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import CircleAlert from 'lucide-svelte/icons/circle-alert';
 	import * as Alert from '$lib/components/ui/alert/index.js';
-	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { page } from '$app/stores';
-	import { Checkbox } from '$lib/components/ui/checkbox';
+	import { superForm } from 'sveltekit-superforms/client';
+	import { replaceState } from '$app/navigation';
+	import { onMount } from 'svelte';
+
+	export let data;
 
 	let email = $page.form?.email || '';
 	let password = '';
 	let checked = false;
+	const register = $page.url.searchParams.get('register') !== null;
+
+	onMount(() => {
+		if (register) {
+			setTimeout(() => {
+				console.info(register);
+				replaceState('/signin', {});
+			}, 0);
+		}
+	});
+
+	const _superForm = superForm(data.form);
+	const { form, errors, enhance } = _superForm;
 </script>
 
 <div
@@ -141,7 +157,7 @@
 		<div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
 			<img src="logo-bds.png" alt="bds" class="mx-auto h-24 w-24" />
 
-			<Tabs.Root value="signin" class="w-[400px]">
+			<Tabs.Root value={register ? 'register' : 'signin'} class="w-[400px]">
 				<Tabs.List class="grid w-full grid-cols-2">
 					<Tabs.Trigger value="signin">Se connecter</Tabs.Trigger>
 					<Tabs.Trigger value="register">S'inscrire</Tabs.Trigger>
@@ -153,7 +169,11 @@
 							<Card.Description>Connectez vous à votre compte BDS.</Card.Description>
 						</Card.Header>
 						<Card.Content>
-							<SignIn class="items-left flex w-full flex-col" provider="credentials">
+							<SignIn
+								class="items-left flex w-full flex-col"
+								provider="credentials"
+								signInPage="signin?/signin"
+							>
 								<svelte:fragment slot="credentials">
 									<Label for="email" class="mb-2">Email</Label>
 									<Input type="email" name="email" placeholder="Mail @viacesi" bind:value={email} />
@@ -199,7 +219,44 @@
 							<Card.Description>Créer mon compte BDS.</Card.Description>
 						</Card.Header>
 						<Card.Content>
-							<!-- TODO: ici formulaire de register -->
+							<!-- TODO: Améliorer style register -->
+							<form use:enhance action="?/register" method="POST">
+								<div class="space-y-4">
+									{#if $errors.email}
+										<p class="text-destructive mt-1 text-sm">{$errors.email}</p>
+									{/if}
+									<div>
+										<Label for="email">Email viacesi</Label>
+										<Input
+											id="email"
+											name="email"
+											type="email"
+											placeholder="prenom.nom@viacesi.fr"
+											aria-invalid={$errors.email ? 'true' : undefined}
+											value={$form.email}
+											required
+										/>
+									</div>
+									{#if $errors.password}
+										<p class="text-destructive mt-1 text-sm">{$errors.password}</p>
+									{/if}
+									<div>
+										<Label for="password">Mot de passe</Label>
+										<Input
+											id="password"
+											name="password"
+											type="password"
+											required
+											aria-invalid={$errors.password ? 'true' : undefined}
+										/>
+									</div>
+									<div>
+										<Label for="confirmPassword">Confirmer le mot de passe</Label>
+										<Input id="confirmPassword" name="confirmPassword" type="password" required />
+									</div>
+									<Button type="submit" class="w-full">S'inscrire</Button>
+								</div>
+							</form>
 						</Card.Content>
 						<Card.Footer>
 							<Button>Save password</Button>

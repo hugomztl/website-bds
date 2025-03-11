@@ -10,7 +10,7 @@
 	import { Calendar } from '$lib/components/ui/calendar';
 	import { Button } from '$lib/components/ui/button';
 	import { ChevronsUpDown, Check } from 'lucide-svelte';
-	import { DateFormatter } from '@internationalized/date';
+	import { DateFormatter, type DateValue, getLocalTimeZone } from '@internationalized/date';
 	import * as Command from '$lib/components/ui/command/index.js';
 	import countriesData from '$lib/data/countries.json';
 	import { tick } from 'svelte';
@@ -22,13 +22,13 @@
 	import type { CarouselAPI } from '$lib/components/ui/carousel/context.js';
 	import { Separator } from '$lib/components/ui/separator';
 	import { cn } from '$lib/utils';
-	import { writable } from 'svelte/store';
 
 	let api: CarouselAPI;
 	let current = 0;
 	let count = 0;
 
-	let dateNaissDate: Date = undefined;
+	// FIXME: Bind la date à la valeur en string du formulaire avec le formattage correct
+	let dateNaissDate: DateValue | undefined = undefined;
 
 	$: if (api) {
 		count = api.scrollSnapList().length;
@@ -273,7 +273,6 @@
 					<Carousel.Item>
 						<Card.Root class="h-full">
 							<Card.Content class="grid grid-cols-4 gap-4">
-								<!-- FIXME: j'arrive pas a faire fonctionner le composant calendar 🦧​​ (https://www.shadcn-svelte.com/docs/components/calendar) -->
 								<div class="flex w-full max-w-sm flex-col gap-1.5">
 									<Label for="datenaiss">Date de naissance*</Label>
 									{#if $errors.datenaiss}
@@ -290,7 +289,9 @@
 												builders={[builder]}
 											>
 												<CalendarIcon class="mr-2 h-4 w-4" />
-												{dateNaissDate ? dateNaissDate : 'Pick a date'}
+												{dateNaissDate
+													? df.format(dateNaissDate.toDate(getLocalTimeZone()))
+													: 'Choisir une date'}
 											</Button>
 										</Popover.Trigger>
 										<Popover.Content class="w-auto p-0">

@@ -4,7 +4,7 @@
 	import type { Writable } from 'svelte/store';
 
 	export let checked: Writable<boolean>;
-	export let mongoId: Writable<string>;
+	export let mongoId: string;
 </script>
 
 <div class="flex items-center space-x-2">

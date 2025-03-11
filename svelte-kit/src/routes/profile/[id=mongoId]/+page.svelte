@@ -33,6 +33,7 @@
 	import { Label } from '$lib/components/ui/label/index.js';
 	import { resolveRoute } from '$app/paths';
 	import Footer from '$lib/components/footer.svelte';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data;
 	$: user = data.user;
@@ -306,11 +307,17 @@
 																</AlertDialog.Header>
 																<AlertDialog.Footer>
 																	<AlertDialog.Cancel>Annuler</AlertDialog.Cancel>
-																	<!-- TODO: gérer la fonctionnalité pour quitter un club -->
 																	<AlertDialog.Action
 																		class="bg-red-500"
-																		on:click={() => console.log(club.name + ' : club quitté')}
-																		>Quitter</AlertDialog.Action
+																		on:click={async () => {
+																			const formData = new FormData();
+																			formData.append('_id', club._id.toString());
+																			await fetch(`/clubs/${club._id}?/leave`, {
+																				method: 'POST',
+																				body: formData
+																			});
+																			await invalidateAll();
+																		}}>Quitter</AlertDialog.Action
 																	>
 																</AlertDialog.Footer>
 															</AlertDialog.Content>

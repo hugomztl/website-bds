@@ -351,13 +351,12 @@
 									</Popover.Root>
 								</div>
 
-								<!-- FIXME: la combobox pour les département ne fonctionne pas correctement (censé se fermer quand tu clique sur un dpt comme celle pour les pays) -->
 								<div class="flex w-full max-w-sm flex-col gap-1.5">
 									<Label for="dpt_naissance">Département de naissance*</Label>
 									{#if $errors.dpt_naissance}
 										<span class="text-sm text-red-500">{$errors.dpt_naissance}</span>
 									{/if}
-									<Popover.Root bind:openDpt let:ids>
+									<Popover.Root bind:open={openDpt} let:ids>
 										<Popover.Trigger asChild let:builder>
 											<Button
 												builders={[builder]}

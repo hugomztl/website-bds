@@ -136,4 +136,3 @@
 </div>
 
 <Footer />
-<!-- FIXME: quand on charge le footer depuis la page /legal/privacy il cherche le logo du bds dans /legal/logo-bds.png au lieu de chercher dans le dossier static (voir composant footer) -->

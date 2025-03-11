@@ -27,6 +27,7 @@
 	import { Shadow } from 'svelte-loading-spinners';
 	import type { ClubType } from '$lib/models/Club';
 	import type { UserType } from '$lib/models/User';
+	import { Toaster } from '$lib/components/ui/sonner';
 
 	$: session = $page.data.session;
 
@@ -119,6 +120,7 @@
 	});
 </script>
 
+<Toaster />
 <ModeWatcher />
 <!-- bg-white/70 shadow-xl backdrop-blur-md dark:border-gray-800 dark:bg-black/10 -->
 {#if $page.url.pathname != '/signin'}

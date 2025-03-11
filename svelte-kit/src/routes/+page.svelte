@@ -47,8 +47,6 @@
 		// Ajoutez d'autres partenaires selon vos besoins
 	];
 
-	console.log(data.posts);
-
 	let actu = [
 		{
 			titre: 'Soirée BBQ',

@@ -130,7 +130,6 @@
 	onMount(() => {
 		if (register) {
 			setTimeout(() => {
-				console.info(register);
 				replaceState('/signin', {});
 			}, 0);
 		}

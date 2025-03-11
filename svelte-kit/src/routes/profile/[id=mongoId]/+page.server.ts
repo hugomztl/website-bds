@@ -37,8 +37,6 @@ export const actions = {
 		if (!user) {
 			return fail(404);
 		}
-
-		console.info({ fullName, promo, sports, discord });
 	}
 }
 

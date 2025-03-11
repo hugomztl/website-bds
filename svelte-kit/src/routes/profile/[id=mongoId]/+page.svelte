@@ -41,9 +41,6 @@
 	$: trySession = 1;
 	$: profilCompletion = 55; //TODO: calculer le pourcentage de complétion du profil dynamiquement en fonction des champs définis ou non dans la bdd
 
-	// TODO: remplacer la liste des sports par la liste des clubs auquel l'utilisateur est inscrit
-	//console.log(data.user);
-
 	$: clubs = data.clubs;
 
 	let sheetOpen = false;

@@ -13,7 +13,6 @@ export const prerender = false;
 export const actions: Actions = {
 	signin: async (event) => {
 		try {
-			console.info("Signin");
 			return await signIn(event);
 		} catch (error) {
 			if (error instanceof CredentialsSignin) {
@@ -55,8 +54,6 @@ export const actions: Actions = {
 		});
 
 		await user.save();
-
-		console.info(User.find({}));
 	}
 };
 

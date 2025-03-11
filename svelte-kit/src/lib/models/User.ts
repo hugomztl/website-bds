@@ -26,7 +26,6 @@ const UserSchema = new Schema({
 		default: false
 	},
 	discord: String,
-	// FIXME: Mongoose ne valide pas les enums
 	promo: {
 		type: String,
 		enum: promos
@@ -36,11 +35,9 @@ const UserSchema = new Schema({
 		default: false,
 		required: true
 	},
-	// FIXME: Mongoose ne valide pas les enums
 	sports: [
 		{
 			type: String,
-			// FIXME: Changer les sports plus tard
 			enum: sports
 		}
 	],

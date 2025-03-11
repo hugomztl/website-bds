@@ -62,7 +62,7 @@
 		<p>{form.message}</p>
 	{/if}
 
-	<!-- TODO: Utiliser Zob et SuperForms? -->
+	<!-- TODO: Utiliser Zod et SuperForms -->
 	<form method="POST" action="?/update" use:enhance>
 		<input type="text" placeholder="name" name="name" required value={club.name} />
 		<input
@@ -75,7 +75,7 @@
 
 		<label>
 			Nécessite une license?
-			<input type="checkbox" name="requireLicense" checked={club.requireLicense}/>
+			<input type="checkbox" name="requireLicense" checked={club.requireLicense} />
 		</label>
 
 		<label>

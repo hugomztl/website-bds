@@ -1,5 +1,6 @@
 export const promos = Object.freeze(['A1', 'A2', 'A3', 'A4', 'A5'] as const);
 
+// FIXME: Changer la liste des sports
 export const sports = Object.freeze([
 	'football',
 	'basketball',

@@ -47,13 +47,13 @@
 					mongoId: 'Identifiant'
 				});
 			},
-			cell: ({ row }, { pluginStates }) => {
+			cell: ({ row, value }, { pluginStates }) => {
 				const { getRowState } = pluginStates.select;
 				const { isSelected } = getRowState(row);
 
 				return createRender(DataTableCheckbox, {
 					checked: isSelected,
-					mongoId: row.original._id
+					mongoId: value.toString()
 				});
 			},
 			plugins: {
@@ -77,7 +77,7 @@
 		table.column({
 			accessor: 'admin',
 			header: 'Administrateur',
-			cell: ({ row }) => (row.original.admin ? 'Oui' : 'Non'), //FIXME: je crois que c'est pas la bonne façon de faire
+			cell: ({ value }) => (value ? 'Oui' : 'Non'),
 			plugins: {
 				sort: {
 					disable: true
@@ -87,7 +87,7 @@
 		table.column({
 			accessor: 'license',
 			header: 'Licence',
-			cell: ({ row }) => (row.original.license ? 'Oui' : 'Non'), //FIXME: je crois que c'est pas la bonne façon de faire
+			cell: ({ value }) => (value ? 'Oui' : 'Non'),
 			plugins: {
 				sort: {
 					disable: true
@@ -97,7 +97,7 @@
 		table.column({
 			accessor: 'dateInscription',
 			header: "Date d'Inscription",
-			cell: ({ row }) => new Date(row.original.dateInscription).toLocaleDateString('fr-FR') //FIXME: je crois que c'est pas la bonne façon de faire
+			cell: ({ value }) => new Date(value).toLocaleDateString('fr-FR')
 		})
 	]);
 

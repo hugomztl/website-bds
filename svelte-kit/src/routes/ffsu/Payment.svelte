@@ -7,7 +7,6 @@
 	import { Input } from '$lib/components/ui/input';
 	import * as RadioGroup from '$lib/components/ui/radio-group';
 	import * as Popover from '$lib/components/ui/popover';
-	import { Calendar } from '$lib/components/ui/calendar';
 	import { Button } from '$lib/components/ui/button';
 	import { ChevronsUpDown, Check } from 'lucide-svelte';
 	import { DateFormatter, type DateValue, getLocalTimeZone } from '@internationalized/date';
@@ -22,6 +21,7 @@
 	import type { CarouselAPI } from '$lib/components/ui/carousel/context.js';
 	import { Separator } from '$lib/components/ui/separator';
 	import { cn } from '$lib/utils';
+	import Calendrier from './Calendrier.svelte';
 
 	let api: CarouselAPI;
 	let current = 0;
@@ -295,7 +295,7 @@
 											</Button>
 										</Popover.Trigger>
 										<Popover.Content class="w-auto p-0">
-											<Calendar bind:value={dateNaissDate} initialFocus />
+											<Calendrier bind:value={dateNaissDate} />
 										</Popover.Content>
 									</Popover.Root>
 								</div>

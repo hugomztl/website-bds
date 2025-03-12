@@ -2,11 +2,11 @@
 	import * as Card from '$lib/components/ui/card';
 	import { PenSquare, Trash } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { Separator } from '$lib/components/ui/separator';
 	import type { BlogPostType } from '$lib/models/BlogPost';
 	import { invalidate } from '$app/navigation';
+	import type { UserType } from '$lib/models/User';
 
-	export let post: BlogPostType;
+	export let post: Omit<BlogPostType, 'createdBy'> & { createdBy: UserType };
 
 	function deletePost(post: Pick<BlogPostType, 'title' | '_id'>) {
 		if (!confirm(`Voulez-vous supprimer le post: ${post.title}`)) return;

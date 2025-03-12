@@ -57,11 +57,6 @@
 		dateStyle: 'long'
 	});
 
-	// Fonction pour mettre à jour la date dans le formulaire
-	function updateDate(date) {
-		_form.datenaiss = date ? date.toString() : '';
-	}
-
 	// Transformation des données en une liste d'objets
 	const countries = Object.entries(countriesData).map(([code, name]) => ({
 		value: code,
@@ -70,13 +65,12 @@
 
 	const departements = Object.entries(departementsData).map(([code, name]) => ({
 		value: code,
-		label: name
+		label: name as keyof typeof departementsData
 	}));
 
 	let open = false;
 	let openDpt = false;
 	let selectedCountry = '';
-	let selectedDepartement = '';
 
 	// Fonction pour fermer le popover et remettre le focus sur le bouton déclencheur
 	function closeAndFocusTrigger(triggerId: string) {
@@ -177,7 +171,7 @@
 									{#if $errors.sexe}
 										<span class="error">{$errors.sexe}</span>
 									{/if}
-									<RadioGroup.Root bind:value={$_form.sexe} name="sexe" required>
+									<RadioGroup.Root bind:value={$_form.sexe} required>
 										<div class="flex items-center space-x-2">
 											<RadioGroup.Item value="M" id="masculin" />
 											<Label for="masculin">Masculin</Label>
@@ -186,6 +180,7 @@
 											<RadioGroup.Item value="F" id="feminin" />
 											<Label for="feminin">Féminin</Label>
 										</div>
+										<RadioGroup.Input name="sexe" />
 									</RadioGroup.Root>
 								</div>
 
@@ -366,7 +361,7 @@
 												class="w-full justify-between"
 												id={ids.trigger}
 											>
-												{selectedDepartement || 'Sélectionnez un département...'}
+												{$_form.dpt_naissance || 'Sélectionnez un département...'}
 												<ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
 											</Button>
 										</Popover.Trigger>
@@ -379,14 +374,17 @@
 														<Command.Item
 															value={dpt.label}
 															onSelect={(currentValue) => {
-																selectedDepartement =
-																	departements.find((d) => d.label === currentValue)?.label || '';
-																$_form.dpt_naissance = selectedDepartement;
+																const dpt = departements.find(
+																	(d) => d.label === currentValue
+																)?.label;
+																if (dpt) {
+																	$_form.dpt_naissance = dpt;
+																}
 																closeAndFocusTrigger(ids.trigger);
 															}}
 														>
 															<span
-																class="mr-2 flex h-4 w-4 items-center {selectedDepartement ===
+																class="mr-2 flex h-4 w-4 items-center {$_form.dpt_naissance ===
 																dpt.label
 																	? ''
 																	: 'text-transparent'}"
@@ -504,7 +502,7 @@
 									{#if $errors.sport}
 										<span class="error">{$errors.sport}</span>
 									{/if}
-									<Select.Root bind:value={$_form.sport} name="sport">
+									<Select.Root bind:selected={$_form.sport} name="sport">
 										<Select.Trigger class="w-full">
 											<Select.Value placeholder="Sélectionnez un sport..." />
 										</Select.Trigger>

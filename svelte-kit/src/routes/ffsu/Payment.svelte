@@ -502,7 +502,13 @@
 									{#if $errors.sport}
 										<span class="error">{$errors.sport}</span>
 									{/if}
-									<Select.Root bind:selected={$_form.sport} name="sport">
+									<Select.Root
+										name="sport"
+										onSelectedChange={(v) => {
+											// @ts-expect-error v.value devrait être un sport valide
+											v && ($_form.sport = v.value);
+										}}
+									>
 										<Select.Trigger class="w-full">
 											<Select.Value placeholder="Sélectionnez un sport..." />
 										</Select.Trigger>
